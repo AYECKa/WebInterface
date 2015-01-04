@@ -6,6 +6,7 @@ $read = $_SESSION['read_st'];
 $device_IP = $_SESSION['device_IP_st'];
 $ver = $_SESSION['stVer'];
 
+
 $oid = $_SESSION['oid'];
 $type = $_SESSION['type'];
 
@@ -41,74 +42,21 @@ if (isset($_POST['read']) OR $read == "read"){
 
 if(isset($_POST['readtable'])){
 
-//    snmp_get_by_rows
-    for($i=1; $i<=256; $i++){
-//        entry #
-        for($c=1; $c<=6; $c++){
-//            column
-            $oid = "1.3.6.1.4.1.27928.102.1.3.1.1.1.".$c.".".$i;
-            $snmpget[] = snmp2_get($device_IP,"public",$oid);
-        }
-// save to database
-        $id = substr($snmpget[0], 9);
-        $ip = substr($snmpget[1], 11);
-        $mask = substr($snmpget[2], 11);
-        $mac = substr($snmpget[3], 11);
-        $pid = substr($snmpget[4], 9);
-        $enabled = substr($snmpget[5], 9);
-
-        mysql_query("UPDATE st_ipFwdTable SET `ipfwdEntryIndex` = '$id', `ipfwdIpAddress` = '$ip', `ipfwdIpNetmask` = '$mask', `ipfwdMacAddress` = '$mac', `ipfwdPid` = '$pid', `ipfwdEnabled` = '$enabled', `time` = CURRENT_TIMESTAMP WHERE Instance = $i");
-
-//    unset get araay
-        unset($get);
-    }
 }
-
-
-
-/*
- ******************************
- *          Write!            *
- ******************************
- */
+//write
 
 if (isset($_POST['write']) AND $read == "read"){
-    foreach($_POST['checkbox'] as $i){
 
-        $ip = "ipfwdIpAddress".$i;
-        $netmask = "ipfwdIpNetmask".$i;
-        $macaddress = "ipfwdMacAddress".$i;
-        $pid = "ipfwdPid".$i;
-        $enabled = "ipfwdEnabled".$i;
-
-        mysql_query("UPDATE st_ipFwdTable SET
-        ipfwdIpAddress = '$_POST[$ip]',
-        ipfwdIpNetmask = '$_POST[$netmask]',
-        ipfwdMacAddress = '$_POST[$macaddress]',
-        ipfwdPid = '$_POST[$pid]',
-        ipfwdEnabled = '$_POST[$enabled]',
-        time=CURRENT_TIMESTAMP
-        WHERE Instance = $i");
-
-        $column = array("","","ipfwdIpAddress","ipfwdIpNetmask","ipfwdMacAddress","ipfwdPid","ipfwdEnabled");
-        $columntype = array("","","a","a","macAddress","i","i");
-
-        for($n = 2; $n <= 6; $n++){
-            $q = mysql_query("SELECT $column[$n] FROM st_ipFwdTable WHERE Instance = $i");
-            $r = mysql_fetch_array($q);
-
-            $oid = "1.3.6.1.4.1.27928.102.1.3.1.1.1.".$n.".".$i;
-
-            snmp2_set($device_IP, "private", $oid, $columntype[$n], $r[$column[$n]]);
-
-        }
-    }
-    echo '<script type="text/javascript">alert("Entry';
-    foreach($_POST['checkbox'] as $i){
-        echo " ".$i.",";
-    }
-    echo ' was updated to the device")</script>';
 }
+
+
+
+
+
+
+
+
+
 ?>
 <!doctype html>
 
@@ -123,7 +71,7 @@ if (isset($_POST['write']) AND $read == "read"){
     <script type="text/javascript" src="../bootstrap/js/bootstrap.min.js"></script>
     <style type="text/css">
         body {
-            padding-top: 0;
+            padding-top: 0px;
             padding-bottom: 20px;
         }
     </style>
@@ -134,15 +82,105 @@ if (isset($_POST['write']) AND $read == "read"){
                 $(this).parent().parent().find("td .checkme").attr("checked",'checked');
             });
         });
+
+
     </script>
 </head>
 
 <body>
 
+<div id="progressWrapper" style="display: none; text-align: center;">
+    <!-- Progress bar holder -->
+    <div id="progress" style="width:500px;border:1px solid #ccc;margin: auto;"></div>
+    <!-- Progress information -->
+    <div id="information" style="margin:auto;width"></div>
+</div>
+<?php
+
+if(isset($_POST['readtable'])){
+    $total = 256;
+    echo '<script language="javascript"> document.getElementById("progressWrapper").style.display="block";</script>';
+    $t = 0;
+
+    //    snmp_get_by_rows
+    for($i=1; $i<=256; $i++){
+//        $i = entry #
+
+        $oid = "1.3.6.1.4.1.27928.102.1.3.1.1.1.2.".$i;
+        $getIp = snmp2_get($device_IP,"public",$oid);
+        $getIp = substr($getIp, 11);
+
+        if($getIp != "0.0.0.0"){
+            for($c=1; $c<=6; $c++){
+//                     column
+                if($c != 2){
+                    $oid = "1.3.6.1.4.1.27928.102.1.3.1.1.1.".$c.".".$i;
+                    $snmpget[] = snmp2_get($device_IP,"public",$oid);
+                } else {
+                    $snmpget[] = $getIp;
+                }
+            }
+            $id = substr($snmpget[0], 9);
+            $ip = $snmpget[1];
+            $mask = substr($snmpget[2], 11);
+            $mac = substr($snmpget[3], 11);
+            $pid = substr($snmpget[4], 9);
+            $enabled = substr($snmpget[5], 9);
+
+        }else{
+//        If ip = 0.0.0.0
+
+            $id = $i;
+            $ip = $getIp;
+            $mask = "0.0.0.0";
+            $mac = " 00 00 00 00 00 00 ";
+            $pid = "0";
+            $enabled = "0";
+        }
+
+        mysql_query("UPDATE `st_ipFwdTable` SET `ipfwdEntryIndex` = '$id', `ipfwdIpAddress` = '$ip', `ipfwdIpNetmask` = '$mask', `ipfwdMacAddress` = '$mac', `ipfwdPid` = '$pid', `ipfwdEnabled` = '$enabled', `time` = CURRENT_TIMESTAMP WHERE Instance = $i");
+
+//    unset get araay
+        unset($snmpget);
+
+
+        // Calculate the percentation
+        $percent = intval($i/$total * 100)."%";
+
+        // Javascript for updating the progress bar and information
+        echo '<script language="javascript">
+    document.getElementById("progress").innerHTML="<div style=\"width:'.$percent.';background:#6cb245\">&nbsp;</div>";
+    document.getElementById("information").innerHTML="'.$percent.' completed. ('.$i.'/'.$total.')";
+    </script>';
+
+// This is for the buffer achieve the minimum size in order to flush data
+        echo str_repeat(' ',1024*64);
+// Send output to browser immediately
+        flush();
+        $t = $t+1;
+
+        if($t==20){
+            $t=0;
+            sleep(1);
+        }
+
+    } //end $i
+
+
+// Tell user that the process is completed
+    echo '<script language="javascript">document.getElementById("information").innerHTML="Process completed";</script>';
+    echo '<script language="javascript"> document.getElementById("progressWrapper").style.display="none";</script>';
+
+}
+
+?>
+
+
 <?php
 $active = "encapsulator";
 include_once('header.php');
 ?>
+
 
 <!--PageBody-->
 <!--end Page Body-->
@@ -172,13 +210,16 @@ include_once('header.php');
             <div class="col-md-3"></div>
             <div class="col-md-6 text-center">
 
+
                 <?php
                 $time = mysql_query("SELECT MAX(time) as max FROM st_ipFwdTable");
                 $timeresult = mysql_fetch_array($time);
-                echo "This is the last update from: <b>".$timeresult['max'];
+                echo "This is the last update from: <b>".$timeresult[max];
                 echo "</b><br>".'<input class="btn btn-sm btn-danger" type="submit" name="readtable" value="To update table from device Click Here">';
                 ?>
                 <br>*The updating process may take a few minutes
+
+
 
                 <br><br>
                 Show row:
@@ -285,7 +326,8 @@ ROW;
         <span class="pull-right">  <?php echo "Version number: ".$ver;?></span>
         &copy; <a href="http://www.ayecka.com">Ayecka</a> Comunnication System</footer>
 </div>
-
+</form>
 <!-- /container -->
 </body>
 </html>
+

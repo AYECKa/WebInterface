@@ -46,7 +46,23 @@ if (isset($_POST['write']) AND $read == "read"){
     //RX1
     snmp2_set($device_IP, "private", $oid['egrRx1Enabled'], $type['egrRx1Enabled'], $_POST['egrRx1Enabled']);
     snmp2_set($device_IP, "private", $oid['egrRx1DstIpAddress'], $type['egrRx1DstIpAddress'], $_POST['egrRx1DstIpAddress']);
-    snmp2_set($device_IP, "private", $oid['egrRx1DstEthAddress'], $type['egrRx1DstEthAddress'], $_POST['egrRx1DstEthAddress']);
+
+    $destIp = explode(".", $_POST['egrRx1DstIpAddress']);
+    if($destIp[0] > 224 AND $destIp[0] < 239){ //if multicast format
+        $hex1 = dechex($destIp[1]);
+        $hex2 = dechex($destIp[2]);
+        $hex3 = dechex($destIp[3]);
+
+        $hex1 = strlen($hex1) < 2 ? "0".$hex1 : $hex1; //if need to add 0
+        $hex2 = strlen($hex2) < 2 ? "0".$hex2 : $hex2;
+        $hex3 = strlen($hex3) < 2 ? "0".$hex3 : $hex3;
+
+        $egrRx1DstEthAddress = "01 00 5E ".$hex1." ".$hex2." ".$hex3;
+        snmp2_set($device_IP, "private", $oid['egrRx1DstEthAddress'], "x", $egrRx1DstEthAddress);
+    } else {
+        snmp2_set($device_IP, "private", $oid['egrRx1DstEthAddress'], "x", $_POST['egrRx1DstEthAddress']);
+    }
+
     snmp2_set($device_IP, "private", $oid['egrRx1DstUdpPort'], $type['egrRx1DstUdpPort'], $_POST['egrRx1DstUdpPort']);
     snmp2_set($device_IP, "private", $oid['egrRx1Dscp'], $type['egrRx1Dscp'], $_POST['egrRx1Dscp']);
     snmp2_set($device_IP, "private", $oid['egrRx1SrcIpAddress'], $type['egrRx1SrcIpAddress'], $_POST['egrRx1SrcIpAddress']);
@@ -60,7 +76,23 @@ if (isset($_POST['write']) AND $read == "read"){
     //RX2
     snmp2_set($device_IP, "private", $oid['egrRx2Enabled'], $type['egrRx2Enabled'], $_POST['egrRx2Enabled']);
     snmp2_set($device_IP, "private", $oid['egrRx2DstIpAddress'], $type['egrRx2DstIpAddress'], $_POST['egrRx2DstIpAddress']);
-    snmp2_set($device_IP, "private", $oid['egrRx2DstEthAddress'], $type['egrRx2DstEthAddress'], $_POST['egrRx2DstEthAddress']);
+
+    $destIp = explode(".", $_POST['egrRx2DstIpAddress']);
+    if($destIp[0] > 224 AND $destIp[0] < 239){ //if multicast format
+        $hex1 = dechex($destIp[1]);
+        $hex2 = dechex($destIp[2]);
+        $hex3 = dechex($destIp[3]);
+
+        $hex1 = strlen($hex1) < 2 ? "0".$hex1 : $hex1; //if need to add 0
+        $hex2 = strlen($hex2) < 2 ? "0".$hex2 : $hex2;
+        $hex3 = strlen($hex3) < 2 ? "0".$hex3 : $hex3;
+
+        $egrRx2DstEthAddress = "01 00 5E ".$hex1." ".$hex2." ".$hex3;
+        snmp2_set($device_IP, "private", $oid['egrRx2DstEthAddress'], "x", $egrRx2DstEthAddress);
+    } else {
+        snmp2_set($device_IP, "private", $oid['egrRx2DstEthAddress'], "x", $_POST['egrRx2DstEthAddress']);
+    }
+
     snmp2_set($device_IP, "private", $oid['egrRx2DstUdpPort'], $type['egrRx2DstUdpPort'], $_POST['egrRx2DstUdpPort']);
     snmp2_set($device_IP, "private", $oid['egrRx2Dscp'], $type['egrRx2Dscp'], $_POST['egrRx2Dscp']);
     snmp2_set($device_IP, "private", $oid['egrRx2SrcIpAddress'], $type['egrRx2SrcIpAddress'], $_POST['egrRx2SrcIpAddress']);
@@ -74,7 +106,23 @@ if (isset($_POST['write']) AND $read == "read"){
     //ASI
     snmp2_set($device_IP, "private", $oid['egrAsiEnabled'], $type['egrAsiEnabled'], $_POST['egrAsiEnabled']);
     snmp2_set($device_IP, "private", $oid['egrAsiDstIpAddress'], $type['egrAsiDstIpAddress'], $_POST['egrAsiDstIpAddress']);
-    snmp2_set($device_IP, "private", $oid['egrAsiDstEthAddress'], $type['egrAsiDstEthAddress'], $_POST['egrAsiDstEthAddress']);
+
+    $destIp = explode(".", $_POST['egrAsiDstIpAddress']);
+    if($destIp[0] > 224 AND $destIp[0] < 239){ //if multicast format
+        $hex1 = dechex($destIp[1]);
+        $hex2 = dechex($destIp[2]);
+        $hex3 = dechex($destIp[3]);
+
+        $hex1 = strlen($hex1) < 2 ? "0".$hex1 : $hex1; //if need to add 0
+        $hex2 = strlen($hex2) < 2 ? "0".$hex2 : $hex2;
+        $hex3 = strlen($hex3) < 2 ? "0".$hex3 : $hex3;
+
+        $egrAsiDstEthAddress = "01 00 5E ".$hex1." ".$hex2." ".$hex3;
+        snmp2_set($device_IP, "private", $oid['egrAsiDstEthAddress'], "x", $egrAsiDstEthAddress);
+    } else {
+        snmp2_set($device_IP, "private", $oid['egrAsiDstEthAddress'], "x", $_POST['egrAsiDstEthAddress']);
+    }
+
     snmp2_set($device_IP, "private", $oid['egrAsiDstUdpPort'], $type['egrAsiDstUdpPort'], $_POST['egrAsiDstUdpPort']);
     snmp2_set($device_IP, "private", $oid['egrAsiDscp'], $type['egrAsiDscp'], $_POST['egrAsiDscp']);
     snmp2_set($device_IP, "private", $oid['egrAsiSrcIpAddress'], $type['egrAsiSrcIpAddress'], $_POST['egrAsiSrcIpAddress']);
