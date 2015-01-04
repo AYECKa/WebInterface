@@ -1,3 +1,14 @@
+<div class="well well-sm" style="margin-bottom: 0;">
+    <div class="container">
+        <div class="col-lg-1"><img src="../images/ayeckaLogo.png" class="pull-left"></div>
+        <div class="col-lg-10 text-center">
+            <br><h4><strong><a href="http://www.ayecka.com/TC1.html">TC1</a></strong> - Transport stream Media converter</h4>
+        </div>
+        <div class="col-lg-1"><img src="../images/slogen.png" class="pull-right"></div>
+    </div>
+</div>
+
+
 <div class="navbar navbar-inverse">
     <div class="container">
         <div class="navbar-header">

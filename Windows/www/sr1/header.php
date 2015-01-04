@@ -1,10 +1,10 @@
-<div class="well well-sm" style="margin-bottom: 0px;">
+<div class="well well-sm" style="margin-bottom: 0;">
     <div class="container">
         <div class="col-lg-1"><img src="../images/ayeckaLogo.png" class="pull-left"></div>
         <div class="col-lg-10 text-center">
             <br><h4><strong><a href="http://www.ayecka.com/SR1.html">SR1</a></strong> - Advanced DVB-S2 Receiver with GigE interface</h4>
         </div>
-        <div class="col-lg-1"><img src="../images/slogen2.png" class="pull-right"></div>
+        <div class="col-lg-1"><img src="../images/slogen.png" class="pull-right"></div>
     </div>
 </div>
 

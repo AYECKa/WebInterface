@@ -64,24 +64,13 @@ if (isset($_POST['write']) AND $read == "read"){
     <script type="text/javascript" src="../bootstrap/js/bootstrap.min.js"></script>
     <style type="text/css">
         body {
-            padding-top: 0px;
+            padding-top: 0;
             padding-bottom: 20px;
         }
     </style>
 </head>
 
 <body>
-
-<div class="well well-sm" style="margin-bottom: 0px;">
-    <div class="container">
-        <div class="col-lg-1"><img src="../images/ayeckaLogo.png" class="pull-left"></div>
-        <div class="col-lg-10 text-center">
-            <br><h4><strong><a href="http://www.ayecka.com/ST1.html">ST1</a></strong> - Satellite Transmitter, IP over DVB-S2</h4>
-        </div>
-        <div class="col-lg-1"><img src="../images/slogen2.png" class="pull-right"></div>
-    </div>
-</div>
-
 <?php
 $active = "buc";
 include_once('header.php');

@@ -41,57 +41,36 @@ if (isset($_POST['read']) OR $read == "read"){
 
 if(isset($_POST['readtable'])){
 
-// snmp walk
-    $walk = snmpwalk($device_IP, "public", "1.3.6.1.4.1.27928.102.1.3.1.1.1");
+//    snmp_get_by_rows
+    for($i=1; $i<=256; $i++){
+//        entry #
+        for($c=1; $c<=6; $c++){
+//            column
+            $oid = "1.3.6.1.4.1.27928.102.1.3.1.1.1.".$c.".".$i;
+            $snmpget[] = snmp2_get($device_IP,"public",$oid);
+        }
+// save to database
+        $id = substr($snmpget[0], 9);
+        $ip = substr($snmpget[1], 11);
+        $mask = substr($snmpget[2], 11);
+        $mac = substr($snmpget[3], 11);
+        $pid = substr($snmpget[4], 9);
+        $enabled = substr($snmpget[5], 9);
 
-    for($i = 0; $i <= 255; $i++){
-        $id = substr($walk[$i], 9);
-        $instance = $i+1;
+        mysql_query("UPDATE st_ipFwdTable SET `ipfwdEntryIndex` = '$id', `ipfwdIpAddress` = '$ip', `ipfwdIpNetmask` = '$mask', `ipfwdMacAddress` = '$mac', `ipfwdPid` = '$pid', `ipfwdEnabled` = '$enabled', `time` = CURRENT_TIMESTAMP WHERE Instance = $i");
 
-        mysql_query("UPDATE st_ipFwdTable SET ipfwdEntryIndex = '$id' WHERE Instance = $instance");
-    }
-
-
-    for($i = 256; $i <= 511; $i++){
-        $ip = substr($walk[$i], 11);
-        $instance = $i-255;
-
-        mysql_query("UPDATE st_ipFwdTable SET ipfwdIpAddress = '$ip' WHERE Instance = $instance");
-    }
-
-    for($i = 512; $i <= 767; $i++){
-        $mask = substr($walk[$i], 11);
-        $instance = $i-511;
-
-        mysql_query("UPDATE st_ipFwdTable SET ipfwdIpNetmask = '$mask' WHERE Instance = $instance");
-    }
-
-    for($i = 768; $i <= 1023; $i++){
-        $mac = substr($walk[$i], 11);
-        $instance = $i-767;
-
-        mysql_query("UPDATE st_ipFwdTable SET ipfwdMacAddress = '$mac' WHERE Instance = $instance");
-    }
-
-    for($i = 1024; $i <= 1279; $i++){
-        $pid = substr($walk[$i], 9);
-        $instance = $i-1023;
-
-        mysql_query("UPDATE st_ipFwdTable SET ipfwdPid = '$pid' WHERE Instance = $instance");
-    }
-
-    for($i = 1280; $i <= 1535; $i++){
-        $enabled = substr($walk[$i], 9);
-        $instance = $i-1279;
-
-        mysql_query("UPDATE st_ipFwdTable SET ipfwdEnabled = '$enabled' WHERE Instance = $instance");
-    }
-
-    for($i = 1; $i <=256; $i++){
-        mysql_query("UPDATE st_ipFwdTable SET time=CURRENT_TIMESTAMP WHERE Instance = $i");
+//    unset get araay
+        unset($get);
     }
 }
-//write
+
+
+
+/*
+ ******************************
+ *          Write!            *
+ ******************************
+ */
 
 if (isset($_POST['write']) AND $read == "read"){
     foreach($_POST['checkbox'] as $i){
@@ -125,10 +104,10 @@ if (isset($_POST['write']) AND $read == "read"){
         }
     }
     echo '<script type="text/javascript">alert("Entry';
-        foreach($_POST['checkbox'] as $i){
+    foreach($_POST['checkbox'] as $i){
         echo " ".$i.",";
     }
-        echo ' was updated to the device")</script>';
+    echo ' was updated to the device")</script>';
 }
 ?>
 <!doctype html>
@@ -144,7 +123,7 @@ if (isset($_POST['write']) AND $read == "read"){
     <script type="text/javascript" src="../bootstrap/js/bootstrap.min.js"></script>
     <style type="text/css">
         body {
-            padding-top: 0px;
+            padding-top: 0;
             padding-bottom: 20px;
         }
     </style>
@@ -159,16 +138,6 @@ if (isset($_POST['write']) AND $read == "read"){
 </head>
 
 <body>
-
-<div class="well well-sm" style="margin-bottom: 0px;">
-    <div class="container">
-        <div class="col-lg-1"><img src="../images/ayeckaLogo.png" class="pull-left"></div>
-        <div class="col-lg-10 text-center">
-            <br><h4><strong><a href="http://www.ayecka.com/ST1.html">ST1</a></strong> - Satellite Transmitter, IP over DVB-S2</h4>
-        </div>
-        <div class="col-lg-1"><img src="../images/slogen2.png" class="pull-right"></div>
-    </div>
-</div>
 
 <?php
 $active = "encapsulator";
@@ -206,7 +175,7 @@ include_once('header.php');
                 <?php
                 $time = mysql_query("SELECT MAX(time) as max FROM st_ipFwdTable");
                 $timeresult = mysql_fetch_array($time);
-                echo "This is the last update from: <b>".$timeresult[max];
+                echo "This is the last update from: <b>".$timeresult['max'];
                 echo "</b><br>".'<input class="btn btn-sm btn-danger" type="submit" name="readtable" value="To update table from device Click Here">';
                 ?>
                 <br>*The updating process may take a few minutes
@@ -316,7 +285,7 @@ ROW;
         <span class="pull-right">  <?php echo "Version number: ".$ver;?></span>
         &copy; <a href="http://www.ayecka.com">Ayecka</a> Comunnication System</footer>
 </div>
-</form>
+
 <!-- /container -->
 </body>
 </html>

@@ -35,9 +35,26 @@ if(isset($_POST['submit'])){
             <form method="post">
                 <select class="form-control input-sm" name="device">
                     <option selected disabled>Select Device</option>
-                    <option value="sr1">SR1 - Advanced DVB-S2 Receiver with GigE interface</option>
-                    <option value="tc1">TC1 - Transport stream Media converter</option>
-                    <option value="st1">ST1 - Satellite Transmitter, IP over DVB-S2</option>
+                    <?php
+                    $filename = 'sr1';
+                    if (file_exists($filename)) {
+                        echo '<option value="sr1">SR1 - Advanced DVB-S2 Receiver with GigE interface</option>';
+                    }
+                    $filename = 'tc1';
+                    if (file_exists($filename)) {
+                        echo '<option value="tc1">TC1 - Transport stream Media converter</option>';
+                    }
+
+                    $filename = 'st1';
+                    if (file_exists($filename)) {
+                        echo '<option value="st1">ST1 - Satellite Transmitter, IP over DVB-S2</option>';
+                    }
+
+                    $filename = 'aupc';
+                    if (file_exists($filename)) {
+                        echo '<option value="aupc">AUPC - Automatic Uplink Power Control</option>';
+                    }
+                    ?>
                 </select>
                 <br>
                 <input type="submit" value="Go" name="submit" class="btn btn-success btn-lg">
@@ -49,7 +66,7 @@ if(isset($_POST['submit'])){
     <div class="col-lg-4"></div>
 </div>
 
-</form>
+
 <!-- /container -->
 </body>
 

@@ -70,23 +70,13 @@ if (isset($_POST['read']) OR $read == "read"){
     <script type="text/javascript" src="../bootstrap/js/bootstrap.min.js"></script>
     <style type="text/css">
         body {
-            padding-top: 0px;
+            padding-top: 0;
             padding-bottom: 20px;
         }
     </style>
 </head>
 
 <body>
-
-<div class="well well-sm" style="margin-bottom: 0px;">
-    <div class="container">
-        <div class="col-lg-1"><img src="../images/ayeckaLogo.png" class="pull-left"></div>
-        <div class="col-lg-10 text-center">
-            <br><h4><strong><a href="http://www.ayecka.com/ST1.html">ST1</a></strong> - Satellite Transmitter, IP over DVB-S2</h4>
-        </div>
-        <div class="col-lg-1"><img src="../images/slogen2.png" class="pull-right"></div>
-    </div>
-</div>
 
 <?php
 $active = "index";
@@ -158,7 +148,7 @@ include_once('header.php');
 </form>
 <div class="col-md-4"></div>
 <form method="post">
-    </div>This page automatically refreshes every
+    This page automatically refreshes every
     <div class="form-group">
         <input class="form-control input-sm" type="number" min="10" max="360" name="refreshTime" value="<?php echo $refreshTime;?>">
     </div> Sec

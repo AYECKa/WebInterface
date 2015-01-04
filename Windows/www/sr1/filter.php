@@ -1,4 +1,12 @@
 <?php
+
+/********************************************************
+ * Reference:
+ * 1.3.6.1.4.1.27928.101.1.rx.conf.4.3.1.column.entry  *
+ ********************************************************
+ */
+
+
 session_start();
 error_reporting(0);
 $read = $_SESSION['read_sr'];
@@ -7,7 +15,7 @@ $ver = $_SESSION['srVer'];
 
 $oid = $_SESSION['oid'];
 $type = $_SESSION['type'];
-$readTable = "";
+
 
 require_once('sql.php');
 sql_connect();
@@ -33,117 +41,57 @@ if (isset($_POST['read']) OR $read == "read"){
     include_once('info_function.php');
 
 //  Choose Read Table
-    if(isset($_POST['filterTableSubmit'])){
-        //table chosen
-        $readTable = $_POST['filterTable'];
+    if(isset($_POST['selectTableSubmit'])){
+//        Choose table
+        $selectTable = $_POST['selectTable'];
 
-        //Value
-        //$walk = snmpwalk($device_IP, "public", "1.3.6.1.4.1.27928.101.1.1.1.4.3");
-        $walk = snmpwalk($device_IP, "public", $oid[$readTable]);
+        for($i=1; $i<=8; $i++){
+//            row number ($i)
+            for($c=1; $c<=10; $c++){
+//                column number ($c)
+                $oid = "1.3.6.1.4.1.27928.101.1.".$selectTable.".4.3.1.".$c.".$i";
+                $get[$i][$c] = substr(snmp2_get($device_IP,"public",$oid),9);
 
-        for($i=0; $i<=64; $i += 8){
-            $filter1[] = substr($walk[$i],9);
+//                clean the mac address result
+                if($c==3){
+                    $get[$i][$c] = substr($get[$i][$c],2);
+                }
+            }
         }
-        for($i=1; $i<=65; $i += 8){
-            $filter2[] = substr($walk[$i],9);
-        }
-        for($i=2; $i<=66; $i += 8){
-            $filter3[] = substr($walk[$i],9);
-        }
-        for($i=3; $i<=67; $i += 8){
-            $filter4[] = substr($walk[$i],9);
-        }
-        for($i=4; $i<=68; $i += 8){
-            $filter5[] = substr($walk[$i],9);
-        }
-        for($i=5; $i<=69; $i += 8){
-            $filter6[] = substr($walk[$i],9);
-        }
-        for($i=6; $i<=70; $i += 8){
-            $filter7[] = substr($walk[$i],9);
-        }
-        for($i=7; $i<=71; $i += 8){
-            $filter8[] = substr($walk[$i],9);
-        }
-        $filterTable = array($filter1,$filter2,$filter3,$filter4,$filter5,$filter6,$filter7,$filter8);
-
-//Clean Mac Address
-        for ($i=0; $i<=8; $i++){
-            $filterTable[$i][2] = substr($filterTable[$i][2],2);
-        }
-
-//!!!DONE VALUE ARRAY! [filterTable]!!!
-
-
-
+//        loop closed
     }
-
 }
 
+/********************************
+ *          Write!              *
+ ********************************
+ */
 if (isset($_POST['write']) AND $read == "read"){
-//Write
-    for($i=0; $i<=7; $i++){
-        $pid = "pid$i";
-        $mac = "mac$i";
-        $status = "status$i";
-        $multiCast = "multiCast$i";
-        $arrayName = "row$i";
-        $$arrayName = array($i,$_POST[$pid],$_POST[$mac],$_POST[$status],$_POST[$multiCast]);
-    }
-    $tableRow = array($row0,$row1,$row2,$row3,$row4,$row5,$row6,$row7);
+    for($i=1; $i<=8; $i++){
+        $pidName = "pid".$i;
+        $statusName = "status".$i;
+        $multicastName = "multicast".$i;
 
+        $pid = $_POST[$pidName];
+        $status = $_POST[$statusName];
+        $multicast = $_POST[$multicastName];
+        $selectTable = $_POST['selectTable'];
 
-    //START OID ARRAY
-    $readTable = $_POST['filterTable'];
-    $walkoid1 = snmpwalkoid($device_IP, "public", $oid[$readTable]);
+//        snmp2_set($device_IP,"private",oid,type,value);
 
-    $i = "0";
-    foreach ($walkoid1 as $key => $value) {
-        $newKey = substr($key,3);
-        $walkoid[$i] = "1".$newKey;
-        $i++;
-    }
+        $c = 2;
+        $oid = "1.3.6.1.4.1.27928.101.1.".$selectTable.".4.3.1.".$c.".$i";
+        snmp2_set($device_IP,"private",$oid,"i",$pid);
 
-    for($i=0; $i<=64; $i += 8){
-        $tableoid1[] = $walkoid[$i];
-    }
-    for($i=1; $i<=65; $i += 8){
-        $tableoid2[] = $walkoid[$i];
-    }
-    for($i=2; $i<=66; $i += 8){
-        $tableoid3[] = $walkoid[$i];
-    }
-    for($i=3; $i<=67; $i += 8){
-        $tableoid4[] = $walkoid[$i];
-    }
-    for($i=4; $i<=68; $i += 8){
-        $tableoid5[] = $walkoid[$i];
-    }
-    for($i=5; $i<=69; $i += 8){
-        $tableoid6[] = $walkoid[$i];
-    }
-    for($i=6; $i<=70; $i += 8){
-        $tableoid7[] = $walkoid[$i];
-    }
-    for($i=7; $i<=71; $i += 8){
-        $tableoid8[] = $walkoid[$i];
-    }
-    $filterOid = array($tableoid1,$tableoid2,$tableoid3,$tableoid4,$tableoid5,$tableoid6,$tableoid7,$tableoid8);
+        $c = 8;
+        $oid = "1.3.6.1.4.1.27928.101.1.".$selectTable.".4.3.1.".$c.".$i";
+        snmp2_set($device_IP,"private",$oid,"i",$status);
 
-    print_r($filterOid);
-//!!! DONE OID ARRAY! [filterOid]!
-
-    for($i=0; $i<=7; $i++){
-        $arrayName = "row$i";
-        snmp2_set($device_IP, "private", $filterOid[$i][1], "int", $tableRow[$i][1]);
-        snmp2_set($device_IP, "private", $filterOid[$i][7], "int", $tableRow[$i][3]);
-        snmp2_set($device_IP, "private", $filterOid[$i][8], "int", $tableRow[$i][4]);
+        $c = 10;
+        $oid = "1.3.6.1.4.1.27928.101.1.".$selectTable.".4.3.1.".$c.".$i";
+        snmp2_set($device_IP,"private",$oid,"i",$multicast);
     }
-
-
 }
-
-
 ?>
 <!doctype html>
 
@@ -201,53 +149,65 @@ include_once('header.php');
             <div class="col-md-3"></div>
             <div class="col-md-6 text-center">
                 <div class="form-group">
-                    <select name="filterTable" class="form-control input-sm">
-                        <option value="filters1Table"  <?php if($readTable == "rf1Conf1Table"){echo "selected";}?>>Rx1 - Conf1</option>
-                        <option value="filters2Table"  <?php if($readTable == "rf1Conf2Table"){echo "selected";}?>>Rx1 - Conf2</option>
-                        <option value="filters3Table"  <?php if($readTable == "rf2Conf1Table"){echo "selected";}?>>Rx2 - Conf1</option>
-                        <option value="filters4Table"  <?php if($readTable == "rf2Conf2Table"){echo "selected";}?>>Rx2 - Conf2</option>
+                    <select name="selectTable" class="form-control input-sm">
+                        <option value="1.1" <?php if($selectTable == "1.1"){echo "selected";}?>>Rx1 - Conf1</option>
+                        <option value="1.2" <?php if($selectTable == "1.2"){echo "selected";}?>>Rx1 - Conf2</option>
+                        <option value="2.1" <?php if($selectTable == "2.1"){echo "selected";}?>>Rx2 - Conf1</option>
+                        <option value="2.2" <?php if($selectTable == "2.2"){echo "selected";}?>>Rx2 - Conf2</option>
                     </select>
                 </div>
                 <div class="form-group">
-                    <input class="form-control input-sm btn-info" type="submit" name="filterTableSubmit" value="Read Table">
+                    <input class="form-control input-sm btn-info" type="submit" name="selectTableSubmit" value="Read Table">
                 </div>
 
-
-            <table class="table table-condensed table-hover">
-                <thead>
-                <tr>
-                    <th>Slot</th>
-                    <th>PID</th>
-                    <th>Mac Address</th>
-                    <th>Status</th>
-                    <th>IP Multicast</th>
-                </tr>
-                </thead>
-                <tbody>
-
-                <?php
-                for ($i=0; $i<=7; $i++){
-                    $slot = $i +1;
-                    ?>
+                <br><br>
+                <table class="table table-condensed table-hover">
+                    <thead>
                     <tr>
-                        <td> <?php echo $slot;?></td>
-                        <td><input class="form-control input-sm" type="number" min="0" max="8191" name="pid <?php echo$i;?>" value="<?php echo $filterTable[$i][1];?>"></td>
-                        <td><input class="form-control input-sm" type="text" name="mac <?php echo $i;?>" value="<?php echo $filterTable[$i][2];?>" readonly></td>
-                        <td><select name="status <?php echo $i;?>" class="form-control input-sm">
-                                <option value="1"  <?php  if($filterTable[$i][7] == 1){echo "selected";}?>>Enable</option>
-                                <option value="0"  <?php  if($filterTable[$i][7] == 0){echo "selected";}?>>Disable</option>
-                            </select></td>
-                        <td><select name="multiCast <?php echo $i;?>" class="form-control input-sm">
-                                <option value="1"  <?php  if($filterTable[$i][8] == 1){echo "selected";}?>>Passed</option>
-                                <option value="0"  <?php  if($filterTable[$i][8] == 0){echo "selected";}?>>Blocked</option>
-                            </select></td>
+                        <th>Slot</th>
+                        <th>PID</th>
+                        <th>Mac Address</th>
+                        <th>Status</th>
+                        <th>IP Multicast</th>
                     </tr>
+                    </thead>
+                    <tbody>
+                    <?php
+                    for($i=1; $i<=8; $i++){
 
-                <?php }?>
+                        $enable = $disable = '';
+                        $selected = ' selected="selected"';
+                        $get[$i][8] == 0 ? $disable = $selected : $enable = $selected;
+
+                        $passed = $blocked = '';
+                        $selected = ' selected="selected"';
+                        $get[$i][10] == 0 ? $blocked = $selected : $passed = $selected;
 
 
-                </tbody>
-            </table>
+                        echo <<<ROW
+                             <tr>
+                                <td>{$get[$i][1]}</td>
+                                <td><input class="form-control input-sm" type="number" min="0" max="8191" name="pid{$i}" value="{$get[$i][2]}"></td>
+                                <td><input class="form-control input-sm" type="text" name="mac{$i}" value="{$get[$i][3]}" readonly></td>
+                                <td>
+                                    <select name="status{$i}" class="form-control input-sm">
+                                        <option value="1"{$enable}>Enable</option>
+                                        <option value="0"{$disable}>Disable</option>
+                                    </select>
+                                </td>
+                                <td>
+                                    <select name="multicast{$i}" class="form-control input-sm">
+                                        <option value="1"{$passed}>Passed</option>
+                                        <option value="0"{$blocked}>Blocked</option>
+                                    </select>
+                                </td>
+                             </tr>
+ROW;
+
+                    }
+                    ?>
+                    </tbody>
+                </table>
 
 </form>
 </div>

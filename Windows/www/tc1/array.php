@@ -123,7 +123,7 @@ function tableArray(){
     $_SESSION['bl'] = $bl;
 }
 
-$_SESSION['tcVer'] = "2.1";
+$_SESSION['tcVer'] = "2.1.2";
 
 
 
