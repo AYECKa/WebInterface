@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<configuration>
+<oid name="frequency1" value="1.3.6.1.4.1.27928.103.1.1.1.1.1.1.0" type="uint"/>
+<oid name="acquisitionBandwidth1" value="1.3.6.1.4.1.27928.103.1.1.1.1.1.2.0" type="uint"/>
+<oid name="gain1" value="1.3.6.1.4.1.27928.103.1.1.1.1.1.3.0" type="int"/>
+<oid name="standard1" value="1.3.6.1.4.1.27928.103.1.1.1.1.2.1.0" type="int"/>
+<oid name="symbolRate1" value="1.3.6.1.4.1.27928.103.1.1.1.1.2.2.0" type="uint"/>
+<oid name="codingMode1" value="1.3.6.1.4.1.27928.103.1.1.1.1.2.3.0" type="int"/>
+<oid name="modcod1" value="1.3.6.1.4.1.27928.103.1.1.1.1.2.4.0" type="int"/>
+<oid name="rollOff1" value="1.3.6.1.4.1.27928.103.1.1.1.1.2.5.0" type="int"/>
+<oid name="pilots1" value="1.3.6.1.4.1.27928.103.1.1.1.1.2.6.0" type="int"/>
+<oid name="spectralInversion1" value="1.3.6.1.4.1.27928.103.1.1.1.1.2.7.0" type="int"/>
+<oid name="goldCode1" value="1.3.6.1.4.1.27928.103.1.1.1.1.2.8.0" type="int"/>
+<oid name="lnbPower1" value="1.3.6.1.4.1.27928.103.1.1.1.1.3.1.0" type="int"/>
+<oid name="compensation1" value="1.3.6.1.4.1.27928.103.1.1.1.1.3.2.0" type="int"/>
+<oid name="signal22KHz1" value="1.3.6.1.4.1.27928.103.1.1.1.1.3.3.0" type="int"/>
+<oid name="frameType1" value="1.3.6.1.4.1.27928.103.1.1.1.1.4.1.0" type="int"/>
+<oid name="isi1" value="1.3.6.1.4.1.27928.103.1.1.1.1.4.2.0" type="int"/>
+<oid name="encapsulation1" value="1.3.6.1.4.1.27928.103.1.1.1.1.4.3.0" type="int"/>
+<oid name="profileName1" value="1.3.6.1.4.1.27928.103.1.1.1.1.5.0" type="OCTET STRING"/>
+<oid name="frequency2" value="1.3.6.1.4.1.27928.103.1.1.1.2.1.1.0" type="uint"/>
+<oid name="acquisitionBandwidth2" value="1.3.6.1.4.1.27928.103.1.1.1.2.1.2.0" type="uint"/>
+<oid name="gain2" value="1.3.6.1.4.1.27928.103.1.1.1.2.1.3.0" type="int"/>
+<oid name="standard2" value="1.3.6.1.4.1.27928.103.1.1.1.2.2.1.0" type="int"/>
+<oid name="symbolRate2" value="1.3.6.1.4.1.27928.103.1.1.1.2.2.2.0" type="uint"/>
+<oid name="codingMode2" value="1.3.6.1.4.1.27928.103.1.1.1.2.2.3.0" type="int"/>
+<oid name="modcod2" value="1.3.6.1.4.1.27928.103.1.1.1.2.2.4.0" type="int"/>
+<oid name="rollOff2" value="1.3.6.1.4.1.27928.103.1.1.1.2.2.5.0" type="int"/>
+<oid name="pilots2" value="1.3.6.1.4.1.27928.103.1.1.1.2.2.6.0" type="int"/>
+<oid name="spectralInversion2" value="1.3.6.1.4.1.27928.103.1.1.1.2.2.7.0" type="int"/>
+<oid name="goldCode2" value="1.3.6.1.4.1.27928.103.1.1.1.2.2.8.0" type="int"/>
+<oid name="lnbPower2" value="1.3.6.1.4.1.27928.103.1.1.1.2.3.1.0" type="int"/>
+<oid name="compensation2" value="1.3.6.1.4.1.27928.103.1.1.1.2.3.2.0" type="int"/>
+<oid name="signal22KHz2" value="1.3.6.1.4.1.27928.103.1.1.1.2.3.3.0" type="int"/>
+<oid name="frameType2" value="1.3.6.1.4.1.27928.103.1.1.1.2.4.1.0" type="int"/>
+<oid name="isi2" value="1.3.6.1.4.1.27928.103.1.1.1.2.4.2.0" type="int"/>
+<oid name="encapsulation2" value="1.3.6.1.4.1.27928.103.1.1.1.2.4.3.0" type="int"/>
+<oid name="profileName2" value="1.3.6.1.4.1.27928.103.1.1.1.2.5.0" type="OCTET STRING"/>
+<oid name="rx1CfgSet1Status" value="1.3.6.1.4.1.27928.103.1.1.1.3.1.0" type="int"/>
+<oid name="rx1CfgSet2Status" value="1.3.6.1.4.1.27928.103.1.1.1.3.2.0" type="int"/>
+<oid name="rx1CfgMode" value="1.3.6.1.4.1.27928.103.1.1.1.3.3.0" type="int"/>
+<oid name="rx1CfgSwitchPeriod" value="1.3.6.1.4.1.27928.103.1.1.1.3.4.0" type="int"/>
+<oid name="tunerStatus1" value="1.3.6.1.4.1.27928.103.1.1.1.4.1.0" type="int"/>
+<oid name="frequencyOffset1" value="1.3.6.1.4.1.27928.103.1.1.1.4.2.0" type="uint"/>
+<oid name="powerLevel1" value="1.3.6.1.4.1.27928.103.1.1.1.4.3.0" type="int"/>
+<oid name="esno1" value="1.3.6.1.4.1.27928.103.1.1.1.4.4.0" type="int"/>
+<oid name="ber1" value="1.3.6.1.4.1.27928.103.1.1.1.4.5.0" type="uint"/>
+<oid name="linkMargin1" value="1.3.6.1.4.1.27928.103.1.1.1.4.6.0" type="int"/>
+<oid name="demodulatorStatus1" value="1.3.6.1.4.1.27928.103.1.1.1.4.7.0" type="int"/>
+<oid name="crcErrors1" value="1.3.6.1.4.1.27928.103.1.1.1.4.8.0" type="uint"/>
+<oid name="transportStatus1" value="1.3.6.1.4.1.27928.103.1.1.1.4.9.0" type="int"/>
+<oid name="modcodStatus1" value="1.3.6.1.4.1.27928.103.1.1.1.4.10.0" type="int"/>
+<oid name="rollOffStatus1" value="1.3.6.1.4.1.27928.103.1.1.1.4.11.0" type="int"/>
+<oid name="pilotsStatus1" value="1.3.6.1.4.1.27928.103.1.1.1.4.12.0" type="int"/>
+<oid name="frequency3" value="1.3.6.1.4.1.27928.103.1.1.2.1.1.1.0" type="uint"/>
+<oid name="acquisitionBandwidth3" value="1.3.6.1.4.1.27928.103.1.1.2.1.1.2.0" type="uint"/>
+<oid name="gain3" value="1.3.6.1.4.1.27928.103.1.1.2.1.1.3.0" type="int"/>
+<oid name="standard3" value="1.3.6.1.4.1.27928.103.1.1.2.1.2.1.0" type="int"/>
+<oid name="symbolRate3" value="1.3.6.1.4.1.27928.103.1.1.2.1.2.2.0" type="uint"/>
+<oid name="codingMode3" value="1.3.6.1.4.1.27928.103.1.1.2.1.2.3.0" type="int"/>
+<oid name="modcod3" value="1.3.6.1.4.1.27928.103.1.1.2.1.2.4.0" type="int"/>
+<oid name="rollOff3" value="1.3.6.1.4.1.27928.103.1.1.2.1.2.5.0" type="int"/>
+<oid name="pilots3" value="1.3.6.1.4.1.27928.103.1.1.2.1.2.6.0" type="int"/>
+<oid name="spectralInversion3" value="1.3.6.1.4.1.27928.103.1.1.2.1.2.7.0" type="int"/>
+<oid name="goldCode3" value="1.3.6.1.4.1.27928.103.1.1.2.1.2.8.0" type="int"/>
+<oid name="lnbPower3" value="1.3.6.1.4.1.27928.103.1.1.2.1.3.1.0" type="int"/>
+<oid name="compensation3" value="1.3.6.1.4.1.27928.103.1.1.2.1.3.2.0" type="int"/>
+<oid name="signal22KHz3" value="1.3.6.1.4.1.27928.103.1.1.2.1.3.3.0" type="int"/>
+<oid name="frameType3" value="1.3.6.1.4.1.27928.103.1.1.2.1.4.1.0" type="int"/>
+<oid name="isi3" value="1.3.6.1.4.1.27928.103.1.1.2.1.4.2.0" type="int"/>
+<oid name="encapsulation3" value="1.3.6.1.4.1.27928.103.1.1.2.1.4.3.0" type="int"/>
+<oid name="profileName3" value="1.3.6.1.4.1.27928.103.1.1.2.1.5.0" type="OCTET STRING"/>
+<oid name="frequency4" value="1.3.6.1.4.1.27928.103.1.1.2.2.1.1.0" type="uint"/>
+<oid name="acquisitionBandwidth4" value="1.3.6.1.4.1.27928.103.1.1.2.2.1.2.0" type="uint"/>
+<oid name="gain4" value="1.3.6.1.4.1.27928.103.1.1.2.2.1.3.0" type="int"/>
+<oid name="standard4" value="1.3.6.1.4.1.27928.103.1.1.2.2.2.1.0" type="int"/>
+<oid name="symbolRate4" value="1.3.6.1.4.1.27928.103.1.1.2.2.2.2.0" type="uint"/>
+<oid name="codingMode4" value="1.3.6.1.4.1.27928.103.1.1.2.2.2.3.0" type="int"/>
+<oid name="modcod4" value="1.3.6.1.4.1.27928.103.1.1.2.2.2.4.0" type="int"/>
+<oid name="rollOff4" value="1.3.6.1.4.1.27928.103.1.1.2.2.2.5.0" type="int"/>
+<oid name="pilots4" value="1.3.6.1.4.1.27928.103.1.1.2.2.2.6.0" type="int"/>
+<oid name="spectralInversion4" value="1.3.6.1.4.1.27928.103.1.1.2.2.2.7.0" type="int"/>
+<oid name="goldCode4" value="1.3.6.1.4.1.27928.103.1.1.2.2.2.8.0" type="int"/>
+<oid name="lnbPower4" value="1.3.6.1.4.1.27928.103.1.1.2.2.3.1.0" type="int"/>
+<oid name="compensation4" value="1.3.6.1.4.1.27928.103.1.1.2.2.3.2.0" type="int"/>
+<oid name="signal22KHz4" value="1.3.6.1.4.1.27928.103.1.1.2.2.3.3.0" type="int"/>
+<oid name="frameType4" value="1.3.6.1.4.1.27928.103.1.1.2.2.4.1.0" type="int"/>
+<oid name="isi4" value="1.3.6.1.4.1.27928.103.1.1.2.2.4.2.0" type="int"/>
+<oid name="encapsulation4" value="1.3.6.1.4.1.27928.103.1.1.2.2.4.3.0" type="int"/>
+<oid name="profileName4" value="1.3.6.1.4.1.27928.103.1.1.2.2.5.0" type="OCTET STRING"/>
+<oid name="rx2CfgSet1Status" value="1.3.6.1.4.1.27928.103.1.1.2.3.1.0" type="int"/>
+<oid name="rx2CfgSet2Status" value="1.3.6.1.4.1.27928.103.1.1.2.3.2.0" type="int"/>
+<oid name="rx2CfgMode" value="1.3.6.1.4.1.27928.103.1.1.2.3.3.0" type="int"/>
+<oid name="rx2CfgSwitchPeriod" value="1.3.6.1.4.1.27928.103.1.1.2.3.4.0" type="int"/>
+<oid name="tunerStatus2" value="1.3.6.1.4.1.27928.103.1.1.2.4.1.0" type="int"/>
+<oid name="frequencyOffset2" value="1.3.6.1.4.1.27928.103.1.1.2.4.2.0" type="uint"/>
+<oid name="powerLevel2" value="1.3.6.1.4.1.27928.103.1.1.2.4.3.0" type="int"/>
+<oid name="esno2" value="1.3.6.1.4.1.27928.103.1.1.2.4.4.0" type="int"/>
+<oid name="ber2" value="1.3.6.1.4.1.27928.103.1.1.2.4.5.0" type="uint"/>
+<oid name="linkMargin2" value="1.3.6.1.4.1.27928.103.1.1.2.4.6.0" type="int"/>
+<oid name="demodulatorStatus2" value="1.3.6.1.4.1.27928.103.1.1.2.4.7.0" type="int"/>
+<oid name="crcErrors2" value="1.3.6.1.4.1.27928.103.1.1.2.4.8.0" type="uint"/>
+<oid name="transportStatus2" value="1.3.6.1.4.1.27928.103.1.1.2.4.9.0" type="int"/>
+<oid name="modcodStatus2" value="1.3.6.1.4.1.27928.103.1.1.2.4.10.0" type="int"/>
+<oid name="rollOffStatus2" value="1.3.6.1.4.1.27928.103.1.1.2.4.11.0" type="int"/>
+<oid name="pilotsStatus2" value="1.3.6.1.4.1.27928.103.1.1.2.4.12.0" type="int"/>
+<oid name="rxActive" value="1.3.6.1.4.1.27928.103.1.1.3.1.0" type="int"/>
+<oid name="rxSwitchMode" value="1.3.6.1.4.1.27928.103.1.1.3.2.0" type="int"/>
+<oid name="rxSwitchPeriod" value="1.3.6.1.4.1.27928.103.1.1.3.3.0" type="int"/>
+<oid name="rxChannelOpMode" value="1.3.6.1.4.1.27928.103.1.1.3.4.0" type="int"/>
+<oid name="egrRx1DstEthAddress" value="1.3.6.1.4.1.27928.103.1.2.1.1.0" type="macAddress"/>
+<oid name="egrRx1SrcEthAddress" value="1.3.6.1.4.1.27928.103.1.2.1.2.0" type="macAddress"/>
+<oid name="egrRx1VlanSupport" value="1.3.6.1.4.1.27928.103.1.2.1.3.0" type="int"/>
+<oid name="egrRx1VlanPcp" value="1.3.6.1.4.1.27928.103.1.2.1.4.0" type="uint"/>
+<oid name="egrRx1VlanId" value="1.3.6.1.4.1.27928.103.1.2.1.5.0" type="uint"/>
+<oid name="egrRx1Dscp" value="1.3.6.1.4.1.27928.103.1.2.1.6.0" type="int"/>
+<oid name="egrRx1SrcIpAddress" value="1.3.6.1.4.1.27928.103.1.2.1.7.0" type="ipAddress"/>
+<oid name="egrRx1DstIpAddress" value="1.3.6.1.4.1.27928.103.1.2.1.8.0" type="ipAddress"/>
+<oid name="egrRx1SrcUdpPort" value="1.3.6.1.4.1.27928.103.1.2.1.9.0" type="uint"/>
+<oid name="egrRx1DstUdpPort" value="1.3.6.1.4.1.27928.103.1.2.1.10.0" type="uint"/>
+<oid name="egrRx1TSoIPContainerSize" value="1.3.6.1.4.1.27928.103.1.2.1.11.0" type="uint"/>
+<oid name="egrRx1PcrAwareness" value="1.3.6.1.4.1.27928.103.1.2.1.12.0" type="int"/>
+<oid name="egrRx1TimeoutAwareness" value="1.3.6.1.4.1.27928.103.1.2.1.13.0" type="int"/>
+<oid name="egrRx1MaxTimeout" value="1.3.6.1.4.1.27928.103.1.2.1.14.0" type="uint"/>
+<oid name="egrRx1Enabled" value="1.3.6.1.4.1.27928.103.1.2.1.15.0" type="int"/>
+<oid name="egrRx2DstEthAddress" value="1.3.6.1.4.1.27928.103.1.2.2.1.0" type="macAddress"/>
+<oid name="egrRx2SrcEthAddress" value="1.3.6.1.4.1.27928.103.1.2.2.2.0" type="macAddress"/>
+<oid name="egrRx2VlanSupport" value="1.3.6.1.4.1.27928.103.1.2.2.3.0" type="int"/>
+<oid name="egrRx2VlanPcp" value="1.3.6.1.4.1.27928.103.1.2.2.4.0" type="uint"/>
+<oid name="egrRx2VlanId" value="1.3.6.1.4.1.27928.103.1.2.2.5.0" type="uint"/>
+<oid name="egrRx2Dscp" value="1.3.6.1.4.1.27928.103.1.2.2.6.0" type="int"/>
+<oid name="egrRx2SrcIpAddress" value="1.3.6.1.4.1.27928.103.1.2.2.7.0" type="ipAddress"/>
+<oid name="egrRx2DstIpAddress" value="1.3.6.1.4.1.27928.103.1.2.2.8.0" type="ipAddress"/>
+<oid name="egrRx2SrcUdpPort" value="1.3.6.1.4.1.27928.103.1.2.2.9.0" type="uint"/>
+<oid name="egrRx2DstUdpPort" value="1.3.6.1.4.1.27928.103.1.2.2.10.0" type="uint"/>
+<oid name="egrRx2TSoIPContainerSize" value="1.3.6.1.4.1.27928.103.1.2.2.11.0" type="uint"/>
+<oid name="egrRx2PcrAwareness" value="1.3.6.1.4.1.27928.103.1.2.2.12.0" type="int"/>
+<oid name="egrRx2TimeoutAwareness" value="1.3.6.1.4.1.27928.103.1.2.2.13.0" type="int"/>
+<oid name="egrRx2MaxTimeout" value="1.3.6.1.4.1.27928.103.1.2.2.14.0" type="uint"/>
+<oid name="egrRx2Enabled" value="1.3.6.1.4.1.27928.103.1.2.2.15.0" type="int"/>
+<oid name="egrAsiDstEthAddress" value="1.3.6.1.4.1.27928.103.1.2.3.1.0" type="macAddress"/>
+<oid name="egrAsiSrcEthAddress" value="1.3.6.1.4.1.27928.103.1.2.3.2.0" type="macAddress"/>
+<oid name="egrAsiVlanSupport" value="1.3.6.1.4.1.27928.103.1.2.3.3.0" type="int"/>
+<oid name="egrAsiVlanPcp" value="1.3.6.1.4.1.27928.103.1.2.3.4.0" type="uint"/>
+<oid name="egrAsiVlanId" value="1.3.6.1.4.1.27928.103.1.2.3.5.0" type="uint"/>
+<oid name="egrAsiDscp" value="1.3.6.1.4.1.27928.103.1.2.3.6.0" type="int"/>
+<oid name="egrAsiSrcIpAddress" value="1.3.6.1.4.1.27928.103.1.2.3.7.0" type="ipAddress"/>
+<oid name="egrAsiDstIpAddress" value="1.3.6.1.4.1.27928.103.1.2.3.8.0" type="ipAddress"/>
+<oid name="egrAsiSrcUdpPort" value="1.3.6.1.4.1.27928.103.1.2.3.9.0" type="uint"/>
+<oid name="egrAsiDstUdpPort" value="1.3.6.1.4.1.27928.103.1.2.3.10.0" type="uint"/>
+<oid name="egrAsiTSoIPContainerSize" value="1.3.6.1.4.1.27928.103.1.2.3.11.0" type="uint"/>
+<oid name="egrAsiPcrAwareness" value="1.3.6.1.4.1.27928.103.1.2.3.12.0" type="int"/>
+<oid name="egrAsiTimeoutAwareness" value="1.3.6.1.4.1.27928.103.1.2.3.13.0" type="int"/>
+<oid name="egrAsiMaxTimeout" value="1.3.6.1.4.1.27928.103.1.2.3.14.0" type="uint"/>
+<oid name="egrAsiEnabled" value="1.3.6.1.4.1.27928.103.1.2.3.15.0" type="int"/>
+<oid name="managementIpAddress" value="1.3.6.1.4.1.27928.103.2.1.0" type="ipAddress"/>
+<oid name="managementSubnetMask" value="1.3.6.1.4.1.27928.103.2.2.0" type="ipAddress"/>
+<oid name="managementMacAddress" value="1.3.6.1.4.1.27928.103.2.3.0" type="macAddress"/>
+<oid name="managementDefaultGateway" value="1.3.6.1.4.1.27928.103.2.4.0" type="ipAddress"/>
+<oid name="managementDhcpClient" value="1.3.6.1.4.1.27928.103.2.5.0" type="int"/>
+<oid name="managementDscp" value="1.3.6.1.4.1.27928.103.2.6.0" type="int"/>
+<oid name="managementVlanId" value="1.3.6.1.4.1.27928.103.2.7.0" type="int"/>
+<oid name="lanIpAddress" value="1.3.6.1.4.1.27928.103.2.8.0" type="ipAddress"/>
+<oid name="lanSubnetMask" value="1.3.6.1.4.1.27928.103.2.9.0" type="ipAddress"/>
+<oid name="lanMacAddress" value="1.3.6.1.4.1.27928.103.2.10.0" type="macAddress"/>
+<oid name="lanDhcpClient" value="1.3.6.1.4.1.27928.103.2.11.0" type="int"/>
+<oid name="fpgaVersionIndex" value="1.3.6.1.4.1.27928.103.3.17.1.1" type="int"/>
+<oid name="fpgaVersionValue" value="1.3.6.1.4.1.27928.103.3.17.1.2" type="OCTET STRING"/>
+<oid name="fpgaVersionSize" value="1.3.6.1.4.1.27928.103.3.17.1.3" type="uint"/>
+<oid name="fpgaVersionValid" value="1.3.6.1.4.1.27928.103.3.17.1.4" type="int"/>
+<oid name="fpgaVersionActive" value="1.3.6.1.4.1.27928.103.3.17.1.5" type="int"/>
+<oid name="softwareVersionIndex" value="1.3.6.1.4.1.27928.103.3.20.1.1" type="int"/>
+<oid name="softwareVersionValue" value="1.3.6.1.4.1.27928.103.3.20.1.2" type="OCTET STRING"/>
+<oid name="softwareVersionSize" value="1.3.6.1.4.1.27928.103.3.20.1.3" type="uint"/>
+<oid name="softwareVersionValid" value="1.3.6.1.4.1.27928.103.3.20.1.4" type="int"/>
+<oid name="softwareVersionActive" value="1.3.6.1.4.1.27928.103.3.20.1.5" type="int"/>
+<oid name="bootloaderVersionIndex" value="1.3.6.1.4.1.27928.103.3.26.1.1" type="int"/>
+<oid name="bootloaderVersionValue" value="1.3.6.1.4.1.27928.103.3.26.1.2" type="OCTET STRING"/>
+<oid name="bootloaderVersionSize" value="1.3.6.1.4.1.27928.103.3.26.1.3" type="uint"/>
+<oid name="bootloaderVersionValid" value="1.3.6.1.4.1.27928.103.3.26.1.4" type="int"/>
+<oid name="bootloaderVersionActive" value="1.3.6.1.4.1.27928.103.3.26.1.5" type="int"/>
+<oid name="warmReset" value="1.3.6.1.4.1.27928.103.3.1.0" type="int"/>
+<oid name="coldReset" value="1.3.6.1.4.1.27928.103.3.2.0" type="int"/>
+<oid name="serialNumber" value="1.3.6.1.4.1.27928.103.3.3.0" type="uint"/>
+<oid name="productionCode" value="1.3.6.1.4.1.27928.103.3.4.0" type="uint"/>
+<oid name="softwareVersion" value="1.3.6.1.4.1.27928.103.3.5.0" type="OCTET STRING"/>
+<oid name="fpgaVersion" value="1.3.6.1.4.1.27928.103.3.6.0" type="OCTET STRING"/>
+<oid name="hardwareVersion" value="1.3.6.1.4.1.27928.103.3.7.0" type="OCTET STRING"/>
+<oid name="username" value="1.3.6.1.4.1.27928.103.3.8.0" type="OCTET STRING"/>
+<oid name="password" value="1.3.6.1.4.1.27928.103.3.9.0" type="OCTET STRING"/>
+<oid name="ntpServerIpAddress" value="1.3.6.1.4.1.27928.103.3.10.0" type="ipAddress"/>
+<oid name="snmpTrapServerIpAddress" value="1.3.6.1.4.1.27928.103.3.11.0" type="ipAddress"/>
+<oid name="snmpWriteCommunity" value="1.3.6.1.4.1.27928.103.3.12.0" type="OCTET STRING"/>
+<oid name="snmpReadCommunity" value="1.3.6.1.4.1.27928.103.3.13.0" type="OCTET STRING"/>
+<oid name="tftpServerIp" value="1.3.6.1.4.1.27928.103.3.14.0" type="ipAddress"/>
+<oid name="fpgaImageFilename" value="1.3.6.1.4.1.27928.103.3.15.0" type="OCTET STRING"/>
+<oid name="startFpgaUpgrade" value="1.3.6.1.4.1.27928.103.3.16.0" type="int"/>
+<oid name="softwareImageFilename" value="1.3.6.1.4.1.27928.103.3.18.0" type="OCTET STRING"/>
+<oid name="startSoftwareUpgrade" value="1.3.6.1.4.1.27928.103.3.19.0" type="int"/>
+<oid name="permanentStorageDevice" value="1.3.6.1.4.1.27928.103.3.21.0" type="OCTET STRING"/>
+<oid name="rxChipsetModel" value="1.3.6.1.4.1.27928.103.3.22.0" type="OCTET STRING"/>
+<oid name="bootloaderImageFilename" value="1.3.6.1.4.1.27928.103.3.23.0" type="OCTET STRING"/>
+<oid name="startBootloaderUpgrade" value="1.3.6.1.4.1.27928.103.3.24.0" type="int"/>
+<oid name="startBootloaderDownload" value="1.3.6.1.4.1.27928.103.3.25.0" type="int"/>
+</configuration>

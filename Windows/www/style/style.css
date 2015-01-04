@@ -1,0 +1,73 @@
+@font-face {
+    font-family: MyriadPro;
+    src: url('MyriadPro-Light.otf');
+}
+
+body{
+    background: #6b6b73;
+    color: white;
+    padding: 0;
+    margin: 0;
+    width: 100%;
+    font-family: MyriadPro;
+}
+#slogen{
+    float: right;
+}
+header{
+    border-bottom: 2px solid white;
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+}
+header img{
+    margin-left: 10px;
+}
+nav{
+    width: 90%;
+    margin: auto;
+    text-align: center;
+}
+nav ul{
+    list-style: none;
+}
+nav ul li{
+    display: inline;
+}
+#aymenu ul li a{
+    padding-left: 10px;
+    padding-right: 10px;
+    text-decoration: none;
+    color: white;
+}
+#aymenu ul li a:hover{
+    background: #39b149;
+}
+#aymenu ul li.Active a{
+    background: #39b149;
+}
+
+#boardInfo{
+    margin-top: 20px;
+}
+.mainWrapper{
+
+    margin: auto;
+    margin-top: 40px;
+
+}
+a{
+    text-decoration: none;
+}
+
+h2{
+    text-align: center;
+    margin: 0px;
+}
+h1{
+    margin: 5px;
+}
+footer{
+    text-align: right;
+    margin-top: 5px;
+}

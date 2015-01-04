@@ -1,0 +1,1143 @@
+ST1 DEFINITIONS ::= BEGIN
+
+IMPORTS
+	MODULE-IDENTITY, OBJECT-TYPE, enterprises,
+	Integer32,  
+	Unsigned32,
+	IpAddress
+	FROM SNMPv2-SMI 
+	
+	MacAddress
+	FROM SNMPv2-TC
+	
+	MODULE-COMPLIANCE, OBJECT-GROUP
+	FROM SNMPv2-CONF;
+	
+ayecka MODULE-IDENTITY
+	LAST-UPDATED "201012291200Z"
+	ORGANIZATION "Ayecka Communications Systems Ltd."
+	CONTACT-INFO "yarong@ayecka.com"
+	DESCRIPTION "This is the MIB of the ST1"
+	::= {enterprises 27928}  
+	
+st1 				OBJECT IDENTIFIER ::= {ayecka 102}
+configuration 		OBJECT IDENTIFIER ::= {st1 1}
+status 				OBJECT IDENTIFIER ::= {st1 2}
+network				OBJECT IDENTIFIER ::= {st1 3}
+system				OBJECT IDENTIFIER ::= {st1 4}
+transmitter 		OBJECT IDENTIFIER ::= {configuration 1}
+modulator			OBJECT IDENTIFIER ::= {configuration 2}
+encapsulator		OBJECT IDENTIFIER ::= {configuration 3}
+buc					OBJECT IDENTIFIER ::= {configuration 4}
+egress				OBJECT IDENTIFIER ::= {configuration 5}
+ip_fwd_table		OBJECT IDENTIFIER ::= {encapsulator 1}
+rf_calibration		OBJECT IDENTIFIER ::= {system 22}
+calibration_params	OBJECT IDENTIFIER ::= {rf_calibration 2}
+
+--------------------------------------------------------------------------------
+-- TX
+--
+txFrequency OBJECT-TYPE
+	SYNTAX Unsigned32 (950..2150)
+	MAX-ACCESS read-write
+	STATUS current
+	DESCRIPTION "TX Frequency in kHz units"
+	::= {transmitter 1}
+
+txPowerLevel OBJECT-TYPE
+	SYNTAX Integer32 (-1..-450)
+	MAX-ACCESS read-write
+	STATUS current
+	DESCRIPTION "TX Output Power Level in 0.1 dBm units"
+	::= {transmitter 2}
+
+txPowerState OBJECT-TYPE
+	SYNTAX INTEGER { off( 0 ), on( 1 ) } 
+	MAX-ACCESS read-write
+	STATUS current
+	DESCRIPTION "TX Output Power Enable/Disable"
+	::= {transmitter 3}
+
+txPowerStateInitial OBJECT-TYPE
+	SYNTAX INTEGER { off( 0 ), user-defined( 1 ) } 
+	MAX-ACCESS read-write
+	STATUS current
+	DESCRIPTION "TX Output Power On Powercycle"
+	::= {transmitter 4}
+
+--------------------------------------------------------------------------------
+-- Modulator
+--
+modSymbolRate OBJECT-TYPE
+	SYNTAX Unsigned32 (400000..45000000)
+	MAX-ACCESS read-write
+	STATUS current
+	DESCRIPTION "Symbol Rate in SPS units"
+	::= {modulator 1}
+
+modModcod OBJECT-TYPE
+	SYNTAX INTEGER {modcod_dvbs2_dummy_frame( 0 ),
+					modcod_dvbs2_qpsk_1_4( 1 ),
+					modcod_dvbs2_qpsk_1_3( 2 ),
+					modcod_dvbs2_qpsk_2_5( 3 ),
+					modcod_dvbs2_qpsk_1_2( 4 ),
+					modcod_dvbs2_qpsk_3_5( 5 ),
+					modcod_dvbs2_qpsk_2_3( 6 ),
+					modcod_dvbs2_qpsk_3_4( 7 ),
+					modcod_dvbs2_qpsk_4_5( 8 ),
+					modcod_dvbs2_qpsk_5_6( 9 ),
+					modcod_dvbs2_qpsk_8_9( 10 ),
+					modcod_dvbs2_qpsk_9_10(	11 ),
+					modcod_dvbs2_8psk_3_5( 12 ),
+					modcod_dvbs2_8psk_2_3( 13 ),
+					modcod_dvbs2_8psk_3_4( 14 ),
+					modcod_dvbs2_8psk_5_6( 15 ),
+					modcod_dvbs2_8psk_8_9( 16 ),
+					modcod_dvbs2_8psk_9_10(	17 ),
+					modcod_dvbs2_16apsk_2_3( 18 ),
+					modcod_dvbs2_16apsk_3_4( 19 ),
+					modcod_dvbs2_16apsk_4_5( 20 ),
+					modcod_dvbs2_16apsk_5_6( 21 ),
+					modcod_dvbs2_16apsk_8_9( 22 ),
+					modcod_dvbs2_16apsk_9_10( 23 ),
+					modcod_dvbs2_32apsk_3_4( 24 ),
+					modcod_dvbs2_32apsk_4_5( 25 ),
+					modcod_dvbs2_32apsk_5_6( 26 ),
+					modcod_dvbs2_32apsk_8_9( 27 ),
+					modcod_dvbs2_32apsk_9_10( 28 ) }
+	MAX-ACCESS read-write
+	STATUS current
+	DESCRIPTION "DVB-S2 modcod"
+	::= {modulator 2}
+
+modPilots OBJECT-TYPE
+	SYNTAX INTEGER { on( 0 ), off( 1 ) } 
+	MAX-ACCESS read-write
+	STATUS current
+	DESCRIPTION "Pilots Insertion Enable/Disable"
+	::= {modulator 3}
+
+modFrameType OBJECT-TYPE
+	SYNTAX INTEGER { normal( 0 ), short( 1 ) } 
+	MAX-ACCESS read-write
+	STATUS current
+	DESCRIPTION "FEC Frame Type"
+	::= {modulator 4}
+
+modRollOff OBJECT-TYPE
+	SYNTAX INTEGER { rf20( 0 ), rf25( 1 ), rf35( 2 ), rf05( 3 ), rf10( 4 ), rf15( 5 ) }
+	MAX-ACCESS read-write
+	STATUS current
+	DESCRIPTION "Signal Roll Off (20%, 25%, 35%, 5%, 10%, 15%)"
+	::= {modulator 5}
+
+modDvbs2Profile OBJECT-TYPE
+	SYNTAX INTEGER { ccm( 0 ), vcm( 1 ), acm( 2 ) }
+	MAX-ACCESS read-write
+	STATUS current
+	DESCRIPTION "DVB-S2 Profile"
+	::= {modulator 6}
+
+modScramblerSeed OBJECT-TYPE
+	SYNTAX INTEGER (0..262143)
+	MAX-ACCESS read-write
+	STATUS current
+	DESCRIPTION "Scrambler Seed"
+	::= {modulator 7}
+
+modPowerState OBJECT-TYPE
+	SYNTAX INTEGER { on( 0 ), off( 1 ) } 
+	MAX-ACCESS read-write
+	STATUS current
+	DESCRIPTION "Modulator Enable/Disable"
+	::= {modulator 8}
+
+modSpectrumInversion OBJECT-TYPE
+	SYNTAX INTEGER { auto( 0 ), on( 1 ), off( 2 ) } 
+	MAX-ACCESS read-write
+	STATUS current
+	DESCRIPTION "Modulator Spectrum Inversion control"
+	::= {modulator 9}
+
+modOutputFormat OBJECT-TYPE
+	SYNTAX INTEGER { twos_complement( 0 ), unsigned_binary( 1 ) } 
+	MAX-ACCESS read-write
+	STATUS current
+	DESCRIPTION "Modulator Output Format control"
+	::= {modulator 10}
+
+modCarrierAtOutput OBJECT-TYPE
+	SYNTAX INTEGER { off( 0 ), on( 1 ) } 
+	MAX-ACCESS read-write
+	STATUS current
+	DESCRIPTION "Modulator Output Carrier Force control"
+	::= {modulator 11}
+
+--------------------------------------------------------------------------------
+-- Encapsulator
+--
+ipFwdTable OBJECT-TYPE
+    SYNTAX SEQUENCE OF IpFwdEntry
+    MAX-ACCESS not-accessible
+    STATUS current
+    DESCRIPTION "IP Forwarding Table"
+ 	::= { ip_fwd_table 1 }
+ 
+ipFwdEntry OBJECT-TYPE
+    SYNTAX IpFwdEntry
+    MAX-ACCESS not-accessible
+    STATUS current
+    DESCRIPTION "IP Forwarding Table"
+    INDEX { ipfwdEntryIndex }
+    ::= { ipFwdTable 1 }
+
+IpFwdEntry ::= SEQUENCE {
+    ipfwdEntryIndex		Unsigned32,
+	ipfwdIpAddress		IpAddress,
+	ipfwdIpNetmask		IpAddress, 
+	ipfwdMacAddress		MacAddress,
+	ipfwdPid			Unsigned32,
+	ipfwdEnabled		INTEGER	
+	}
+
+ipfwdEntryIndex OBJECT-TYPE
+    SYNTAX Unsigned32 
+    MAX-ACCESS read-only
+    STATUS current
+    DESCRIPTION "Unique Index of This Entry"
+    ::= { ipFwdEntry 1 }
+
+ipfwdIpAddress OBJECT-TYPE
+	SYNTAX IpAddress
+	MAX-ACCESS read-write
+	STATUS current
+	DESCRIPTION "IP Address"
+	::= {ipFwdEntry 2}
+	
+ipfwdIpNetmask OBJECT-TYPE
+	SYNTAX IpAddress
+	MAX-ACCESS read-write
+	STATUS current
+	DESCRIPTION "IP Netmask"
+	::= {ipFwdEntry 3}
+
+ipfwdMacAddress OBJECT-TYPE
+	SYNTAX MacAddress
+	MAX-ACCESS read-write
+	STATUS current
+	DESCRIPTION "MAC Address"
+	::= {ipFwdEntry 4}
+
+ipfwdPid OBJECT-TYPE
+    SYNTAX Unsigned32 (0..8191)
+    MAX-ACCESS read-write
+    STATUS current
+    DESCRIPTION "PID"
+    ::= { ipFwdEntry 5 }
+
+ipfwdEnabled OBJECT-TYPE
+	SYNTAX INTEGER { disable( 0 ), enable( 1 ) } 
+	MAX-ACCESS read-write
+	STATUS current
+	DESCRIPTION "Entry Enable/Disable"
+	::= {ipFwdEntry 6}
+  
+--------------------------------------------------------------------------------
+-- BUC
+--
+bucPowerState OBJECT-TYPE
+	SYNTAX INTEGER { off( 0 ), on( 1 ) } 
+	MAX-ACCESS read-write
+	STATUS current
+	DESCRIPTION "BUC Power Enable/Disable"
+	::= {buc 1}
+
+buc10MHzOutput OBJECT-TYPE
+	SYNTAX INTEGER { off( 0 ), on( 1 ) } 
+	MAX-ACCESS read-write
+	STATUS current
+	DESCRIPTION "BUC 10 MHz Output Enable/Disable"
+	::= {buc 2}
+
+--------------------------------------------------------------------------------
+-- Egress
+--
+egrDstEthAddress OBJECT-TYPE
+	SYNTAX MacAddress
+	MAX-ACCESS read-write
+	STATUS current
+	DESCRIPTION "Egress Destination Ethernet MAC Address"
+    ::= {egress 1}
+
+egrSrcEthAddress OBJECT-TYPE
+	SYNTAX MacAddress
+	MAX-ACCESS read-write
+	STATUS current
+	DESCRIPTION "Egress Source Ethernet MAC Address"
+    ::= {egress 2}
+
+egrVlanSupport OBJECT-TYPE
+	SYNTAX INTEGER { disable( 0 ), enable( 1 ) }
+	MAX-ACCESS read-write
+	STATUS current
+	DESCRIPTION "Egress VLAN Support Enable/Disable"
+    ::= {egress 3}
+
+egrVlanPcp OBJECT-TYPE
+	SYNTAX Unsigned32 (0..7)
+	MAX-ACCESS read-write
+	STATUS current
+	DESCRIPTION "Egress VLAN Priority Code Point (PCP)"
+    ::= {egress 4}
+
+egrVlanVid OBJECT-TYPE
+	SYNTAX Unsigned32 (0..4094)
+	MAX-ACCESS read-write
+	STATUS current
+	DESCRIPTION "Egress VLAN ID (VID)"
+    ::= {egress 5}
+
+egrDscp OBJECT-TYPE
+	SYNTAX Unsigned32 (0..63)
+	MAX-ACCESS read-write
+	STATUS current
+	DESCRIPTION "Egress Differentiated Services Code Point (DSCP)"
+    ::= {egress 6}
+
+egrSrcIpAddress OBJECT-TYPE
+	SYNTAX IpAddress
+	MAX-ACCESS read-write
+	STATUS current
+	DESCRIPTION "Egress Source IP Address"
+    ::= {egress 7}
+
+egrDstIpAddress OBJECT-TYPE
+	SYNTAX IpAddress
+	MAX-ACCESS read-write
+	STATUS current
+	DESCRIPTION "Egress Destination IP Address"
+    ::= {egress 8}
+
+egrSrcUdpPort OBJECT-TYPE
+	SYNTAX Unsigned32 (0..65535)
+	MAX-ACCESS read-write
+	STATUS current
+	DESCRIPTION "Egress Source UDP Port"
+    ::= {egress 9}
+
+egrDstUdpPort OBJECT-TYPE
+	SYNTAX Unsigned32 (0..65535)
+	MAX-ACCESS read-write
+	STATUS current
+	DESCRIPTION "Egress Destination UDP Port"
+    ::= {egress 10}
+
+egrModOutputEnabled OBJECT-TYPE
+	SYNTAX INTEGER { disable( 0 ), enable( 0 ) }
+	MAX-ACCESS read-write
+	STATUS current
+	DESCRIPTION "Modulator Output Enable/Disable"
+    ::= {egress 11}
+
+egrNetOutputEnabled OBJECT-TYPE
+	SYNTAX INTEGER { disable( 0 ), enable( 0 ) }
+	MAX-ACCESS read-write
+	STATUS current
+	DESCRIPTION "Network Output Enable/Disable"
+    ::= {egress 12}
+
+egrTsoipNumber OBJECT-TYPE
+	SYNTAX Unsigned32 (1..7)
+	MAX-ACCESS read-write
+	STATUS current
+	DESCRIPTION "Number of Transport Stream Packets in an IP Packet"
+    ::= {egress 13}
+
+egrTsoipTimeoutAwarenessEnable OBJECT-TYPE
+	SYNTAX INTEGER { disable( 0 ), enable( 0 ) }
+	MAX-ACCESS read-write
+	STATUS current
+	DESCRIPTION "Enable/Disable Timeout Awareness"
+    ::= {egress 14}
+
+egrTsoipMaxTimeout OBJECT-TYPE
+	SYNTAX Unsigned32
+	MAX-ACCESS read-write
+	STATUS current
+	DESCRIPTION "Maximum Timeout in microsec units"
+    ::= {egress 15}
+
+--------------------------------------------------------------------------------
+-- Status
+--
+txPowerStateStatus OBJECT-TYPE
+	SYNTAX INTEGER { off( 0 ), on( 1 ) }
+	MAX-ACCESS read-only
+	STATUS current
+	DESCRIPTION "TX RF Output Enabled/Disabled Status"
+	::= {status 1}
+
+txFrequencyStatus OBJECT-TYPE
+	SYNTAX Unsigned32
+	MAX-ACCESS read-only
+	STATUS current
+	DESCRIPTION "TX RF Output Center Frequency Status"
+	::= {status 2}
+
+modInputBitrateStatus OBJECT-TYPE
+	SYNTAX Unsigned32
+	MAX-ACCESS read-only
+	STATUS current
+	DESCRIPTION "Modulator Input Bitrate in kbps Status"
+	::= {status 3}
+
+modOutputBitrateStatus OBJECT-TYPE
+	SYNTAX Unsigned32
+	MAX-ACCESS read-only
+	STATUS current
+	DESCRIPTION "Modulator Output Bitrate in kbps Status"
+	::= {status 4}
+
+modModcodStatus OBJECT-TYPE
+	SYNTAX INTEGER
+	MAX-ACCESS read-only
+	STATUS current
+	DESCRIPTION "Current DVB-S2 MODCOD Status"
+	::= {status 5}
+
+modRolloffStatus OBJECT-TYPE
+	SYNTAX INTEGER
+	MAX-ACCESS read-only
+	STATUS current
+	DESCRIPTION "Current Signal Roll Off (20%, 25%, 35%, 5%, 10%, 15%) Status"
+	::= {status 6}
+
+--------------------------------------------------------------------------------
+-- Network
+--
+managementIpAddress OBJECT-TYPE
+	SYNTAX IpAddress
+	MAX-ACCESS read-write
+	STATUS current
+	DESCRIPTION "Management IP Address"
+	::= {network 1}
+	
+managementSubnetMask OBJECT-TYPE
+	SYNTAX IpAddress
+	MAX-ACCESS read-write
+	STATUS current
+	DESCRIPTION "Management Subnet Mask"
+	::= {network 2}
+
+managementMacAddress OBJECT-TYPE
+	SYNTAX MacAddress
+	MAX-ACCESS read-only
+	STATUS current
+	DESCRIPTION "Management MAC Address"
+	::= {network 3}
+
+managementDefaultGateway OBJECT-TYPE
+	SYNTAX IpAddress
+	MAX-ACCESS read-write
+	STATUS current
+	DESCRIPTION "Tuner Gain"
+	::= {network 4}       
+	
+managementDhcpClient OBJECT-TYPE
+	SYNTAX INTEGER {off(0),on(1)}
+	MAX-ACCESS read-write
+	STATUS current
+	DESCRIPTION "Management DHCP Client Mode"
+	::= {network 5}
+
+managementDscp OBJECT-TYPE
+	SYNTAX INTEGER (0..63)
+	MAX-ACCESS read-write
+	STATUS current
+	DESCRIPTION "Management DiffServ Code Point"
+	::= {network 6}
+
+managementVlanId OBJECT-TYPE
+	SYNTAX INTEGER (0..4094)
+	MAX-ACCESS read-write
+	STATUS current
+	DESCRIPTION "Management VLAN Identifier"
+	::= {network 7}
+
+managementMulticastMode OBJECT-TYPE
+	SYNTAX INTEGER {on(0), off(1)}
+	MAX-ACCESS read-write
+	STATUS current
+	DESCRIPTION "Management Multicast Mode"
+	::= {network 8}
+
+managementPortState OBJECT-TYPE
+	SYNTAX INTEGER {off(0), on(1)}
+	MAX-ACCESS read-write
+	STATUS current
+	DESCRIPTION "Management Port State"
+	::= {network 9}
+	
+routerArpMode OBJECT-TYPE
+	SYNTAX INTEGER {off(0),on(1)}
+	MAX-ACCESS read-write
+	STATUS current
+	DESCRIPTION "Router ARP Mode"
+	::= {network 10}
+
+lanIpAddress OBJECT-TYPE
+	SYNTAX IpAddress
+	MAX-ACCESS read-write
+	STATUS current
+	DESCRIPTION "LAN IP Address"
+	::= {network 11}
+	
+lanSubnetMask OBJECT-TYPE
+	SYNTAX IpAddress
+	MAX-ACCESS read-write
+	STATUS current
+	DESCRIPTION "LAN Subnet Mask"
+	::= {network 12}
+
+lanMulticastMode OBJECT-TYPE
+	SYNTAX INTEGER {on(0), off(1)}
+	MAX-ACCESS read-write
+	STATUS current
+	DESCRIPTION "LAN Multicast Mode"
+	::= {network 13}
+
+lanDefaultGateway OBJECT-TYPE
+	SYNTAX IpAddress
+	MAX-ACCESS read-write
+	STATUS current
+	DESCRIPTION "LAN Default Gateway"
+	::= {network 14}
+	
+lanMacAddress OBJECT-TYPE
+	SYNTAX MacAddress
+	MAX-ACCESS read-only
+	STATUS current
+	DESCRIPTION "LAN MAC Address"
+	::= {network 15}     
+	
+lanDhcpClient OBJECT-TYPE
+	SYNTAX INTEGER {off(0),on(1)}
+	MAX-ACCESS read-write
+	STATUS current
+	DESCRIPTION "LAN DHCP Client"
+	::= {network 16}
+
+routerIpAddress OBJECT-TYPE
+	SYNTAX IpAddress
+	MAX-ACCESS read-write
+	STATUS current
+	DESCRIPTION "Router IP Address"
+	::= {network 17}
+
+routerMacAddress OBJECT-TYPE
+	SYNTAX MacAddress
+	MAX-ACCESS read-write
+	STATUS current
+	DESCRIPTION "Router MAC Address"
+	::= {network 18}
+
+routerArpPeriod OBJECT-TYPE
+	SYNTAX Unsigned32
+	MAX-ACCESS read-write
+	STATUS current
+	DESCRIPTION "Router ARP period"
+	::= {network 19}
+
+routerArpTimeout OBJECT-TYPE
+	SYNTAX Unsigned32
+	MAX-ACCESS read-write
+	STATUS current
+	DESCRIPTION "Router ARP timeout"
+	::= {network 20}
+
+isolateNetworks OBJECT-TYPE
+	SYNTAX INTEGER {no( 0 ), yes( 1 )}
+	MAX-ACCESS read-write
+	STATUS current
+	DESCRIPTION "Isolate Management and Traffic Networks"
+	::= {network 21}
+
+vrrpEnabled OBJECT-TYPE
+	SYNTAX INTEGER {no( 0 ), yes( 1 )}
+	MAX-ACCESS read-write
+	STATUS current
+	DESCRIPTION "VRRP Functionality Enable/Disable"
+	::= {network 22}
+
+vrrpIpAddress OBJECT-TYPE
+	SYNTAX IpAddress
+	MAX-ACCESS read-write
+	STATUS current
+	DESCRIPTION "VRRP IP Address"
+	::= {network 23}
+
+vrrpIpNetmask OBJECT-TYPE
+	SYNTAX IpAddress
+	MAX-ACCESS read-write
+	STATUS current
+	DESCRIPTION "VRRP IP Netmask"
+	::= {network 24}
+
+vrrpVrid OBJECT-TYPE
+	SYNTAX Unsigned32 (1..255)
+	MAX-ACCESS read-write
+	STATUS current
+	DESCRIPTION "VRRP Virtual Router ID"
+	::= {network 25}
+
+vrrpState OBJECT-TYPE
+	SYNTAX INTEGER {init( 0 ), master( 1 ), backup( 2 )}
+	MAX-ACCESS read-only
+	STATUS current
+	DESCRIPTION "VRRP State"
+	::= {network 26}
+
+vrrpPriority OBJECT-TYPE
+	SYNTAX Unsigned32 (0..255)
+	MAX-ACCESS read-write
+	STATUS current
+	DESCRIPTION "VRRP Entity Priority"
+	::= {network 27}
+
+vrrpAdvInterval OBJECT-TYPE
+	SYNTAX Unsigned32 (1..4294967)
+	MAX-ACCESS read-write
+	STATUS current
+	DESCRIPTION "VRRP Advertisement Interval in Seconds"
+	::= {network 28}
+
+--
+-- The MIB module consists of the following groups:
+-- System
+
+warmReset OBJECT-TYPE
+	SYNTAX INTEGER {reset(1)}
+	MAX-ACCESS write-only
+	STATUS current
+	DESCRIPTION "Warm Reset"
+	::= {system 1}
+	
+coldReset OBJECT-TYPE
+	SYNTAX INTEGER {reset(1)}
+	MAX-ACCESS write-only
+	STATUS current
+	DESCRIPTION "Cold Reset"
+	::= {system 2}
+
+serialNumber OBJECT-TYPE
+	SYNTAX Unsigned32
+	MAX-ACCESS read-only
+	STATUS current
+	DESCRIPTION "ST1 Serial Number"
+	::= {system 3}
+
+productionCode OBJECT-TYPE
+	SYNTAX Unsigned32
+	MAX-ACCESS read-only
+	STATUS current
+	DESCRIPTION "ST1 Production Code"
+	::= {system 4}
+
+softwareVersion OBJECT-TYPE
+	SYNTAX OCTET STRING
+	MAX-ACCESS read-only
+	STATUS current
+	DESCRIPTION "ST1 Software Version"
+	::= {system 5}
+
+fpgaVersion OBJECT-TYPE
+	SYNTAX OCTET STRING
+	MAX-ACCESS read-only
+	STATUS current
+	DESCRIPTION "Active FPGA Version"
+	::= {system 6}
+
+hardwareVersion OBJECT-TYPE
+	SYNTAX OCTET STRING
+	MAX-ACCESS read-only
+	STATUS current
+	DESCRIPTION "ST1 Hardware Version"
+	::= {system 7}
+
+username OBJECT-TYPE
+	SYNTAX OCTET STRING (SIZE(1..11))
+	MAX-ACCESS read-write
+	STATUS current
+	DESCRIPTION "Telnet Login Username"
+	::= {system 8}
+	
+password OBJECT-TYPE
+	SYNTAX OCTET STRING (SIZE(1..11))
+	MAX-ACCESS read-write
+	STATUS current
+	DESCRIPTION "Telnet Login Password"
+	::= {system 9}
+	
+ntpServerIpAddress OBJECT-TYPE
+	SYNTAX IpAddress
+	MAX-ACCESS read-write
+	STATUS current
+	DESCRIPTION "NTP Server IP Address"
+	::= {system 10}
+	
+snmpTrapServerIpAddress OBJECT-TYPE
+	SYNTAX IpAddress
+	MAX-ACCESS read-write
+	STATUS current
+	DESCRIPTION "SNMP Trap Server IP Address"
+	::= {system 11}
+	
+snmpWriteCommunity OBJECT-TYPE
+	SYNTAX OCTET STRING (SIZE(0..19))
+	MAX-ACCESS read-write
+	STATUS current
+	DESCRIPTION "SNMP Write Community"
+	::= {system 12}
+	
+snmpReadCommunity OBJECT-TYPE
+	SYNTAX OCTET STRING (SIZE(0..19))
+	MAX-ACCESS read-write
+	STATUS current
+	DESCRIPTION "SNMP Read Community"
+	::= {system 13}
+	
+tftpServerIp OBJECT-TYPE
+	SYNTAX IpAddress
+	MAX-ACCESS read-write
+	STATUS current
+	DESCRIPTION "TFTP Server IP Address"
+	::= {system 14}
+	
+fpgaImageFilename OBJECT-TYPE
+	SYNTAX OCTET STRING (SIZE(0..19))
+	MAX-ACCESS read-write
+	STATUS current
+	DESCRIPTION "FPGA image filename"
+	::= {system 15}
+	
+startFpgaUpgrade OBJECT-TYPE
+	SYNTAX INTEGER {start(1)}
+	MAX-ACCESS write-only
+	STATUS current
+	DESCRIPTION "Start FPGA Upgrade"
+	::= {system 16}
+
+fpgaVersionTable OBJECT-TYPE
+    SYNTAX SEQUENCE OF FpgaVersionEntry
+    MAX-ACCESS not-accessible
+    STATUS current
+    DESCRIPTION
+           "Table of FPGA Versions."
+ 	::= { system 17 }
+ 
+fpgaVersionEntry OBJECT-TYPE
+    SYNTAX FpgaVersionEntry
+    MAX-ACCESS not-accessible
+    STATUS current
+    DESCRIPTION
+           "FPGA Version table"
+    INDEX { fpgaVersionIndex }
+    ::= { fpgaVersionTable 1 }
+
+FpgaVersionEntry ::= SEQUENCE {
+    fpgaVersionIndex	INTEGER,
+	fpgaVersionValue	OCTET STRING,
+	fpgaVersionSize	    Unsigned32,
+	fpgaVersionValid	INTEGER,
+	fpgaVersionActive	INTEGER,
+	}
+
+fpgaVersionIndex OBJECT-TYPE
+    SYNTAX INTEGER 
+    MAX-ACCESS read-only
+    STATUS current
+    DESCRIPTION
+		"Unique index of this fpga version entry"
+    ::= { fpgaVersionEntry 1 }
+	
+fpgaVersionValue OBJECT-TYPE
+    SYNTAX OCTET STRING 
+    MAX-ACCESS read-only
+    STATUS current
+    DESCRIPTION
+		"FPGA Version"
+    ::= { fpgaVersionEntry 2 }
+	
+fpgaVersionSize OBJECT-TYPE
+    SYNTAX Unsigned32 
+    MAX-ACCESS read-only
+    STATUS current
+    DESCRIPTION
+		"FPGA Version Size"
+    ::= { fpgaVersionEntry 3 }
+	
+fpgaVersionValid OBJECT-TYPE
+    SYNTAX INTEGER {no(0),yes(1)}
+    MAX-ACCESS read-only
+    STATUS current
+    DESCRIPTION
+		"FPGA Version Valid"
+    ::= { fpgaVersionEntry 4 }
+	
+fpgaVersionActive OBJECT-TYPE
+    SYNTAX INTEGER {no(0),yes(1)}
+    MAX-ACCESS read-write
+    STATUS current
+    DESCRIPTION
+		"FPGA Version Active"
+    ::= { fpgaVersionEntry 5 }
+
+softwareImageFilename OBJECT-TYPE
+	SYNTAX OCTET STRING (SIZE(0..19))
+	MAX-ACCESS read-write
+	STATUS current
+	DESCRIPTION "Software image filename"
+	::= {system 18}
+	
+startSoftwareUpgrade OBJECT-TYPE
+	SYNTAX INTEGER {start(1)}
+	MAX-ACCESS write-only
+	STATUS current
+	DESCRIPTION "Start Software Upgrade"
+	::= {system 19}
+
+softwareVersionTable OBJECT-TYPE
+    SYNTAX SEQUENCE OF SoftwareVersionEntry
+    MAX-ACCESS not-accessible
+    STATUS current
+    DESCRIPTION
+           "Table of Software Versions."
+ 	::= { system 20 }
+ 
+softwareVersionEntry OBJECT-TYPE
+    SYNTAX SoftwareVersionEntry
+    MAX-ACCESS not-accessible
+    STATUS current
+    DESCRIPTION
+           "Software Version Table"
+    INDEX { softwareVersionIndex }
+    ::= { softwareVersionTable 1 }
+
+SoftwareVersionEntry ::= SEQUENCE {
+    softwareVersionIndex	INTEGER,
+	softwareVersionValue	OCTET STRING,
+	softwareVersionSize	    Unsigned32,
+	softwareVersionValid	INTEGER,
+	softwareVersionActive	INTEGER,
+	}
+
+softwareVersionIndex OBJECT-TYPE
+    SYNTAX INTEGER 
+    MAX-ACCESS read-only
+    STATUS current
+    DESCRIPTION
+		"Unique index of this software version entry"
+    ::= { softwareVersionEntry 1 }
+	
+softwareVersionValue OBJECT-TYPE
+    SYNTAX OCTET STRING 
+    MAX-ACCESS read-only
+    STATUS current
+    DESCRIPTION
+		"Software Version"
+    ::= { softwareVersionEntry 2 }
+	
+softwareVersionSize OBJECT-TYPE
+    SYNTAX Unsigned32 
+    MAX-ACCESS read-only
+    STATUS current
+    DESCRIPTION
+		"Software Version Size"
+    ::= { softwareVersionEntry 3 }
+	
+softwareVersionValid OBJECT-TYPE
+    SYNTAX INTEGER {no(0),yes(1)}
+    MAX-ACCESS read-only
+    STATUS current
+    DESCRIPTION
+		"Software Version Valid"
+    ::= { softwareVersionEntry 4 }
+	
+softwareVersionActive OBJECT-TYPE
+    SYNTAX INTEGER {no(0),yes(1)}
+    MAX-ACCESS read-write
+    STATUS current
+    DESCRIPTION
+		"Software Version Active"
+    ::= { softwareVersionEntry 5 }
+
+permanentStorageDevice OBJECT-TYPE
+	SYNTAX OCTET STRING 
+    MAX-ACCESS read-only
+    STATUS current
+    DESCRIPTION "Permanent Storage Device"
+	::= {system 21}
+
+-----------------------------------------------
+rfCalibrationTable OBJECT-TYPE
+    SYNTAX SEQUENCE OF RfCalibrationEntry
+    MAX-ACCESS not-accessible
+    STATUS current
+    DESCRIPTION "TX RF Calibration Table"
+ 	::= { rf_calibration 1 }
+ 
+rfCalibrationEntry OBJECT-TYPE
+    SYNTAX RfCalibrationEntry
+    MAX-ACCESS not-accessible
+    STATUS current
+    DESCRIPTION "TX RF Calibration Entry"
+    INDEX { rfCalibrationEntryIndex }
+    ::= { rfCalibrationTable 1 }
+
+RfCalibrationEntry ::= SEQUENCE {
+    rfCalibrationEntryIndex	Unsigned32,
+	rfCalibrationRangeStart	Unsigned32,
+	rfCalibrationRangeEnd	Unsigned32,
+	rfCalibrationMulI		Unsigned32, 
+	rfCalibrationDivI		Unsigned32,
+	rfCalibrationOffsetI	INTEGER,
+	rfCalibrationMulQ		Unsigned32,
+	rfCalibrationDivQ		Unsigned32,
+	rfCalibrationOffsetQ	INTEGER,
+	rfCalibrationMaxPwl		INTEGER
+	}
+
+rfCalibrationEntryIndex OBJECT-TYPE
+    SYNTAX Unsigned32 
+    MAX-ACCESS read-only
+    STATUS current
+    DESCRIPTION "Unique Index of this Entry"
+    ::= { rfCalibrationEntry 1 }
+
+rfCalibrationRangeStart OBJECT-TYPE
+	SYNTAX Unsigned32
+	MAX-ACCESS read-only
+	STATUS current
+	DESCRIPTION "Calibration range start in MHz"
+	::= { rfCalibrationEntry 2 }
+
+rfCalibrationRangeEnd OBJECT-TYPE
+	SYNTAX Unsigned32
+	MAX-ACCESS read-only
+	STATUS current
+	DESCRIPTION "Calibration range end in MHz"
+	::= { rfCalibrationEntry 3 }
+		
+rfCalibrationMulI OBJECT-TYPE
+	SYNTAX Unsigned32
+	MAX-ACCESS read-only
+	STATUS current
+	DESCRIPTION "Multiplier I"
+	::= { rfCalibrationEntry 4 }
+
+rfCalibrationDivI OBJECT-TYPE
+	SYNTAX Unsigned32
+	MAX-ACCESS read-only
+	STATUS current
+	DESCRIPTION "Divider I"
+	::= { rfCalibrationEntry 5 }
+
+rfCalibrationOffsetI OBJECT-TYPE
+	SYNTAX INTEGER
+	MAX-ACCESS read-only
+	STATUS current
+	DESCRIPTION "Offset I"
+	::= { rfCalibrationEntry 6 }
+
+rfCalibrationMulQ OBJECT-TYPE
+	SYNTAX Unsigned32
+	MAX-ACCESS read-only
+	STATUS current
+	DESCRIPTION "Multiplier Q"
+	::= { rfCalibrationEntry 7 }
+
+rfCalibrationDivQ OBJECT-TYPE
+	SYNTAX Unsigned32
+	MAX-ACCESS read-only
+	STATUS current
+	DESCRIPTION "Divider Q"
+	::= { rfCalibrationEntry 8 }
+
+rfCalibrationOffsetQ OBJECT-TYPE
+	SYNTAX INTEGER
+	MAX-ACCESS read-only
+	STATUS current
+	DESCRIPTION "Offset Q"
+	::= { rfCalibrationEntry 9 }
+
+rfCalibrationMaxPwl OBJECT-TYPE
+	SYNTAX INTEGER
+	MAX-ACCESS read-only
+	STATUS current
+	DESCRIPTION "Maximal Power Level in 0.1 dBm units"
+	::= { rfCalibrationEntry 10 }
+
+frequency OBJECT-TYPE
+	SYNTAX Unsigned32 (950..2150)
+	MAX-ACCESS read-write
+	STATUS current
+	DESCRIPTION "TX RF Calibration Frequency"
+	::= {calibration_params 1}
+	
+multiplierI OBJECT-TYPE
+	SYNTAX Unsigned32
+	MAX-ACCESS read-write
+	STATUS current
+	DESCRIPTION "Multiplier I"
+	::= { calibration_params 2 }
+
+dividerI OBJECT-TYPE
+	SYNTAX Unsigned32
+	MAX-ACCESS read-write
+	STATUS current
+	DESCRIPTION "Divider I"
+	::= { calibration_params 3 }
+
+offsetI OBJECT-TYPE
+	SYNTAX INTEGER
+	MAX-ACCESS read-write
+	STATUS current
+	DESCRIPTION "Offset I"
+	::= { calibration_params 4 }
+
+multiplierQ OBJECT-TYPE
+	SYNTAX Unsigned32
+	MAX-ACCESS read-write
+	STATUS current
+	DESCRIPTION "Multiplier Q"
+	::= { calibration_params 5 }
+
+dividerQ OBJECT-TYPE
+	SYNTAX Unsigned32
+	MAX-ACCESS read-write
+	STATUS current
+	DESCRIPTION "Divider Q"
+	::= { calibration_params 6 }
+
+offsetQ OBJECT-TYPE
+	SYNTAX INTEGER
+	MAX-ACCESS read-write
+	STATUS current
+	DESCRIPTION "Offset Q"
+	::= { calibration_params 7 }
+
+maxPwl OBJECT-TYPE
+	SYNTAX INTEGER
+	MAX-ACCESS read-write
+	STATUS current
+	DESCRIPTION "Maximal Power Level in 0.1 dBm units"
+	::= { calibration_params 8 }
+
+testSignalControl OBJECT-TYPE
+	SYNTAX INTEGER { off( 0 ), on( 1 ) }
+	MAX-ACCESS read-write
+	STATUS current
+	DESCRIPTION "Test Signal Control"
+	::= { calibration_params 9 }
+
+loadValues OBJECT-TYPE
+	SYNTAX INTEGER { write( 1 ) }
+	MAX-ACCESS write-only
+	STATUS current
+	DESCRIPTION "Command: Load Configured Values to FPGA"
+	::= { calibration_params 10 }
+
+storeValues OBJECT-TYPE
+	SYNTAX INTEGER { write( 1 ) }
+	MAX-ACCESS write-only
+	STATUS current
+	DESCRIPTION "Command: Store Configured Values to Permanent Storage"
+	::= { calibration_params 11 }
+
+bootloaderImageFilename OBJECT-TYPE
+	SYNTAX OCTET STRING (SIZE(0..19))
+	MAX-ACCESS read-write
+	STATUS current
+	DESCRIPTION "Bootloader image filename"
+	::= {system 23}
+	
+startBootloaderUpgrade OBJECT-TYPE
+	SYNTAX INTEGER {start(1)}
+	MAX-ACCESS write-only
+	STATUS current
+	DESCRIPTION "Start Bootloader Upgrade"
+	::= {system 24}
+
+startBootloaderDownload OBJECT-TYPE
+	SYNTAX INTEGER {start(1)}
+	MAX-ACCESS write-only
+	STATUS current
+	DESCRIPTION "Start Bootloader Download"
+	::= {system 25}
+
+bootloaderVersionTable OBJECT-TYPE
+    SYNTAX SEQUENCE OF BootloaderVersionEntry
+    MAX-ACCESS not-accessible
+    STATUS current
+    DESCRIPTION
+           "Table of Bootloader Versions."
+ 	::= { system 26 }
+ 
+bootloaderVersionEntry OBJECT-TYPE
+    SYNTAX BootloaderVersionEntry
+    MAX-ACCESS not-accessible
+    STATUS current
+    DESCRIPTION
+           "Bootloader Version Table"
+    INDEX { bootloaderVersionIndex }
+    ::= { bootloaderVersionTable 1 }
+
+BootloaderVersionEntry ::= SEQUENCE {
+    bootloaderVersionIndex	INTEGER,
+	bootloaderVersionValue	OCTET STRING,
+	bootloaderVersionSize	Unsigned32,
+	bootloaderVersionValid	INTEGER,
+	bootloaderVersionActive	INTEGER,
+	}
+
+bootloaderVersionIndex OBJECT-TYPE
+    SYNTAX INTEGER 
+    MAX-ACCESS read-only
+    STATUS current
+    DESCRIPTION
+		"Unique index of this bootloader version entry"
+    ::= { bootloaderVersionEntry 1 }
+	
+bootloaderVersionValue OBJECT-TYPE
+    SYNTAX OCTET STRING 
+    MAX-ACCESS read-only
+    STATUS current
+    DESCRIPTION
+		"Bootloader Version"
+    ::= { bootloaderVersionEntry 2 }
+	
+bootloaderVersionSize OBJECT-TYPE
+    SYNTAX Unsigned32 
+    MAX-ACCESS read-only
+    STATUS current
+    DESCRIPTION
+		"Bootloader Version Size"
+    ::= { bootloaderVersionEntry 3 }
+	
+bootloaderVersionValid OBJECT-TYPE
+    SYNTAX INTEGER {no(0),yes(1)}
+    MAX-ACCESS read-only
+    STATUS current
+    DESCRIPTION
+		"Bootloader Version Valid"
+    ::= { bootloaderVersionEntry 4 }
+	
+bootloaderVersionActive OBJECT-TYPE
+    SYNTAX INTEGER {no(0),yes(1)}
+    MAX-ACCESS read-write
+    STATUS current
+    DESCRIPTION
+		"Bootloader Version Active"
+    ::= { bootloaderVersionEntry 5 }
+
+END

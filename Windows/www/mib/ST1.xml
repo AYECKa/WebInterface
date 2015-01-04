@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<configuration>
+<oid name="txFrequency" value="1.3.6.1.4.1.27928.102.1.1.1.0" type="uint"/>
+<oid name="txPowerLevel" value="1.3.6.1.4.1.27928.102.1.1.2.0" type="int"/>
+<oid name="txPowerState" value="1.3.6.1.4.1.27928.102.1.1.3.0" type="int"/>
+<oid name="txPowerStateInitial" value="1.3.6.1.4.1.27928.102.1.1.4.0" type="int"/>
+<oid name="modSymbolRate" value="1.3.6.1.4.1.27928.102.1.2.1.0" type="uint"/>
+<oid name="modModcod" value="1.3.6.1.4.1.27928.102.1.2.2.0" type="int"/>
+<oid name="modPilots" value="1.3.6.1.4.1.27928.102.1.2.3.0" type="int"/>
+<oid name="modFrameType" value="1.3.6.1.4.1.27928.102.1.2.4.0" type="int"/>
+<oid name="modRollOff" value="1.3.6.1.4.1.27928.102.1.2.5.0" type="int"/>
+<oid name="modDvbs2Profile" value="1.3.6.1.4.1.27928.102.1.2.6.0" type="int"/>
+<oid name="modScramblerSeed" value="1.3.6.1.4.1.27928.102.1.2.7.0" type="int"/>
+<oid name="modPowerState" value="1.3.6.1.4.1.27928.102.1.2.8.0" type="int"/>
+<oid name="modSpectrumInversion" value="1.3.6.1.4.1.27928.102.1.2.9.0" type="int"/>
+<oid name="modOutputFormat" value="1.3.6.1.4.1.27928.102.1.2.10.0" type="int"/>
+<oid name="modCarrierAtOutput" value="1.3.6.1.4.1.27928.102.1.2.11.0" type="int"/>
+<oid name="ipfwdEntryIndex" value="1.3.6.1.4.1.27928.102.1.3.1.1.1.1" type="uint"/>
+<oid name="ipfwdIpAddress" value="1.3.6.1.4.1.27928.102.1.3.1.1.1.2" type="ipAddress"/>
+<oid name="ipfwdIpNetmask" value="1.3.6.1.4.1.27928.102.1.3.1.1.1.3" type="ipAddress"/>
+<oid name="ipfwdMacAddress" value="1.3.6.1.4.1.27928.102.1.3.1.1.1.4" type="macAddress"/>
+<oid name="ipfwdPid" value="1.3.6.1.4.1.27928.102.1.3.1.1.1.5" type="uint"/>
+<oid name="ipfwdEnabled" value="1.3.6.1.4.1.27928.102.1.3.1.1.1.6" type="int"/>
+<oid name="bucPowerState" value="1.3.6.1.4.1.27928.102.1.4.1.0" type="int"/>
+<oid name="buc10MHzOutput" value="1.3.6.1.4.1.27928.102.1.4.2.0" type="int"/>
+<oid name="egrDstEthAddress" value="1.3.6.1.4.1.27928.102.1.5.1.0" type="macAddress"/>
+<oid name="egrSrcEthAddress" value="1.3.6.1.4.1.27928.102.1.5.2.0" type="macAddress"/>
+<oid name="egrVlanSupport" value="1.3.6.1.4.1.27928.102.1.5.3.0" type="int"/>
+<oid name="egrVlanPcp" value="1.3.6.1.4.1.27928.102.1.5.4.0" type="uint"/>
+<oid name="egrVlanVid" value="1.3.6.1.4.1.27928.102.1.5.5.0" type="uint"/>
+<oid name="egrDscp" value="1.3.6.1.4.1.27928.102.1.5.6.0" type="uint"/>
+<oid name="egrSrcIpAddress" value="1.3.6.1.4.1.27928.102.1.5.7.0" type="ipAddress"/>
+<oid name="egrDstIpAddress" value="1.3.6.1.4.1.27928.102.1.5.8.0" type="ipAddress"/>
+<oid name="egrSrcUdpPort" value="1.3.6.1.4.1.27928.102.1.5.9.0" type="uint"/>
+<oid name="egrDstUdpPort" value="1.3.6.1.4.1.27928.102.1.5.10.0" type="uint"/>
+<oid name="egrModOutputEnabled" value="1.3.6.1.4.1.27928.102.1.5.11.0" type="int"/>
+<oid name="egrNetOutputEnabled" value="1.3.6.1.4.1.27928.102.1.5.12.0" type="int"/>
+<oid name="egrTsoipNumber" value="1.3.6.1.4.1.27928.102.1.5.13.0" type="uint"/>
+<oid name="egrTsoipTimeoutAwarenessEnable" value="1.3.6.1.4.1.27928.102.1.5.14.0" type="int"/>
+<oid name="egrTsoipMaxTimeout" value="1.3.6.1.4.1.27928.102.1.5.15.0" type="uint"/>
+<oid name="txPowerStateStatus" value="1.3.6.1.4.1.27928.102.2.1.0" type="int"/>
+<oid name="txFrequencyStatus" value="1.3.6.1.4.1.27928.102.2.2.0" type="uint"/>
+<oid name="modInputBitrateStatus" value="1.3.6.1.4.1.27928.102.2.3.0" type="uint"/>
+<oid name="modOutputBitrateStatus" value="1.3.6.1.4.1.27928.102.2.4.0" type="uint"/>
+<oid name="modModcodStatus" value="1.3.6.1.4.1.27928.102.2.5.0" type="int"/>
+<oid name="modRolloffStatus" value="1.3.6.1.4.1.27928.102.2.6.0" type="int"/>
+<oid name="managementIpAddress" value="1.3.6.1.4.1.27928.102.3.1.0" type="ipAddress"/>
+<oid name="managementSubnetMask" value="1.3.6.1.4.1.27928.102.3.2.0" type="ipAddress"/>
+<oid name="managementMacAddress" value="1.3.6.1.4.1.27928.102.3.3.0" type="macAddress"/>
+<oid name="managementDefaultGateway" value="1.3.6.1.4.1.27928.102.3.4.0" type="ipAddress"/>
+<oid name="managementDhcpClient" value="1.3.6.1.4.1.27928.102.3.5.0" type="int"/>
+<oid name="managementDscp" value="1.3.6.1.4.1.27928.102.3.6.0" type="int"/>
+<oid name="managementVlanId" value="1.3.6.1.4.1.27928.102.3.7.0" type="int"/>
+<oid name="managementMulticastMode" value="1.3.6.1.4.1.27928.102.3.8.0" type="int"/>
+<oid name="managementPortState" value="1.3.6.1.4.1.27928.102.3.9.0" type="int"/>
+<oid name="routerArpMode" value="1.3.6.1.4.1.27928.102.3.10.0" type="int"/>
+<oid name="lanIpAddress" value="1.3.6.1.4.1.27928.102.3.11.0" type="ipAddress"/>
+<oid name="lanSubnetMask" value="1.3.6.1.4.1.27928.102.3.12.0" type="ipAddress"/>
+<oid name="lanMulticastMode" value="1.3.6.1.4.1.27928.102.3.13.0" type="int"/>
+<oid name="lanDefaultGateway" value="1.3.6.1.4.1.27928.102.3.14.0" type="ipAddress"/>
+<oid name="lanMacAddress" value="1.3.6.1.4.1.27928.102.3.15.0" type="macAddress"/>
+<oid name="lanDhcpClient" value="1.3.6.1.4.1.27928.102.3.16.0" type="int"/>
+<oid name="routerIpAddress" value="1.3.6.1.4.1.27928.102.3.17.0" type="ipAddress"/>
+<oid name="routerMacAddress" value="1.3.6.1.4.1.27928.102.3.18.0" type="macAddress"/>
+<oid name="routerArpPeriod" value="1.3.6.1.4.1.27928.102.3.19.0" type="uint"/>
+<oid name="routerArpTimeout" value="1.3.6.1.4.1.27928.102.3.20.0" type="uint"/>
+<oid name="isolateNetworks" value="1.3.6.1.4.1.27928.102.3.21.0" type="int"/>
+<oid name="vrrpEnabled" value="1.3.6.1.4.1.27928.102.3.22.0" type="int"/>
+<oid name="vrrpIpAddress" value="1.3.6.1.4.1.27928.102.3.23.0" type="ipAddress"/>
+<oid name="vrrpIpNetmask" value="1.3.6.1.4.1.27928.102.3.24.0" type="ipAddress"/>
+<oid name="vrrpVrid" value="1.3.6.1.4.1.27928.102.3.25.0" type="uint"/>
+<oid name="vrrpState" value="1.3.6.1.4.1.27928.102.3.26.0" type="int"/>
+<oid name="vrrpPriority" value="1.3.6.1.4.1.27928.102.3.27.0" type="uint"/>
+<oid name="vrrpAdvInterval" value="1.3.6.1.4.1.27928.102.3.28.0" type="uint"/>
+<oid name="frequency" value="1.3.6.1.4.1.27928.102.4.22.2.1.0" type="uint"/>
+<oid name="multiplierI" value="1.3.6.1.4.1.27928.102.4.22.2.2.0" type="uint"/>
+<oid name="dividerI" value="1.3.6.1.4.1.27928.102.4.22.2.3.0" type="uint"/>
+<oid name="offsetI" value="1.3.6.1.4.1.27928.102.4.22.2.4.0" type="int"/>
+<oid name="multiplierQ" value="1.3.6.1.4.1.27928.102.4.22.2.5.0" type="uint"/>
+<oid name="dividerQ" value="1.3.6.1.4.1.27928.102.4.22.2.6.0" type="uint"/>
+<oid name="offsetQ" value="1.3.6.1.4.1.27928.102.4.22.2.7.0" type="int"/>
+<oid name="maxPwl" value="1.3.6.1.4.1.27928.102.4.22.2.8.0" type="int"/>
+<oid name="testSignalControl" value="1.3.6.1.4.1.27928.102.4.22.2.9.0" type="int"/>
+<oid name="loadValues" value="1.3.6.1.4.1.27928.102.4.22.2.10.0" type="int"/>
+<oid name="storeValues" value="1.3.6.1.4.1.27928.102.4.22.2.11.0" type="int"/>
+<oid name="rfCalibrationEntryIndex" value="1.3.6.1.4.1.27928.102.4.22.1.1.1" type="uint"/>
+<oid name="rfCalibrationRangeStart" value="1.3.6.1.4.1.27928.102.4.22.1.1.2" type="uint"/>
+<oid name="rfCalibrationRangeEnd" value="1.3.6.1.4.1.27928.102.4.22.1.1.3" type="uint"/>
+<oid name="rfCalibrationMulI" value="1.3.6.1.4.1.27928.102.4.22.1.1.4" type="uint"/>
+<oid name="rfCalibrationDivI" value="1.3.6.1.4.1.27928.102.4.22.1.1.5" type="uint"/>
+<oid name="rfCalibrationOffsetI" value="1.3.6.1.4.1.27928.102.4.22.1.1.6" type="int"/>
+<oid name="rfCalibrationMulQ" value="1.3.6.1.4.1.27928.102.4.22.1.1.7" type="uint"/>
+<oid name="rfCalibrationDivQ" value="1.3.6.1.4.1.27928.102.4.22.1.1.8" type="uint"/>
+<oid name="rfCalibrationOffsetQ" value="1.3.6.1.4.1.27928.102.4.22.1.1.9" type="int"/>
+<oid name="rfCalibrationMaxPwl" value="1.3.6.1.4.1.27928.102.4.22.1.1.10" type="int"/>
+<oid name="fpgaVersionIndex" value="1.3.6.1.4.1.27928.102.4.17.1.1" type="int"/>
+<oid name="fpgaVersionValue" value="1.3.6.1.4.1.27928.102.4.17.1.2" type="OCTET STRING"/>
+<oid name="fpgaVersionSize" value="1.3.6.1.4.1.27928.102.4.17.1.3" type="uint"/>
+<oid name="fpgaVersionValid" value="1.3.6.1.4.1.27928.102.4.17.1.4" type="int"/>
+<oid name="fpgaVersionActive" value="1.3.6.1.4.1.27928.102.4.17.1.5" type="int"/>
+<oid name="softwareVersionIndex" value="1.3.6.1.4.1.27928.102.4.20.1.1" type="int"/>
+<oid name="softwareVersionValue" value="1.3.6.1.4.1.27928.102.4.20.1.2" type="OCTET STRING"/>
+<oid name="softwareVersionSize" value="1.3.6.1.4.1.27928.102.4.20.1.3" type="uint"/>
+<oid name="softwareVersionValid" value="1.3.6.1.4.1.27928.102.4.20.1.4" type="int"/>
+<oid name="softwareVersionActive" value="1.3.6.1.4.1.27928.102.4.20.1.5" type="int"/>
+<oid name="bootloaderVersionIndex" value="1.3.6.1.4.1.27928.102.4.26.1.1" type="int"/>
+<oid name="bootloaderVersionValue" value="1.3.6.1.4.1.27928.102.4.26.1.2" type="OCTET STRING"/>
+<oid name="bootloaderVersionSize" value="1.3.6.1.4.1.27928.102.4.26.1.3" type="uint"/>
+<oid name="bootloaderVersionValid" value="1.3.6.1.4.1.27928.102.4.26.1.4" type="int"/>
+<oid name="bootloaderVersionActive" value="1.3.6.1.4.1.27928.102.4.26.1.5" type="int"/>
+<oid name="warmReset" value="1.3.6.1.4.1.27928.102.4.1.0" type="int"/>
+<oid name="coldReset" value="1.3.6.1.4.1.27928.102.4.2.0" type="int"/>
+<oid name="serialNumber" value="1.3.6.1.4.1.27928.102.4.3.0" type="uint"/>
+<oid name="productionCode" value="1.3.6.1.4.1.27928.102.4.4.0" type="uint"/>
+<oid name="softwareVersion" value="1.3.6.1.4.1.27928.102.4.5.0" type="OCTET STRING"/>
+<oid name="fpgaVersion" value="1.3.6.1.4.1.27928.102.4.6.0" type="OCTET STRING"/>
+<oid name="hardwareVersion" value="1.3.6.1.4.1.27928.102.4.7.0" type="OCTET STRING"/>
+<oid name="username" value="1.3.6.1.4.1.27928.102.4.8.0" type="OCTET STRING"/>
+<oid name="password" value="1.3.6.1.4.1.27928.102.4.9.0" type="OCTET STRING"/>
+<oid name="ntpServerIpAddress" value="1.3.6.1.4.1.27928.102.4.10.0" type="ipAddress"/>
+<oid name="snmpTrapServerIpAddress" value="1.3.6.1.4.1.27928.102.4.11.0" type="ipAddress"/>
+<oid name="snmpWriteCommunity" value="1.3.6.1.4.1.27928.102.4.12.0" type="OCTET STRING"/>
+<oid name="snmpReadCommunity" value="1.3.6.1.4.1.27928.102.4.13.0" type="OCTET STRING"/>
+<oid name="tftpServerIp" value="1.3.6.1.4.1.27928.102.4.14.0" type="ipAddress"/>
+<oid name="fpgaImageFilename" value="1.3.6.1.4.1.27928.102.4.15.0" type="OCTET STRING"/>
+<oid name="startFpgaUpgrade" value="1.3.6.1.4.1.27928.102.4.16.0" type="int"/>
+<oid name="softwareImageFilename" value="1.3.6.1.4.1.27928.102.4.18.0" type="OCTET STRING"/>
+<oid name="startSoftwareUpgrade" value="1.3.6.1.4.1.27928.102.4.19.0" type="int"/>
+<oid name="permanentStorageDevice" value="1.3.6.1.4.1.27928.102.4.21.0" type="OCTET STRING"/>
+<oid name="bootloaderImageFilename" value="1.3.6.1.4.1.27928.102.4.23.0" type="OCTET STRING"/>
+<oid name="startBootloaderUpgrade" value="1.3.6.1.4.1.27928.102.4.24.0" type="int"/>
+<oid name="startBootloaderDownload" value="1.3.6.1.4.1.27928.102.4.25.0" type="int"/>
+</configuration>

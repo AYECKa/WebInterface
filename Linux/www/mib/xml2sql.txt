@@ -1,0 +1,12 @@
+LOAD XML INFILE 'file_name.xml'
+INTO TABLE tablename
+ROWS IDENTIFIED BY '<oid>';
+
+*** Save the xml file in /var/lib/mysql/database_name
+
+***Change types***
+
+UPDATE Tablename SET type='i' WHERE type = 'int'
+UPDATE Tablename SET type='s' WHERE type = 'OCTET STRING'
+UPDATE Tablename SET type='a' WHERE type = 'ipAddress'
+UPDATE Tablename SET type='u' WHERE type = 'uint'
