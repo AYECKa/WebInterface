@@ -27,6 +27,8 @@ if (isset($_POST['read']) OR $read == "read"){
     $fpgaVersion = substr(snmp2_get($device_IP,"public",$oid['fpgaVersion']), 9);
     $softwareVersion = substr(snmp2_get($device_IP,"public",$oid['softwareVersion']), 9);
     $serialNumber =  substr(snmp2_get($device_IP,"public",$oid['serialNumber']), 9);
+// System info
+    include_once('info_function.php');
 
 //    RF1
     if($_GET['rf'] == "1"){
@@ -186,34 +188,15 @@ if (isset($_POST['write']) AND $read == "read"){
     </div>
 </div>
 
-<div class="navbar navbar-inverse">
-    <div class="container">
-        <div class="navbar-header">
+<?php
+if($_GET['rf']=="1"){
+    $active = "rf1";
+}elseif($_GET['rf']=="2"){
+    $active = "rf2";
+}
+include_once('header.php');
+?>
 
-        </div>
-        <div class="navbar-collapse collapse">
-            <ul class="nav navbar-nav">
-                <li> <a href="index.php">Status</a></li>
-                <li> | </li>
-                <li <?php if($_GET['rf']=="1"){ echo "class='active'";}?>> <a href="rf.php?rf=1">RF1</a></li>
-                <li> | </li>
-                <li <?php if($_GET['rf']=="2"){ echo "class='active'";}?>> <a href="rf.php?rf=2">RF2</a></li>
-                <li> | </li>
-                <li> <a href="rf_control.php">RF Control</a></li>
-                <li> | </li>
-                <li> <a href="egress.php">Egress</a></li>
-                <li> | </li>
-                <li> <a href="network.php">Network</a></li>
-                <li> | </li>
-                <li> <a href="images.php">Images</a></li>
-                <li> | </li>
-                <li> <a href="system.php">System</a></li>
-                <li> | </li>
-                <li> <a href="http://www.ayecka.com/Files/TC1_UserManual_V1.0.pdf" target="_blank">TC1 User Manual</a></li>
-            </ul>
-        </div>
-    </div>
-</div>
 <!--PageBody-->
 <!--end Page Body-->
 <form method="post" class="form-inline">
@@ -234,6 +217,11 @@ if (isset($_POST['write']) AND $read == "read"){
 </div>
 <div class="form-group">SN<input type="text" class="form-control input-sm" value="<?php echo $serialNumber; ?>" name="serialNumber" readonly>
 </div>
+
+<?php
+include_once('info.php');
+?>
+
 <hr>
 <div class="row">
     <div class="col-lg-3"></div>

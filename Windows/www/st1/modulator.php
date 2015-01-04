@@ -29,6 +29,9 @@ if (isset($_POST['read']) OR $read == "read"){
     $fpgaVersion = substr(snmp2_get($device_IP,"public",$oid['fpgaVersion']), 9);
     $softwareVersion = substr(snmp2_get($device_IP,"public",$oid['softwareVersion']), 9);
     $serialNumber =  substr(snmp2_get($device_IP,"public",$oid['serialNumber']), 9);
+    // system info
+    include_once('info_function.php');
+
 //
 
     $modSymbolRate = substr(snmp2_get($device_IP,"public",$oid['modSymbolRate']), 9);
@@ -103,38 +106,11 @@ if (isset($_POST['write']) AND $read == "read"){
     </div>
 </div>
 
-<div class="navbar navbar-inverse">
-    <div class="container">
-        <div class="navbar-header">
+<?php
+$active = "modulator";
+include_once('header.php');
+?>
 
-        </div>
-        <div class="navbar-collapse collapse">
-            <ul class="nav navbar-nav">
-                <li> <a href="index.php">Status</a></li>
-                <li> | </li>
-                <li> <a href="tx.php">TX Configuration</a></li>
-                <li> | </li>
-                <li class="active"> <a href="modulator.php">Modulator Configuration</a></li>
-                <li> | </li>
-                <li> <a href="encapsulator.php">IP Encapsulator</a></li>
-                <li> | </li>
-                <li> <a href="buc.php">BUC Control</a></li>
-                <li> | </li>
-                <li> <a href="egress.php">Egress Configuration</a></li>
-                <li> | </li>
-                <li> <a href="network.php">Network</a></li>
-                <li> | </li>
-                <li> <a href="vrrp.php">VRRP</a></li>
-                <li> | </li>
-                <li> <a href="system.php">System</a></li>
-                <li> | </li>
-                <li> <a href="images.php">Images</a></li>
-                <li> | </li>
-                <li> <a href="http://www.ayecka.com/Files/ST1_UserManual.pdf" target="_blank">ST1 User Manual</a></li>
-            </ul>
-        </div>
-    </div>
-</div>
 <!--PageBody-->
 <!--end Page Body-->
 <form method="post" class="form-inline">
@@ -155,6 +131,9 @@ if (isset($_POST['write']) AND $read == "read"){
         </div>
         <div class="form-group">SN<input type="text" class="form-control input-sm" value="<?php echo $serialNumber; ?>" name="serialNumber" readonly>
         </div>
+        <?php
+        include_once('info.php');
+        ?>
         <hr>
         <div class="row">
             <div class="col-md-4"></div>
@@ -187,8 +166,8 @@ if (isset($_POST['write']) AND $read == "read"){
                         <td>Pilots Insertion</td>
                         <td>
                             <select class="form-control input-sm" name="modPilots">
-                                <option value="1" <?php if($modPilots == "1"){echo "selected";}?>>Off</option>
-                                <option value="0" <?php if($modPilots == "0"){echo "selected";}?>>On</option>
+                                <option value="0" <?php if($modPilots == "0"){echo "selected";}?>>Off</option>
+                                <option value="1" <?php if($modPilots == "1"){echo "selected";}?>>On</option>
                             </select>
                         </td>
                         <td></td>

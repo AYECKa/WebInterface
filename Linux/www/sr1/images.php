@@ -36,6 +36,9 @@ if (isset($_POST['read']) OR $read == "read"){
     $softwareVersion = substr(snmp2_get($device_IP,"public",$oid['softwareVersion']), 9);
     $serialNumber =  substr(snmp2_get($device_IP,"public",$oid['serialNumber']), 9);
 
+    //system info
+    include_once('info_function.php');
+
 //  Read
     //SWTable
     $softwareVersionValue1 =  substr(snmp2_get($device_IP,"public",$swRow1['softwareVersionValue']), 9);
@@ -161,44 +164,11 @@ if(isset($_POST['startBootloaderUpgrade'])){
 
 <body>
 
-<div class="well well-sm" style="margin-bottom: 0px;">
-    <div class="container">
-        <div class="col-lg-1"><img src="../images/ayeckaLogo.png" class="pull-left"></div>
-        <div class="col-lg-10 text-center">
-            <br><h4><strong><a href="http://www.ayecka.com/SR1.html">SR1</a></strong> - Advanced DVB-S2 Receiver with GigE interface</h4>
-        </div>
-        <div class="col-lg-1"><img src="../images/slogen2.png" class="pull-right"></div>
-    </div>
-</div>
+<?php
+$active = "images";
+include_once('header.php');
+?>
 
-<div class="navbar navbar-inverse">
-    <div class="container">
-        <div class="navbar-header">
-
-        </div>
-        <div class="navbar-collapse collapse">
-            <ul class="nav navbar-nav">
-                <li> <a href="index.php">Status</a></li>
-                <li> | </li>
-                <li> <a href="rf.php?rf=1">RF1</a></li>
-                <li> | </li>
-                <li> <a href="rf.php?rf=2">RF2</a></li>
-                <li> | </li>
-                <li> <a href="rf_control.php">RF Control</a></li>
-                <li> | </li>
-                <li> <a href="filter.php">RF PID Filter</a></li>
-                <li> | </li>
-                <li> <a href="network.php">Network</a></li>
-                <li> | </li>
-                <li class="active"> <a href="images.php">Images</a></li>
-                <li> | </li>
-                <li> <a href="system.php">System</a></li>
-                <li> | </li>
-                <li> <a href="http://www.ayecka.com/Files/SR1_UserManual_V1.8.pdf" target="_blank">SR1 User Manual</a></li>
-            </ul>
-        </div>
-    </div>
-</div>
 <!--PageBody-->
 <!--end Page Body-->
 <form method="post" class="form-inline">
@@ -219,6 +189,9 @@ if(isset($_POST['startBootloaderUpgrade'])){
         </div>
         <div class="form-group">SN<input type="text" class="form-control input-sm" value="<?php echo $serialNumber; ?>" name="serialNumber" readonly>
         </div>
+        <?php
+        include_once('info.php');
+        ?>
         <hr>
         <div class="row">
             <div class="col-md-1"></div>

@@ -50,6 +50,15 @@ if (isset($_POST['read']) OR $read == "read"){
     $softwareVersion = substr(snmp2_get($device_IP,"public",$oid['softwareVersion']), 9);
     $serialNumber =  substr(snmp2_get($device_IP,"public",$oid['serialNumber']), 9);
 
+    //system info
+    include_once('info_function.php');
+
+    // Interfaces
+    $interfaces_walk = snmpwalk($device_IP, "public","1.3.6.1.2.1.2.2");
+    foreach($interfaces_walk as $key=>$value){
+        $interfaces[] = strstr($interfaces_walk[$key]," ");
+    }
+
 //    RF1
     $tunerStatus1 = substr(snmp2_get($device_IP,"public",$oid['tunerStatus1']), 9);
 
@@ -124,44 +133,10 @@ if (isset($_POST['read']) OR $read == "read"){
 
 <body>
 
-<div class="well well-sm" style="margin-bottom: 0px;">
-    <div class="container">
-        <div class="col-lg-1"><img src="../images/ayeckaLogo.png" class="pull-left"></div>
-        <div class="col-lg-10 text-center">
-            <br><h4><strong><a href="http://www.ayecka.com/SR1.html">SR1</a></strong> - Advanced DVB-S2 Receiver with GigE interface</h4>
-        </div>
-        <div class="col-lg-1"><img src="../images/slogen2.png" class="pull-right"></div>
-    </div>
-</div>
-
-<div class="navbar navbar-inverse">
-    <div class="container">
-        <div class="navbar-header">
-
-        </div>
-        <div class="navbar-collapse collapse">
-            <ul class="nav navbar-nav">
-                <li class="active"> <a href="index.php">Status</a></li>
-                <li> | </li>
-                <li> <a href="rf.php?rf=1">RF1</a></li>
-                <li> | </li>
-                <li> <a href="rf.php?rf=2">RF2</a></li>
-                <li> | </li>
-                <li> <a href="rf_control.php">RF Control</a></li>
-                <li> | </li>
-                <li> <a href="filter.php">RF PID Filter</a></li>
-                <li> | </li>
-                <li> <a href="network.php">Network</a></li>
-                <li> | </li>
-                <li> <a href="images.php">Images</a></li>
-                <li> | </li>
-                <li> <a href="system.php">System</a></li>
-                <li> | </li>
-                <li> <a href="http://www.ayecka.com/Files/SR1_UserManual_V1.8.pdf" target="_blank">SR1 User Manual</a></li>
-            </ul>
-        </div>
-    </div>
-</div>
+<?php
+$active = "index";
+include_once('header.php');
+?>
 <!--PageBody-->
 <!--end Page Body-->
 <form method="post" class="form-inline">
@@ -174,18 +149,23 @@ if (isset($_POST['read']) OR $read == "read"){
         <button type="submit" class="btn btn-success btn-sm" disabled name="write">Write To Device</button>
     </div>
     <div class="well well-sm text-center">
-        <div class="form-group">FPGA<input type="text" class="form-control input-sm" value="<?php echo $fpgaVersion; ?>" name="fpgaVersion" readonly>
+        <div class="container">
+            <div class="form-group">FPGA<input type="text" class="form-control input-sm" value="<?php echo $fpgaVersion; ?>" name="fpgaVersion" readonly>
+            </div>
+            <div class="form-group">SW<input type="text" class="form-control input-sm" value="<?php echo $softwareVersion; ?>" name="softwareVersion" readonly>
+            </div>
+            <div class="form-group">HW<input type="text" class="form-control input-sm" value="<?php echo $hardwareVersion; ?>" name="hardwareVersion" readonly>
+            </div>
+            <div class="form-group">SN<input type="text" class="form-control input-sm" value="<?php echo $serialNumber; ?>" name="serialNumber" readonly>
+            </div>
         </div>
-        <div class="form-group">SW<input type="text" class="form-control input-sm" value="<?php echo $softwareVersion; ?>" name="softwareVersion" readonly>
-        </div>
-        <div class="form-group">HW<input type="text" class="form-control input-sm" value="<?php echo $hardwareVersion; ?>" name="hardwareVersion" readonly>
-        </div>
-        <div class="form-group">SN<input type="text" class="form-control input-sm" value="<?php echo $serialNumber; ?>" name="serialNumber" readonly>
-        </div>
+        <?php
+        include_once('info.php');
+        ?>
+
         <hr>
         <div class="row">
-            <div class="col-md-3"></div>
-            <div class="col-md-3 text-left">
+            <div class="col-md-4 text-left">
                 <strong>RF1</strong> <?php echo $rx1ActiveProfile; ?>
                 <table class="table table-hover table-condensed">
                     <tbody>
@@ -260,7 +240,7 @@ if (isset($_POST['read']) OR $read == "read"){
                     </tbody>
                 </table>
             </div>
-            <div class="col-md-3 text-left">
+            <div class="col-md-4 text-left">
                 <strong>RF2</strong> <?php echo $rx2ActiveProfile; ?>
                 <table class="table table-hover table-condensed">
                     <tbody>
@@ -336,7 +316,65 @@ if (isset($_POST['read']) OR $read == "read"){
                 </table>
             </div>
 </form>
-<div class="col-md-3"></div>
+<div class="col-md-4">
+    <strong>Interfaces</strong>
+    <table class="table table-hover table-condensed text-left">
+        <thead>
+        <tr>
+            <th></th>
+            <th>Traffic</th>
+            <th>Management</th>
+        </tr>
+        </thead>
+        <tbody>
+        <?php
+
+
+        echo<<<END
+
+        <tr>
+            <td>Speed</td>
+            <td>GigE</td>
+            <td>GigE</td>
+        </tr>
+        <tr>
+            <td>MAC Address</td>
+            <td>{$interfaces[10]}</td>
+            <td>{$interfaces[11]}</td>
+        </tr>
+        <tr>
+            <td>Admin Status</td>
+            <td>{$interfaces[12]}</td>
+            <td>{$interfaces[13]}</td>
+        </tr>
+        <tr>
+            <td>Packets sent to Sat receiver (Inoctet)</td>
+            <td>{$interfaces[18]}</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>Packets from Sat (OutOctet)</td>
+            <td>{$interfaces[30]}</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>Packets to CPU</td>
+            <td></td>
+            <td>{$interfaces[19]}</td>
+        </tr>
+        <tr>
+            <td>Packets from CPU</td>
+            <td></td>
+            <td>{$interfaces[31]}</td>
+        </tr>
+
+END;
+
+
+        ?>
+        </tbody>
+    </table>
+</div>
 <form method="post">
     </div>This page automatically refreshes every
     <div class="form-group">

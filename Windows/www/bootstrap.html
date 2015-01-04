@@ -1,0 +1,247 @@
+<!doctype html>
+
+<html>
+
+<head>
+    <title>Ayecka Web Interface</title>
+    <meta name="viewport" content="width=device-width">
+    <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
+    <!--<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>-->
+    <script type="text/javascript" src="bootstrap/js/bootstrap.min.js"></script>
+    <style type="text/css">
+        body {
+            padding-top: 0px;
+            padding-bottom: 20px;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="well well-sm" style="margin-bottom: 0px;">
+    <div class="container">
+        <div class="col-lg-1"><img src="images/ayeckaLogo.png" class="pull-left"></div>
+        <div class="col-lg-10 text-center">
+            <br><h4><strong><a href="http://www.ayecka.com/SR1.html">SR1</a></strong> - Advanced DVB-S2 Receiver with GigE interface</h4>
+        </div>
+        <div class="col-lg-1"><img src="images/slogen2.png" class="pull-right"></div>
+    </div>
+</div>
+
+<div class="navbar navbar-inverse">
+    <div class="container">
+        <div class="navbar-header">
+
+        </div>
+        <div class="navbar-collapse collapse">
+            <ul class="nav navbar-nav">
+                <li class="active"> <a href="index.php">Status</a></li>
+                <li> | </li>
+                <li> <a href="rf.php?rf=1">RF1</a></li>
+                <li> | </li>
+                <li> <a href="rf.php?rf=2">RF2</a></li>
+                <li> | </li>
+                <li> <a href="rf_control.php">RF Control</a></li>
+                <li> | </li>
+                <li> <a href="filter.php">RF PID Filter</a></li>
+                <li> | </li>
+                <li> <a href="network.php">Network</a></li>
+                <li> | </li>
+                <li> <a href="images.php">Images</a></li>
+                <li> | </li>
+                <li> <a href="system.php">System</a></li>
+                <li> | </li>
+                <li> <a href="http://www.ayecka.com/Files/SR1_UserManual_V1.8.pdf" target="_blank">SR1 User Manual</a></li>
+            </ul>
+        </div>
+    </div>
+</div>
+<!--PageBody-->
+<!--end Page Body-->
+<form method="post" class="form-inline">
+    <div class="well well-sm text-center">
+
+        <div class="form-group">
+            <input type="email" class="form-control input-sm" placeholder="Device IP Address">
+        </div>
+        <button type="submit" class="btn btn-success btn-sm">Read From Device</button>
+        <button type="submit" class="btn btn-success btn-sm" disabled>Write To Device</button>
+    </div>
+    <div class="well well-sm text-center">
+        <div class="form-group">FPGA<input type="text" class="form-control input-sm">
+        </div>
+        <div class="form-group">SW<input type="text" class="form-control input-sm">
+        </div>
+        <div class="form-group">HW<input type="text" class="form-control input-sm">
+        </div>
+        <div class="form-group">SN<input type="text" class="form-control input-sm">
+        </div>
+        <hr>
+        <div class="row">
+            <div class="col-md-3"></div>
+            <div class="col-md-3 text-left">
+                <strong>RF1</strong>
+                <table class="table table-hover table-condensed">
+                    <tbody>
+                    <tr>
+                        <td>Lock</td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Frequency</td>
+                        <td>
+                            <input class="form-control input-sm">
+                        </td>
+                        <td>Mhz</td>
+                    </tr>
+                    <tr>
+                        <td>EsNo</td>
+                        <td>
+                            <input class="form-control input-sm">
+                        </td>
+                        <td>db</td>
+                    </tr>
+                    <tr>
+                        <td>Power</td>
+                        <td>
+                            <input class="form-control input-sm">
+                        </td>
+                        <td>dbm</td>
+                    </tr>
+                    <tr>
+                        <td>Demod BER</td>
+                        <td>
+                            <input class="form-control input-sm">
+                        </td>
+                        <td>10e7</td>
+                    </tr>
+                    <tr>
+                        <td>Offset</td>
+                        <td>
+                            <input class="form-control input-sm">
+                        </td>
+                        <td>Khz</td>
+                    </tr>
+                    <tr>
+                        <td>Bad Packets</td>
+                        <td>
+                            <input class="form-control input-sm">
+                        </td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>MODCOD</td>
+                        <td>
+                            <input class="form-control input-sm">
+                        </td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Roll Off</td>
+                        <td>
+                            <input class="form-control input-sm">
+                        </td>
+                        <td>%</td>
+                    </tr>
+                    <tr>
+                        <td>Pilot</td>
+                        <td>
+                            <input class="form-control input-sm">
+                        </td>
+                        <td></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="col-md-3 text-left">
+                <strong>RF2</strong>
+                <table class="table table-hover table-condensed">
+                    <tbody>
+                    <tr>
+                        <td>Lock</td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Frequency</td>
+                        <td>
+                            <input class="form-control input-sm">
+                        </td>
+                        <td>Mhz</td>
+                    </tr>
+                    <tr>
+                        <td>EsNo</td>
+                        <td>
+                            <input class="form-control input-sm">
+                        </td>
+                        <td>db</td>
+                    </tr>
+                    <tr>
+                        <td>Power</td>
+                        <td>
+                            <input class="form-control input-sm">
+                        </td>
+                        <td>dbm</td>
+                    </tr>
+                    <tr>
+                        <td>Demod BER</td>
+                        <td>
+                            <input class="form-control input-sm">
+                        </td>
+                        <td>10e7</td>
+                    </tr>
+                    <tr>
+                        <td>Offset</td>
+                        <td>
+                            <input class="form-control input-sm">
+                        </td>
+                        <td>Khz</td>
+                    </tr>
+                    <tr>
+                        <td>Bad Packets</td>
+                        <td>
+                            <input class="form-control input-sm">
+                        </td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>MODCOD</td>
+                        <td>
+                            <input class="form-control input-sm">
+                        </td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Roll Off</td>
+                        <td>
+                            <input class="form-control input-sm">
+                        </td>
+                        <td>%</td>
+                    </tr>
+                    <tr>
+                        <td>Pilot</td>
+                        <td>
+                            <input class="form-control input-sm">
+                        </td>
+                        <td></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="col-md-3"></div>
+        </div>This page automatically refreshes every
+        <div class="form-group">
+            <input type="number" class="form-control input-sm" min="10" max="360">
+        </div>Sec
+        <button type="submit" class="btn btn-success btn-xs">Update</button>
+    </div>
+    <div class="container text-left">
+        <hr>
+        <footer>&copy; <a href="http://www.ayecka.com">Ayecka</a> Comunnication System</footer>
+    </div>
+</form>
+<!-- /container -->
+</body>
+
+</html>

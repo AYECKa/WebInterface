@@ -29,12 +29,16 @@ if (isset($_POST['read']) OR $read == "read"){
     $softwareVersion = substr(snmp2_get($device_IP,"public",$oid['softwareVersion']), 9);
     $serialNumber =  substr(snmp2_get($device_IP,"public",$oid['serialNumber']), 9);
 
+    //system info
+    include_once('info_function.php');
+
 //  Choose Read Table
     if(isset($_POST['filterTableSubmit'])){
         //table chosen
         $readTable = $_POST['filterTable'];
 
         //Value
+        //$walk = snmpwalk($device_IP, "public", "1.3.6.1.4.1.27928.101.1.1.1.4.3");
         $walk = snmpwalk($device_IP, "public", $oid[$readTable]);
 
         for($i=0; $i<=64; $i += 8){
@@ -126,6 +130,7 @@ if (isset($_POST['write']) AND $read == "read"){
     }
     $filterOid = array($tableoid1,$tableoid2,$tableoid3,$tableoid4,$tableoid5,$tableoid6,$tableoid7,$tableoid8);
 
+    print_r($filterOid);
 //!!! DONE OID ARRAY! [filterOid]!
 
     for($i=0; $i<=7; $i++){
@@ -161,44 +166,11 @@ if (isset($_POST['write']) AND $read == "read"){
 
 <body>
 
-<div class="well well-sm" style="margin-bottom: 0px;">
-    <div class="container">
-        <div class="col-lg-1"><img src="../images/ayeckaLogo.png" class="pull-left"></div>
-        <div class="col-lg-10 text-center">
-            <br><h4><strong><a href="http://www.ayecka.com/SR1.html">SR1</a></strong> - Advanced DVB-S2 Receiver with GigE interface</h4>
-        </div>
-        <div class="col-lg-1"><img src="../images/slogen2.png" class="pull-right"></div>
-    </div>
-</div>
+<?php
+$active = "filter";
+include_once('header.php');
+?>
 
-<div class="navbar navbar-inverse">
-    <div class="container">
-        <div class="navbar-header">
-
-        </div>
-        <div class="navbar-collapse collapse">
-            <ul class="nav navbar-nav">
-                <li> <a href="index.php">Status</a></li>
-                <li> | </li>
-                <li> <a href="rf.php?rf=1">RF1</a></li>
-                <li> | </li>
-                <li> <a href="rf.php?rf=2">RF2</a></li>
-                <li> | </li>
-                <li> <a href="rf_control.php">RF Control</a></li>
-                <li> | </li>
-                <li class="active"> <a href="filter.php">RF PID Filter</a></li>
-                <li> | </li>
-                <li> <a href="network.php">Network</a></li>
-                <li> | </li>
-                <li> <a href="images.php">Images</a></li>
-                <li> | </li>
-                <li> <a href="system.php">System</a></li>
-                <li> | </li>
-                <li> <a href="http://www.ayecka.com/Files/SR1_UserManual_V1.8.pdf" target="_blank">SR1 User Manual</a></li>
-            </ul>
-        </div>
-    </div>
-</div>
 <!--PageBody-->
 <!--end Page Body-->
 <form method="post" class="form-inline">
@@ -219,6 +191,10 @@ if (isset($_POST['write']) AND $read == "read"){
         </div>
         <div class="form-group">SN<input type="text" class="form-control input-sm" value="<?php echo $serialNumber; ?>" name="serialNumber" readonly>
         </div>
+
+        <?php
+        include_once('info.php');
+        ?>
         <hr>
 
         <div class="row">
@@ -226,10 +202,10 @@ if (isset($_POST['write']) AND $read == "read"){
             <div class="col-md-6 text-center">
                 <div class="form-group">
                     <select name="filterTable" class="form-control input-sm">
-                        <option value="rf1Conf1Table"  <?php if($readTable == "rf1Conf1Table"){echo "selected";}?>>Rx1 - Conf1</option>
-                        <option value="rf1Conf2Table"  <?php if($readTable == "rf1Conf2Table"){echo "selected";}?>>Rx1 - Conf2</option>
-                        <option value="rf2Conf1Table"  <?php if($readTable == "rf2Conf1Table"){echo "selected";}?>>Rx2 - Conf1</option>
-                        <option value="rf2Conf2Table"  <?php if($readTable == "rf2Conf2Table"){echo "selected";}?>>Rx2 - Conf2</option>
+                        <option value="filters1Table"  <?php if($readTable == "rf1Conf1Table"){echo "selected";}?>>Rx1 - Conf1</option>
+                        <option value="filters2Table"  <?php if($readTable == "rf1Conf2Table"){echo "selected";}?>>Rx1 - Conf2</option>
+                        <option value="filters3Table"  <?php if($readTable == "rf2Conf1Table"){echo "selected";}?>>Rx2 - Conf1</option>
+                        <option value="filters4Table"  <?php if($readTable == "rf2Conf2Table"){echo "selected";}?>>Rx2 - Conf2</option>
                     </select>
                 </div>
                 <div class="form-group">

@@ -27,6 +27,9 @@ if (isset($_POST['read']) OR $read == "read"){
     $softwareVersion = substr(snmp2_get($device_IP,"public",$oid['softwareVersion']), 9);
     $serialNumber =  substr(snmp2_get($device_IP,"public",$oid['serialNumber']), 9);
 
+    //system info
+    include_once('info_function.php');
+
 //  Management
     $managementIpAddress = substr(snmp2_get($device_IP,"public",$oid['managementIpAddress']), 11);
     $managementSubnetMask = substr(snmp2_get($device_IP,"public",$oid['managementSubnetMask']), 11);
@@ -52,6 +55,8 @@ if (isset($_POST['read']) OR $read == "read"){
     $routerArpMode = substr(snmp2_get($device_IP,"public",$oid['routerArpMode']), 9);
     $routerArpPeriod = substr(snmp2_get($device_IP,"public",$oid['routerArpPeriod']), 9)/1000;
     $routerArpTimeout = substr(snmp2_get($device_IP,"public",$oid['routerArpTimeout']), 9)/1000;
+    $arpTableIpAddress = substr(snmp2_get($device_IP,"public",$oid['arpTableIpAddress']), 11);
+    $arpTableIpNetmask = substr(snmp2_get($device_IP,"public",$oid['arpTableIpNetmask']), 11);
     $routerMacAddress = substr(snmp2_get($device_IP,"public",$oid['routerMacAddress']), 11);
 
     //AIR
@@ -96,12 +101,16 @@ if (isset($_POST['write']) AND $read == "read"){
     snmp2_set($device_IP, "private", $oid['routerArpMode'], $type['routerArpMode'], $_POST['routerArpMode']);
     snmp2_set($device_IP, "private", $oid['routerArpPeriod'], $type['routerArpPeriod'], $_POST['routerArpPeriod']*1000);
     snmp2_set($device_IP, "private", $oid['routerArpTimeout'], $type['routerArpTimeout'], $_POST['routerArpTimeout']*1000);
+    snmp2_set($device_IP, "private", $oid['arpTableIpAddress'], $type['arpTableIpAddress'], $_POST['arpTableIpAddress']);
+    snmp2_set($device_IP, "private", $oid['arpTableIpNetmask'], $type['arpTableIpNetmask'], $_POST['arpTableIpNetmask']);
     snmp2_set($device_IP, "private", $oid['routerMacAddress'], $type['routerMacAddress'], $_POST['routerMacAddress']);
 
     //read
     $routerArpMode = substr(snmp2_get($device_IP,"public",$oid['routerArpMode']), 9);
     $routerArpPeriod = substr(snmp2_get($device_IP,"public",$oid['routerArpPeriod']), 9)/1000;
     $routerArpTimeout = substr(snmp2_get($device_IP,"public",$oid['routerArpTimeout']), 9)/1000;
+    $arpTableIpAddress = substr(snmp2_get($device_IP,"public",$oid['arpTableIpAddress']), 11);
+    $arpTableIpNetmask = substr(snmp2_get($device_IP,"public",$oid['arpTableIpNetmask']), 11);
     $routerMacAddress = substr(snmp2_get($device_IP,"public",$oid['routerMacAddress']), 11);
 
     //AIR
@@ -133,44 +142,10 @@ if (isset($_POST['write']) AND $read == "read"){
 
 <body>
 
-<div class="well well-sm" style="margin-bottom: 0px;">
-    <div class="container">
-        <div class="col-lg-1"><img src="../images/ayeckaLogo.png" class="pull-left"></div>
-        <div class="col-lg-10 text-center">
-            <br><h4><strong><a href="http://www.ayecka.com/SR1.html">SR1</a></strong> - Advanced DVB-S2 Receiver with GigE interface</h4>
-        </div>
-        <div class="col-lg-1"><img src="../images/slogen2.png" class="pull-right"></div>
-    </div>
-</div>
-
-<div class="navbar navbar-inverse">
-    <div class="container">
-        <div class="navbar-header">
-
-        </div>
-        <div class="navbar-collapse collapse">
-            <ul class="nav navbar-nav">
-                <li> <a href="index.php">Status</a></li>
-                <li> | </li>
-                <li> <a href="rf.php?rf=1">RF1</a></li>
-                <li> | </li>
-                <li> <a href="rf.php?rf=2">RF2</a></li>
-                <li> | </li>
-                <li> <a href="rf_control.php">RF Control</a></li>
-                <li> | </li>
-                <li> <a href="filter.php">RF PID Filter</a></li>
-                <li> | </li>
-                <li class="active"> <a href="network.php">Network</a></li>
-                <li> | </li>
-                <li> <a href="images.php">Images</a></li>
-                <li> | </li>
-                <li> <a href="system.php">System</a></li>
-                <li> | </li>
-                <li> <a href="http://www.ayecka.com/Files/SR1_UserManual_V1.8.pdf" target="_blank">SR1 User Manual</a></li>
-            </ul>
-        </div>
-    </div>
-</div>
+<?php
+$active = "network";
+include_once('header.php');
+?>
 <!--PageBody-->
 <!--end Page Body-->
 <form method="post" class="form-inline">
@@ -191,6 +166,10 @@ if (isset($_POST['write']) AND $read == "read"){
         </div>
         <div class="form-group">SN<input type="text" class="form-control input-sm" value="<?php echo $serialNumber; ?>" name="serialNumber" readonly>
         </div>
+        <?php
+        include_once('info.php');
+        ?>
+
         <hr>
 
 
@@ -321,11 +300,11 @@ if (isset($_POST['write']) AND $read == "read"){
                     </tr>
                     <tr>
                         <td>Table IP Address</td>
-                        <td><input class="form-control input-sm" type="text" value="<?php echo $xxx; ?>" name="Table"></td>
+                        <td><input class="form-control input-sm" type="text" value="<?php echo $arpTableIpAddress; ?>" name="Table"></td>
                     </tr>
                     <tr>
                         <td>Table IP Mask</td>
-                        <td><input class="form-control input-sm" type="text" value="<?php echo $xxx; ?>" name="TableMask"></td>
+                        <td><input class="form-control input-sm" type="text" value="<?php echo $arpTableIpNetmask; ?>" name="TableMask"></td>
                     </tr>
                     <tr>
                         <td>Router Ethernet Address</td>
