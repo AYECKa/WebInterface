@@ -117,7 +117,7 @@ function tableArray(){
     $_SESSION['bl'] = $bl;
 }
 
-$_SESSION['stVer'] = "1.2.1";
+$_SESSION['stVer'] = "2.0";
 
 
 

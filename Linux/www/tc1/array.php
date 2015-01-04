@@ -62,7 +62,7 @@ $_SESSION['pilot'] = $pilot;
 }
 
 function tunerStatus(){
-    $tunerStatus = array("<img src='../images/locked.png'>","<img src='../images/unlocked.png'>", 'Error');
+    $tunerStatus = array("<span class='label label-success'>Locked</span>","<span class='label label-danger'>Unlocked</span>", "<span class='label label-warning'>Error</span>");
     $_SESSION['tunerStatus'] = $tunerStatus;
 }
 function rolloff(){
@@ -123,7 +123,7 @@ function tableArray(){
     $_SESSION['bl'] = $bl;
 }
 
-$_SESSION['tcVer'] = "1.2.1";
+$_SESSION['tcVer'] = "2.0";
 
 
 

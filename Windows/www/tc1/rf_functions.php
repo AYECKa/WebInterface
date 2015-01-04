@@ -3,9 +3,9 @@ session_start();
 error_reporting(0);
 $oid = $_SESSION['oid'];
 $type = $_SESSION['type'];
-require_once('sql.php ');
+require_once('sql.php');
 sql_connect();
-require_once('array.php ');
+require_once('array.php');
 oidarray();
 
 

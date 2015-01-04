@@ -2,8 +2,8 @@
 
 session_start();
 error_reporting(0);
-$read = $_SESSION['read'];
-$device_IP = $_SESSION['device_IP'];
+$read = $_SESSION['read_st'];
+$device_IP = $_SESSION['device_IP_st'];
 $ver = $_SESSION['stVer'];
 
 $oid = $_SESSION['oid'];
@@ -25,8 +25,8 @@ if (isset($_POST['read']) OR $read == "read"){
         $device_IP = $_POST['device_IP'];
     }
 
-    $_SESSION['device_IP'] = $device_IP;
-    $_SESSION['read'] = "read";
+    $_SESSION['device_IP_st'] = $device_IP;
+    $_SESSION['read_st'] = "read";
 //    Board Information
     $hardwareVersion = substr(snmp2_get($device_IP,"public",$oid['hardwareVersion']), 9);
     $fpgaVersion = substr(snmp2_get($device_IP,"public",$oid['fpgaVersion']), 9);
@@ -124,20 +124,25 @@ if (isset($_POST['write']) AND $read == "read"){
 
         }
     }
-
 }
-
 ?>
+<!doctype html>
 
-
-
-<!DOCTYPE html>
 <html>
-<head>
-    <title>Ayecka Device Manager</title>
-    <link rel="shortcut icon" href="../images/favicon.ico" type="image/x-icon" />
 
-    <link rel="stylesheet" href="../style/style.css">
+<head>
+    <title>Ayecka Web Interface</title>
+    <link rel="shortcut icon" href="../images/favicon.ico" type="image/x-icon" />
+    <meta name="viewport" content="width=device-width">
+    <link rel="stylesheet" href="../bootstrap/css/bootstrap.min.css">
+    <!--<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>-->
+    <script type="text/javascript" src="../bootstrap/js/bootstrap.min.js"></script>
+    <style type="text/css">
+        body {
+            padding-top: 0px;
+            padding-bottom: 20px;
+        }
+    </style>
     <script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
     <script>
         $(document).ready(function(){
@@ -148,78 +153,108 @@ if (isset($_POST['write']) AND $read == "read"){
     </script>
 </head>
 
-
 <body>
-<header>
-    <a href="http://www.ayecka.com" target="_blank"><img src="../images/ayeckaLogo.png"></a>
-    <img id="slogen" src="../images/slogen.png">
-    <h2>ST1</h2>
-<nav id="aymenu">
-    <ul id="MenuList">
-        <li> <a href="index.php">Status</a></li>
-        <li> | </li>
-        <li> <a href="tx.php">TX Configuration</a></li>
-        <li> | </li>
-        <li> <a href="modulator.php">Modulator Configuration</a></li>
-        <li> | </li>
-        <li class="Active"> <a href="encapsulator.php">IP Encapsulator</a></li>
-        <li> | </li>
-        <li> <a href="buc.php">BUC Control</a></li>
-        <li> | </li>
-        <li> <a href="egress.php">Egress Configuration</a></li>
-        <li> | </li>
-        <li> <a href="network.php">Network</a></li>
-        <li> | </li>
-        <li> <a href="vrrp.php">VRRP</a></li>
-        <li> | </li>
-        <li> <a href="system.php">System</a></li>
-        <li> | </li>
-        <li> <a href="images.php">Images</a></li>
-        <li> | </li>
-        <li> <a href="http://www.ayecka.com/Files/ST1_UserManual.pdf" target="_blank">ST1 User Manual</a></li>
-    </ul>
-</nav>
-<nav>
-    <form method="post">
-        <label>Device IP: </label><input type="text" value="<?php echo $device_IP;?>" name="device_IP">
-        <input type="submit" name="read" value="Read From Device">
-        <input type="submit" name="write" value="Write To Device">
-</nav>
 
-<nav id="boardInfo">
+<div class="well well-sm" style="margin-bottom: 0px;">
+    <div class="container">
+        <div class="col-lg-1"><img src="../images/ayeckaLogo.png" class="pull-left"></div>
+        <div class="col-lg-10 text-center">
+            <br><h4><strong><a href="http://www.ayecka.com/ST1.html">ST1</a></strong> - Satellite Transmitter, IP over DVB-S2</h4>
+        </div>
+        <div class="col-lg-1"><img src="../images/slogen2.png" class="pull-right"></div>
+    </div>
+</div>
 
-    <label>FPGA</label> <input type="text" value="<?php echo $fpgaVersion; ?>" name="fpgaVersion" readonly>
-    <label>SW</label> <input type="text" value="<?php echo $softwareVersion; ?>" name="softwareVersion" readonly>
-    <label>HW</label> <input type="text" value="<?php echo $hardwareVersion; ?>" name="hardwareVersion" readonly>
-    <label>SN</label> <input type="text" value="<?php echo $serialNumber; ?>" name="serialNumber" readonly>
+<div class="navbar navbar-inverse">
+    <div class="container">
+        <div class="navbar-header">
 
-</nav>
-<div class="mainWrapper">
-    <center>
+        </div>
+        <div class="navbar-collapse collapse">
+            <ul class="nav navbar-nav">
+                <li> <a href="index.php">Status</a></li>
+                <li> | </li>
+                <li> <a href="tx.php">TX Configuration</a></li>
+                <li> | </li>
+                <li> <a href="modulator.php">Modulator Configuration</a></li>
+                <li> | </li>
+                <li class="active"> <a href="encapsulator.php">IP Encapsulator</a></li>
+                <li> | </li>
+                <li> <a href="buc.php">BUC Control</a></li>
+                <li> | </li>
+                <li> <a href="egress.php">Egress Configuration</a></li>
+                <li> | </li>
+                <li> <a href="network.php">Network</a></li>
+                <li> | </li>
+                <li> <a href="vrrp.php">VRRP</a></li>
+                <li> | </li>
+                <li> <a href="system.php">System</a></li>
+                <li> | </li>
+                <li> <a href="images.php">Images</a></li>
+                <li> | </li>
+                <li> <a href="http://www.ayecka.com/Files/ST1_UserManual.pdf" target="_blank">ST1 User Manual</a></li>
+            </ul>
+        </div>
+    </div>
+</div>
+<!--PageBody-->
+<!--end Page Body-->
+<form method="post" class="form-inline">
+    <div class="well well-sm text-center">
 
-                    <?php
-            $time = mysql_query("SELECT MAX(time) as max FROM st_ipFwdTable");
-            $timeresult = mysql_fetch_array($time);
-            echo "This is the last update from: <b>".$timeresult[max];
-            echo "</b><br>".'<input type="submit" name="readtable" value="To update table from device Click Here">';
-            ?>
-            <br>*The updating process may take a few minutes
+        <div class="form-group">
+            <input type="text" class="form-control input-sm" value="<?php echo $device_IP;?>" name="device_IP" placeholder="Device IP Address">
+        </div>
+        <button type="submit" class="btn btn-success btn-sm" name="read">Show Last Import</button>
+        <button type="submit" class="btn btn-success btn-sm" name="write">Write To Device</button>
+    </div>
+    <div class="well well-sm text-center">
+        <div class="form-group">FPGA<input type="text" class="form-control input-sm" value="<?php echo $fpgaVersion; ?>" name="fpgaVersion" readonly>
+        </div>
+        <div class="form-group">SW<input type="text" class="form-control input-sm" value="<?php echo $softwareVersion; ?>" name="softwareVersion" readonly>
+        </div>
+        <div class="form-group">HW<input type="text" class="form-control input-sm" value="<?php echo $hardwareVersion; ?>" name="hardwareVersion" readonly>
+        </div>
+        <div class="form-group">SN<input type="text" class="form-control input-sm" value="<?php echo $serialNumber; ?>" name="serialNumber" readonly>
+        </div>
+        <hr>
+        <div class="row">
+            <div class="col-md-3"></div>
+            <div class="col-md-6 text-center">
 
+                <?php
+                $time = mysql_query("SELECT MAX(time) as max FROM st_ipFwdTable");
+                $timeresult = mysql_fetch_array($time);
+                echo "This is the last update from: <b>".$timeresult[max];
+                echo "</b><br>".'<input class="btn btn-sm btn-danger" type="submit" name="readtable" value="To update table from device Click Here">';
+                ?>
+                <br>*The updating process may take a few minutes
+
+                <br><br>
+                Show row:
+                <div class="form-group">
+                    <input class="form-control input-sm" type="number" min="0" max="256" name="from" value="<?php echo $from1;?>">
+                </div>
+                to:
+                <div class="form-group">
+                    <input class="form-control input-sm" type="number" min="0" max="256" name="to" value="<?php echo $to2;?>">
+                </div>
+                Order By:
+                <div class="form-group">
+                    <select name="order" class="form-control input-sm">
+                        <option value="ipfwdEntryIndex">Number</option>
+                        <option value="ipfwdIpAddress">IP Address</option>
+                        <option value="ipfwdIpNetmask">IP Netmask</option>
+                        <option value="ipfwdMacAddress">Ethernet Address</option>
+                        <option value="ipfwdPid">PID</option>
+                        <option value="ipfwdEnabled">Enabled</option>
+                    </select>
+                </div>
+                <input class="btn btn-xs btn-info" type="submit" name="table" value="Update Table">
+            </div>
             <br><br>
-            Show row: <input type="number" min="0" max="256" name="from" value="<?php echo $from1;?>">
-            to: <input type="number" min="0" max="256" name="to" value="<?php echo $to2;?>">
-            Order By: <select name="order">
-                <option value="ipfwdEntryIndex">Number</option>
-                <option value="ipfwdIpAddress">IP Address</option>
-                <option value="ipfwdIpNetmask">IP Netmask</option>
-                <option value="ipfwdMacAddress">Ethernet Address</option>
-                <option value="ipfwdPid">PID</option>
-                <option value="ipfwdEnabled">Enabled</option>
-            </select>
-
-            <input type="submit" name="table" value="Update Table">
-            <br><br>
-            <table border="1">
+            <table class="table table-condensed table-striped table-hover">
+                <thead>
                 <tr>
                     <th>#</th>
                     <th>IP Address</th>
@@ -229,6 +264,8 @@ if (isset($_POST['write']) AND $read == "read"){
                     <th>Enabled</th>
                     <th>Save</th>
                 </tr>
+                </thead>
+                <tbody>
                 <?php
 
                 $sqlquery="SELECT * FROM st_ipFwdTable";
@@ -259,19 +296,19 @@ if (isset($_POST['write']) AND $read == "read"){
             {$r['ipfwdEntryIndex']}
         </td>
         <td>
-            <input type="text" name="ipfwdIpAddress{$i}" value="{$r['ipfwdIpAddress']}" />
+            <input class="form-control input-sm" type="text" name="ipfwdIpAddress{$i}" value="{$r['ipfwdIpAddress']}" />
         </td>
         <td>
-            <input type="text" name="ipfwdIpNetmask{$i}" value="{$r['ipfwdIpNetmask']}" />
+            <input class="form-control input-sm" type="text" name="ipfwdIpNetmask{$i}" value="{$r['ipfwdIpNetmask']}" />
         </td>
         <td>
-            <input type="text" name="ipfwdMacAddress{$i}" value="{$r['ipfwdMacAddress']}" />
+            <input class="form-control input-sm" type="text" name="ipfwdMacAddress{$i}" value="{$r['ipfwdMacAddress']}" />
         </td>
         <td>
-            <input type="number" min="0" max="8191" name="ipfwdPid{$i}" value="{$r['ipfwdPid']}" />
+            <input class="form-control input-sm" type="number" min="0" max="8191" name="ipfwdPid{$i}" value="{$r['ipfwdPid']}" />
         </td>
         <td>
-            <select name="ipfwdEnabled{$i}">
+            <select name="ipfwdEnabled{$i}" class="form-control input-sm">
                 <option value="1"{$enable}>Enabled</option>
                 <option value="0"{$disable}>Disabled</option>
             </select>
@@ -282,16 +319,24 @@ if (isset($_POST['write']) AND $read == "read"){
     </tr>
 ROW;
                 }
-
-
                 ?>
+                </tbody>
+            </table>
+        <br><br>
+            <a href="#Top" class="btn btn-info">Back to Top</a>
+</form>
 
-
-        </table>
-        </form>
-
-    </center>
 </div>
-    <footer><span class="ver">  <?php echo "Version number: ".$ver;?></span></footer>
+<div class="col-md-3"></div>
+
+<div class="container text-left">
+    <hr>
+    <footer>
+        <span class="pull-right">  <?php echo "Version number: ".$ver;?></span>
+        &copy; <a href="http://www.ayecka.com">Ayecka</a> Comunnication System</footer>
+</div>
+</form>
+<!-- /container -->
 </body>
+
 </html>

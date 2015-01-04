@@ -1,8 +1,8 @@
 <?php
 session_start();
 error_reporting(0);
-$device_IP = $_SESSION['device_IP'];
-$read = $_SESSION['read'];
+$device_IP = $_SESSION['device_IP_st'];
+$read = $_SESSION['read_st'];
 $ver = $_SESSION['stVer'];
 
 $oid = $_SESSION['oid'];
@@ -28,8 +28,8 @@ if (isset($_POST['read']) OR $read == "read"){
         $device_IP = $_POST['device_IP'];
     }
 
-    $_SESSION['device_IP'] = $device_IP;
-    $_SESSION['read'] = "read";
+    $_SESSION['device_IP_st'] = $device_IP;
+    $_SESSION['read_st'] = "read";
 //    Board Information
     $hardwareVersion = substr(snmp2_get($device_IP,"public",$oid['hardwareVersion']), 9);
     $fpgaVersion = substr(snmp2_get($device_IP,"public",$oid['fpgaVersion']), 9);
@@ -140,175 +140,251 @@ if(isset($_POST['startBootloaderUpgrade'])){
 
 ?>
 
-<!DOCTYPE html>
+<!doctype html>
+
 <html>
+
 <head>
-
-    <title>Ayecka Device Manager</title>
+    <title>Ayecka Web Interface</title>
     <link rel="shortcut icon" href="../images/favicon.ico" type="image/x-icon" />
-    <link rel="stylesheet" href="../style/style.css">
-    <style>
-        td{
-            vertical-align: top;
+    <meta name="viewport" content="width=device-width">
+    <link rel="stylesheet" href="../bootstrap/css/bootstrap.min.css">
+    <!--<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>-->
+    <script type="text/javascript" src="../bootstrap/js/bootstrap.min.js"></script>
+    <style type="text/css">
+        body {
+            padding-top: 0px;
+            padding-bottom: 20px;
         }
-        .mainWrapperImages{
-            margin-top: 40px;
-        }
-
     </style>
-
 </head>
 
-
 <body>
-<header>
-    <a href="http://www.ayecka.com" target="_blank"><img src="../images/ayeckaLogo.png"></a>
-    <img id="slogen" src="../images/slogen.png">
-    <h2>ST1</h2>
-</header>
-<nav id="aymenu">
-    <ul id="MenuList">
-        <li> <a href="index.php">Status</a></li>
-        <li> | </li>
-        <li> <a href="tx.php">TX Configuration</a></li>
-        <li> | </li>
-        <li> <a href="modulator.php">Modulator Configuration</a></li>
-        <li> | </li>
-        <li> <a href="encapsulator.php">IP Encapsulator</a></li>
-        <li> | </li>
-        <li> <a href="buc.php">BUC Control</a></li>
-        <li> | </li>
-        <li> <a href="egress.php">Egress Configuration</a></li>
-        <li> | </li>
-        <li> <a href="network.php">Network</a></li>
-        <li> | </li>
-        <li> <a href="vrrp.php">VRRP</a></li>
-        <li> | </li>
-        <li> <a href="system.php">System</a></li>
-        <li> | </li>
-        <li class="Active"> <a href="images.php">Images</a></li>
-        <li> | </li>
-        <li> <a href="http://www.ayecka.com/Files/ST1_UserManual.pdf" target="_blank">ST1 User Manual</a></li>
-    </ul>
-</nav>
-<nav>
-    <form method="post">
-        <label>Device IP: </label><input type="text" value="<?php echo $device_IP;?>" name="device_IP">
-        <input type="submit" name="read" value="Read From Device">
-        <input type="submit" name="write" value="Write To Device">
-</nav>
 
-<nav id="boardInfo">
-
-    <label>FPGA</label> <input type="text" value="<?php echo $fpgaVersion; ?>" name="fpgaVersion" readonly>
-    <label>SW</label> <input type="text" value="<?php echo $softwareVersion; ?>" name="softwareVersion" readonly>
-    <label>HW</label> <input type="text" value="<?php echo $hardwareVersion; ?>" name="hardwareVersion" readonly>
-    <label>SN</label> <input type="text" value="<?php echo $serialNumber; ?>" name="serialNumber" readonly>
-
-</nav>
-
-<div class="mainWrapperImages">
-    <center>
-        <table border="0">
-            <tr>
-                <td>
-                    <b>SW Images Table</b>
-                    <table>
-                        <tr>
-                            <td></td>
-                            <td>Version</td>
-                            <td>Size</td>
-                            <td>Valid</td>
-                            <td>Active</td>
-                        </tr>
-                        <tr>
-                            <td>SW Image #1</td>
-                            <td><input type="text" name="softwareVersionValue1" value="<?php echo $softwareVersionValue1; ?>" readonly></td>
-                            <td><input type="text" name="softwareVersionSize1" value="<?php echo $softwareVersionSize1; ?>" readonly></td>
-                            <td><input type="checkbox" value="1" name="softwareVersionValid1" <?php if($softwareVersionValid1 == 1){echo "checked";}?> disabled></td>
-                            <td><input type="radio" name="softwareVersionActive" value="1" <?php if($softwareVersionActive1 == 1){echo "checked";}?>></td>
-                        </tr>
-                        <tr>
-                            <td>SW Image #2</td>
-                            <td><input type="text" name="softwareVersionValue2" value="<?php echo $softwareVersionValue2; ?>" readonly></td>
-                            <td><input type="text" name="softwareVersionSize2" value="<?php echo $softwareVersionSize2; ?>" readonly></td>
-                            <td><input type="checkbox" value="2" name="softwareVersionValid1" <?php if($softwareVersionValid2 == 1){echo "checked";}?> disabled></td>
-                            <td><input type="radio" name="softwareVersionActive" value="2" <?php if($softwareVersionActive2 == 1){echo "checked";}?>></td>
-                        </tr>
-                    </table>
-                    <br><br>
-                    <b>FPGA Images Table</b>
-                    <table>
-                        <tr>
-                            <td></td>
-                            <td>Version</td>
-                            <td>Size</td>
-                            <td>Valid</td>
-                            <td>Active</td>
-                        </tr>
-                        <tr>
-                            <td>FW Image #1</td>
-                            <td><input type="text" name="fpgaVersionValue1" value="<?php echo $fpgaVersionValue1; ?>" readonly></td>
-                            <td><input type="text" name="fpgaVersionSize1" value="<?php echo $fpgaVersionSize1; ?>" readonly></td>
-                            <td><input type="checkbox" value="1" name="fpgaVersionValid1" <?php if($fpgaVersionValid1 == 1){echo "checked";}?> disabled></td>
-                            <td><input type="radio" name="fpgaVersionActive" value="1" <?php if($fpgaVersionActive1 == 1){echo "checked";}?>></td>
-                        </tr>
-                        <tr>
-                            <td>FW Image #2</td>
-                            <td><input type="text" name="fpgaVersionValue2" value="<?php echo $fpgaVersionValue2; ?>" readonly></td>
-                            <td><input type="text" name="softwareVersionSize2" value="<?php echo $fpgaVersionSize2; ?>" readonly></td>
-                            <td><input type="checkbox" value="2" name="fpgaVersionValid1" <?php if($fpgaVersionValid2 == 1){echo "checked";}?> disabled></td>
-                            <td><input type="radio" name="fpgaVersionActive" value="2" <?php if($fpgaVersionActive2 == 1){echo "checked";}?>></td>
-                        </tr>
-                    </table>
-                    <br><br>
-                    <b>BL Image Table</b>
-                    <table>
-                        <tr>
-                            <td></td>
-                            <td>Version</td>
-                            <td>Size</td>
-                            <td>Valid</td>
-                            <td>Active</td>
-                        </tr>
-                        <tr>
-                            <td>BL Image #1</td>
-                            <td><input type="text" name="blVersionValue1" value="<?php echo $blVersionValue1; ?>" readonly></td>
-                            <td><input type="text" name="blVersionSize1" value="<?php echo $blVersionSize1; ?>" readonly></td>
-                            <td><input type="checkbox" value="1" name="blVersionValid1" <?php if($blVersionValid1 == 1){echo "checked";}?> disabled></td>
-                            <td><input type="radio" name="blVersionActive" value="1" <?php if($blVersionActive1 == 1){echo "checked";}?>></td>
-                        </tr>
-                    </table>
-                </td>
-                <td>
-                    <table border="0">
-                        <tr>
-                            <td colspan="3">TFTP Server IP Address <input type="text" name="tftpServerIp" value="<?php echo $tftpServerIp;?>"></td>
-                        </tr>
-                        <tr>
-                            <td>SW File Name</td>
-                            <td><input type="text" name="softwareImageFilename" value="<?php echo $softwareImageFilename;?>"></td>
-                            <td><input type="submit" value="Start Download" name="startSoftwareUpgrade"></td>
-                        </tr>
-                        <tr>
-                            <td>FW File Name</td>
-                            <td><input type="text" name="fpgaImageFilename" value="<?php echo $fpgaImageFilename; ?>"></td>
-                            <td><input type="submit" value="Start Download" name="startFpgaUpgrade"></td>
-                        </tr>
-                        <tr>
-                            <td>BL File Name</td>
-                            <td><input type="text" name="bootloaderImageFilename" value="<?php echo $bootloaderImageFilename;?>"></td>
-                            <td><input type="submit" value="Start Download" name="startBootloaderDownload"></td>
-                            <td><input type="submit" value="Start BL Upgrade" name="startBootloaderUpgrade"></td>
-                        </tr>
-                    </table>
-                </td>
-            </tr>
-
-            </form>
-        </table>
-    </center>
+<div class="well well-sm" style="margin-bottom: 0px;">
+    <div class="container">
+        <div class="col-lg-1"><img src="../images/ayeckaLogo.png" class="pull-left"></div>
+        <div class="col-lg-10 text-center">
+            <br><h4><strong><a href="http://www.ayecka.com/ST1.html">ST1</a></strong> - Satellite Transmitter, IP over DVB-S2</h4>
+        </div>
+        <div class="col-lg-1"><img src="../images/slogen2.png" class="pull-right"></div>
+    </div>
 </div>
-<footer><span class="ver">  <?php echo "Version number: ".$ver;?></span></footer>
+
+<div class="navbar navbar-inverse">
+    <div class="container">
+        <div class="navbar-header">
+
+        </div>
+        <div class="navbar-collapse collapse">
+            <ul class="nav navbar-nav">
+                <li> <a href="index.php">Status</a></li>
+                <li> | </li>
+                <li> <a href="tx.php">TX Configuration</a></li>
+                <li> | </li>
+                <li> <a href="modulator.php">Modulator Configuration</a></li>
+                <li> | </li>
+                <li> <a href="encapsulator.php">IP Encapsulator</a></li>
+                <li> | </li>
+                <li> <a href="buc.php">BUC Control</a></li>
+                <li> | </li>
+                <li> <a href="egress.php">Egress Configuration</a></li>
+                <li> | </li>
+                <li> <a href="network.php">Network</a></li>
+                <li> | </li>
+                <li> <a href="vrrp.php">VRRP</a></li>
+                <li> | </li>
+                <li> <a href="system.php">System</a></li>
+                <li> | </li>
+                <li class="active"> <a href="images.php">Images</a></li>
+                <li> | </li>
+                <li> <a href="http://www.ayecka.com/Files/ST1_UserManual.pdf" target="_blank">ST1 User Manual</a></li>
+            </ul>
+        </div>
+    </div>
+</div>
+<!--PageBody-->
+<!--end Page Body-->
+<form method="post" class="form-inline">
+    <div class="well well-sm text-center">
+
+        <div class="form-group">
+            <input type="text" class="form-control input-sm" value="<?php echo $device_IP;?>" name="device_IP" placeholder="Device IP Address">
+        </div>
+        <button type="submit" class="btn btn-success btn-sm" name="read">Read From Device</button>
+        <button type="submit" class="btn btn-success btn-sm" name="write">Write To Device</button>
+    </div>
+    <div class="well well-sm text-center">
+        <div class="form-group">FPGA<input type="text" class="form-control input-sm" value="<?php echo $fpgaVersion; ?>" name="fpgaVersion" readonly>
+        </div>
+        <div class="form-group">SW<input type="text" class="form-control input-sm" value="<?php echo $softwareVersion; ?>" name="softwareVersion" readonly>
+        </div>
+        <div class="form-group">HW<input type="text" class="form-control input-sm" value="<?php echo $hardwareVersion; ?>" name="hardwareVersion" readonly>
+        </div>
+        <div class="form-group">SN<input type="text" class="form-control input-sm" value="<?php echo $serialNumber; ?>" name="serialNumber" readonly>
+        </div>
+        <hr>
+        <div class="row">
+            <div class="col-md-1"></div>
+            <div class="col-md-5 text-left">
+                <h4><span class="label label-success">SW Image Table</span></h4>
+                <table class="table table-hover table-condensed table-hover">
+                    <thead>
+                    <tr>
+                        <th></th>
+                        <th>Version</th>
+                        <th>Size</th>
+                        <th>Valid</th>
+                        <th>Active</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <th>Image #1</th>
+                        <td><input class="form-control input-sm" type="text" name="softwareVersionValue1" value="<?php echo $softwareVersionValue1; ?>" readonly></td>
+                        <td><input class="form-control input-sm" type="text" name="softwareVersionSize1" value="<?php echo $softwareVersionSize1; ?>" readonly></td>
+                        <td>
+                            <?php if($softwareVersionValid1 == 1){
+                                echo '<span class="label label-success">Valid</span>';
+                            }else{
+                                echo '<span class="label label-danger">Not Valid</span>';
+                            }?>
+                        </td>
+                        <td><input type="radio" name="softwareVersionActive" value="1" <?php if($softwareVersionActive1 == 1){echo "checked";}?>></td>
+                    </tr>
+                    <tr>
+                        <th>Image #2</th>
+                        <td><input class="form-control input-sm" type="text" name="softwareVersionValue2" value="<?php echo $softwareVersionValue2; ?>" readonly></td>
+                        <td><input class="form-control input-sm" type="text" name="softwareVersionSize2" value="<?php echo $softwareVersionSize2; ?>" readonly></td>
+                        <td>
+                            <?php if($softwareVersionValid2 == 1){
+                                echo '<span class="label label-success">Valid</span>';
+                            }else{
+                                echo '<span class="label label-danger">Not Valid</span>';
+                            }?>
+                        </td>
+                        <td><input type="radio" name="softwareVersionActive" value="2" <?php if($softwareVersionActive2 == 1){echo "checked";}?>></td>
+                    </tr>
+                    </tbody>
+                </table>
+                <br>
+                <h4><span class="label label-success">FPGA Image Table</span></h4>
+                <table class="table table-hover table-condensed">
+                    <thead>
+                    <tr>
+                        <th></th>
+                        <th>Version</th>
+                        <th>Size</th>
+                        <th>Valid</th>
+                        <th>Active</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <th>Image #1</th>
+                        <td><input class="form-control input-sm" type="text" name="fpgaVersionValue1" value="<?php echo $fpgaVersionValue1; ?>" readonly></td>
+                        <td><input class="form-control input-sm" type="text" name="fpgaVersionSize1" value="<?php echo $fpgaVersionSize1; ?>" readonly></td>
+                        <td>
+                            <?php if($fpgaVersionValid1 == 1){
+                                echo '<span class="label label-success">Valid</span>';
+                            }else{
+                                echo '<span class="label label-danger">Not Valid</span>';
+                            }?>
+                        </td>
+                        <td><input type="radio" name="fpgaVersionActive" value="1"  <?php if($fpgaVersionActive1 == 1){echo "checked";}?>></td>
+                    </tr>
+                    <tr>
+                        <th>Image #2</th>
+                        <td><input class="form-control input-sm" type="text" name="fpgaVersionValue2" value="<?php echo $fpgaVersionValue2; ?>" readonly></td>
+                        <td><input class="form-control input-sm" type="text" name="softwareVersionSize2" value="<?php echo $fpgaVersionSize2; ?>" readonly></td>
+                        <td>
+                            <?php if($fpgaVersionValid2 == 1){
+                                echo '<span class="label label-success">Valid</span>';
+                            }else{
+                                echo '<span class="label label-danger">Not Valid</span>';
+                            }?>
+                        </td>
+                        <td><input type="radio" name="fpgaVersionActive" value="2"  <?php if($fpgaVersionActive2 == 1){echo "checked";}?>></td>
+                    </tr>
+
+                    </tbody>
+                </table>
+                <br>
+                <h4><span class="label label-success">BL Image Table</span></h4>
+                <table class="table table-hover table-condensed">
+                    <thead>
+                    <tr>
+                        <th></th>
+                        <th>Version</th>
+                        <th>Size</th>
+                        <th>Valid</th>
+                        <th>Active</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <th>Image #1</th>
+                        <td><input class="form-control input-sm" type="text" name="blVersionValue1" value="<?php echo $blVersionValue1; ?>" readonly></td>
+                        <td><input class="form-control input-sm" type="text" name="blVersionSize1" value="<?php echo $blVersionSize1; ?>" readonly></td>
+                        <td>
+                            <?php if($blVersionValid1 == 1){
+                                echo '<span class="label label-success">Valid</span>';
+                            }else{
+                                echo '<span class="label label-danger">Not Valid</span>';
+                            }?>
+                        </td>
+                        <td><input type="radio" name="blVersionActive" value="1"  <?php if($blVersionActive1 == 1){echo "checked";}?>></td>
+                    </tr>
+
+                    </tbody>
+                </table>
+
+
+            </div>
+
+            <div class="col-md-5 text-left">
+                <table class="table table-hover table-condensed">
+                    <tbody>
+                    <tr>
+                        <td>TFTP Server IP Address</td>
+                        <td><input class="form-control input-sm" type="text" name="tftpServerIp" value="<?php echo $tftpServerIp;?>"></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>SW File Name</td>
+                        <td><input class="form-control input-sm" type="text" name="softwareImageFilename" value="<?php echo $softwareImageFilename;?>"></td>
+                        <td><input class="btn btn-xs btn-info" type="submit" value="Start Download" name="startSoftwareUpgrade"></td>
+                    </tr>
+                    <tr>
+                        <td>FW File Name</td>
+                        <td><input class="form-control input-sm" type="text" name="fpgaImageFilename" value="<?php echo $fpgaImageFilename; ?>"></td>
+                        <td><input class="btn btn-xs btn-info" type="submit" value="Start Download" name="startFpgaUpgrade"></td>
+                    </tr>
+                    <tr>
+                        <td>BL File Name</td>
+                        <td><input class="form-control input-sm" type="text" name="bootloaderImageFilename" value="<?php echo $bootloaderImageFilename;?>"></td>
+                        <td><input class="btn btn-xs btn-info" type="submit" value="Start Download" name="startBootloaderDownload">
+                            <input class="btn btn-xs btn-warning" style="margin-top: 10px;" type="submit" value="Start BL Upgrade" name="startBootloaderUpgrade">
+                        </td>
+                    </tr>
+
+                    </tbody>
+
+                </table>
+            </div>
+</form>
+<div class="col-md-1"></div>
+</div>
+
+
+<div class="container text-left">
+    <hr>
+    <footer>
+        <span class="pull-right">  <?php echo "Version number: ".$ver;?></span>
+        &copy; <a href="http://www.ayecka.com">Ayecka</a> Comunnication System</footer>
+</div>
+</form>
+<!-- /container -->
 </body>
+
 </html>
