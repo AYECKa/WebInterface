@@ -1,5 +1,11 @@
 <?php
 error_reporting(E_ALL);
+
+
+
+$mibTree = new MibTree('ST1g_v8.01b103.mib');
+print_r($mibTree);
+
 class MibNode 
 {
 	public $name;
@@ -9,9 +15,8 @@ class MibNode
 	public $description;
 	public $canRead;
 	public $canWrite;
-	public $parent;
 	public $children = array();
-	
+	public $parent;
 
 
 	public function addChild($child)
@@ -35,24 +40,6 @@ class MibNode
 			}
 			return null;
 		}
-	}
-
-	public function getOid()
-	{
-		if($this->parent == null) return $this->oid;
-		return $this->parent->getFullOid() . "." . $this->oid;
-	}
-
-	public function getNodesOfType($type)
-	{
-		$nodes = array();
-		if($this->type === $type)
-			$nodes[] = $this;
-		foreach($this->children as $child)
-		{
-			$nodes = array_merge($nodes, $child->getNodesOfType($type));
-		}
-		return $nodes;
 	}
 }
 
@@ -87,7 +74,7 @@ class ObjectIdentifierParser
 	{
 		$ayecka = new MibNode();
 		$ayecka->name = "ayecka";
-		$ayecka->oid = "1.3.6.1.4.1.27928";
+		$ayecka->oid = ".1.3.6.1.4.1.27928";
 		$ayecka->type = "documentRoot";
 		$parentObject = new MibNode();
 		$parentObject->name = $parentMatch[0];
@@ -109,7 +96,7 @@ class ObjectIdentifierParser
 			if($parent == null)
 				throw new Exception('Mib object doesnt have a parent');
 			$mibNode = new MibNode();
-			$mibNode->name = trim($matches[0]);
+			$mibNode->name = $matches[0];
 			$mibNode->oid = $matches[2];
 			$mibNode->type = "folder";
 			$mibNode->parent = $parent;
@@ -165,7 +152,7 @@ class MibObjectParser
 		preg_match('/(\w*)\s*(\d*)/', $match[6], $relationMatch);
 		$access = new MibAccessParser($match[3]);
 		$this->rawNode = new MibNode();
-		$this->rawNode->name = trim($match[1]);
+		$this->rawNode->name = $match[1];
 		$this->rawNode->type = $match[2];
 		$this->rawNode->status = $match[4];
 		$this->rawNode->canRead = $access->canRead();
@@ -204,7 +191,7 @@ class MibObjectParserFactory
 		{
 			$startIndex = $match[1];
 			$newSearchString = substr($mibFile, $startIndex);
-			preg_match("/\r?\n\s*\r?\n/", $newSearchString, $endMatch,PREG_OFFSET_CAPTURE);
+			preg_match("/\r\n\s*\r\n/", $newSearchString, $endMatch,PREG_OFFSET_CAPTURE);
 			$len = $endMatch[0][1];
 			$block = substr($mibFile, $startIndex, $len);
 			if(!preg_match('/^--/', $block))
@@ -231,83 +218,36 @@ class MibObjectParserFactory
 
 class MibTree
 {
-	public $root;
-	private $mibFileName;
-	public function __construct($mibFilePath, $fileName)
+	private $rootElement;
+	public function __construct($mibFilePath)
 	{
-		$mibFile = file_get_contents($mibFilePath . '/' . $fileName);
-		$this->mibFileName = $fileName;
+		$mibFile = file_get_contents($mibFilePath);
 		$objectIdentifiers = new ObjectIdentifierParser($mibFile);
-		$this->root = $objectIdentifiers->parseObjectIdentifiers();
+		$this->rootElement = $objectIdentifiers->parseObjectIdentifiers();
 		$objectParserFactory = new MibObjectParserFactory($mibFile);
 		$objectParsers = $objectParserFactory->createMibObjectParsers();
 
 		foreach($objectParsers as $objectParser)
 		{
 			$objectParser->parseObject();
-			$parentNode = $this->root->getNodeByName($objectParser->getParentName());
-			if($parentNode == null)
-				throw new Exception("Could not find parent " . $parentName ."in for object " . $node->name);
+			$parentName = $objectParser->getParentName();
+			echo $parentName;
+			$parentNode = $this->rootElement->getNodeByName($parentName);
+
 			$node = $objectParser->getRawNode();
 			$node->parent = $parentNode;
-			$parentNode->addChild($node);
+			if($parentNode == null)
+			{
+				print_r($this->rootElement);
+				die();
+			}
+			else
+			{
+				$parentNode->addChild($node);
+			}
 			
 		}
 
 	}
-
-	public function getOidByName($name)
-	{
-		$node = $this->root->getNodeByName($name);
-		return $node->getFullOid();
-	}
-
-	public function getNodesOfType($type)
-	{
-		return $this->root->getNodesOfType($type);
-	}
 }
 
-class MibFiles
-{
-	private $searchPath;
-	private $fileList;
-	private $mibList;
-	public $tree;
-
-	public function __construct($searchPath)
-	{
-		$this->searchPath = $searchPath;
-		$this->loadMibs();
-		$this->tree = false;
-	}
-
-
-	public function selectMibTreeByName($name)
-	{
-		if(!isset($this->mibList[$name])) return false;
-		$this->tree = $this->mibList[$name];
-		return true;
-	}
-
-	public function getMibFileList()
-	{
-		return $this->fileList;
-	}
-	public function isFileSelected()
-	{
-		return !($this->tree === false);
-	}
-	private function loadMibs()
-	{
-		$mibs = array();
-		$files = scandir($this->searchPath);	
-		foreach($files as $file)
-			if(preg_match('/\.mib$/', $file))
-			{
-				$this->mibList[$file] = new MibTree($this->searchPath, $file);
-				$this->fileList[] = $file;
-			}
-
-	}
-}
