@@ -5,12 +5,12 @@
 <html>
 <head>
     <title>Ayecka Web Interface</title>
-    <link rel="shortcut icon" href="../images/favicon.ico" type="image/x-icon" />
+    <link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon" />
     <meta name="viewport" content="width=device-width">
-    <link rel="stylesheet" href="bootstrap/css/bootstrap.css">
+    <link rel="stylesheet" href="css/bootstrap.css">
     
-    <script type="text/javascript" src="bootstrap/js/bootstrap.min.js"></script>
-    <script type="text/javascript" src="jquery-2.1.3.min.js"></script>
+    <script type="text/javascript" src="js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="js/jquery-2.1.3.min.js"></script>
     <script>
         $(function(){
             $(".navbarmenu-items > li > a.trigger").on("click",function(e){
@@ -85,11 +85,11 @@
 
 <div class="well well-sm" style="margin-bottom: 0;">
     <div class="container">
-        <div class="col-lg-1"><img src="../images/ayeckaLogo.png" class="pull-left"></div>
+        <div class="col-lg-1"><img src="images/ayeckaLogo.png" class="pull-left"></div>
         <div class="col-lg-10 text-center">
             <br><h4>AYECKa Web Interface</h4>
         </div>
-        <div class="col-lg-1"><img src="../images/slogen.png" class="pull-right"></div>
+        <div class="col-lg-1"><img src="images/slogen.png" class="pull-right"></div>
     </div>
 </div>
 
