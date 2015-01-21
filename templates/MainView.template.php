@@ -1,11 +1,83 @@
+<?php
+    require_once('NavbarHelper.php');
+    $navbar = new NavBar($mib);
+?>
 <html>
-
 <head>
     <title>Ayecka Web Interface</title>
     <link rel="shortcut icon" href="../images/favicon.ico" type="image/x-icon" />
     <meta name="viewport" content="width=device-width">
-    <link rel="stylesheet" href="../bootstrap/css/bootstrap.min.css">
-    <script type="text/javascript" src="../bootstrap/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="bootstrap/css/bootstrap.css">
+    
+    <script type="text/javascript" src="bootstrap/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="jquery-2.1.3.min.js"></script>
+    <script>
+        $(function(){
+            $(".navbarmenu-items > li > a.trigger").on("click",function(e){
+                var current=$(this).next();
+                var grandparent=$(this).parent().parent();
+                if($(this).hasClass('left-caret')||$(this).hasClass('right-caret'))
+                    $(this).toggleClass('right-caret left-caret');
+                grandparent.find('.left-caret').not(this).toggleClass('right-caret left-caret');
+                grandparent.find(".sub-menu:visible").not(current).hide();
+                current.toggle();
+                current.toggleClass('dropdown-active-now')
+                e.stopPropagation();
+            });
+            $(".navbarmenu-items > li > a:not(.trigger)").on("click",function(){
+                var root=$('.dropdown-active-now');
+                root.hide();
+            });
+
+        });
+    </script>
+    <style>
+         .dropdown-menu>li
+        {   position:relative;
+            -webkit-user-select: none; /* Chrome/Safari */        
+            -moz-user-select: none; /* Firefox */
+            -ms-user-select: none; /* IE10+ */
+            /* Rules below not implemented in browsers yet */
+            -o-user-select: none;
+            user-select: none;
+            cursor:pointer;
+        }
+        .dropdown-menu .sub-menu {
+            left: 100%;
+            position: absolute;
+            top: 0;
+            display:none;
+            margin-top: -1px;
+            border-top-left-radius:0;
+            border-bottom-left-radius:0;
+            border-left-color:#fff;
+            box-shadow:none;
+        }
+        .right-caret:after
+         {  content:"";
+            border-bottom: 4px solid transparent;
+            border-top: 4px solid transparent;
+            border-left: 4px solid orange;
+            display: inline-block;
+            height: 0;
+            opacity: 0.8;
+            vertical-align: middle;
+            width: 0;
+            margin-left:5px;
+        }
+        .left-caret:after
+        {   content:"";
+            border-bottom: 4px solid transparent;
+            border-top: 4px solid transparent;
+            border-right: 4px solid orange;
+            display: inline-block;
+            height: 0;
+            opacity: 0.8;
+            vertical-align: middle;
+            width: 0;
+            margin-left:5px;
+        }
+    </style>
 
 </head>
 <body>
@@ -21,49 +93,13 @@
     </div>
 </div>
 
-<div class="navbar navbar-inverse">
-    <div class="container">
-        <div class="navbar-header">
-
-        </div>
-        <div class="navbar-collapse collapse">
-            <ul class="nav navbar-nav">
-                <li class="active"> <a href="index.php">Status</a></li>
-                <li> | </li>
-                <li> <a href="tx.php">TX Configuration</a></li>
-                <li> | </li>
-                <li> <a href="modulator.php">Modulator Configuration</a></li>
-                <li> | </li>
-                <li> <a href="encapsulator.php">IP Encapsulator</a></li>
-                <li> | </li>
-                <li> <a href="buc.php">BUC Control</a></li>
-                <li> | </li>
-                <li> <a href="egress.php">Egress Configuration</a></li>
-                <li> | </li>
-                <li> <a href="network.php">Network</a></li>
-                <li> | </li>
-                <li> <a href="vrrp.php">VRRP</a></li>
-                <li> | </li>
-                <li> <a href="system.php">System</a></li>
-                <li> | </li>
-                <li> <a href="images.php">Images</a></li>
-                <li> | </li>
-                <li> <a href="http://www.ayecka.com/Files/ST1_UserManual.pdf" target="_blank">User Manual</a></li>
-            </ul>
-        </div>
-    </div>
-</div>
+<?php
+echo $navbar->render();
+?>
 <!--PageBody-->
 <!--end Page Body-->
 <form method="post" class="form-inline">
-    <div class="well well-sm text-center">
 
-        <div class="form-group">
-            <input type="text" class="form-control input-sm" value="" name="device_IP" placeholder="Device IP Address">
-        </div>
-        <button type="submit" class="btn btn-success btn-sm" name="read">Read From Device</button>
-        <button type="submit" class="btn btn-success btn-sm" name="write">Write To Device</button>
-    </div>
     <div class="well well-sm text-center">
         <div class="form-group">FPGA<input type="text" class="form-control input-sm" value="" name="fpgaVersion" readonly></div>
         <div class="form-group">SW<input type="text" class="form-control input-sm" value="" name="softwareVersion" readonly></div>

@@ -2,11 +2,13 @@
 require_once('inc.php');
 if(!$mib->isFileSelected())
 {
-	if(isset($_POST['operation']) && $_POST['operation'] == "select_file")
+	if(isset($_POST['operation']) && $_POST['operation'] == "Manage" && isset($_POST['mib']) && isset($_POST['ip']))
 	{
 		if($mib->selectMibTreeByName($_POST['mib']))
 		{
 			$_SESSION['SELECTED_FILE'] = $_POST['mib'];
+			$_SESSION['IP'] = $_POST['ip'];
+			die('<script>window.location.reload();</script>');
 		}
 		else
 		{
@@ -15,10 +17,10 @@ if(!$mib->isFileSelected())
 	}
 	else
 	{
-    	include_once('FileSelect.php');
+    	include_once('templates/FileSelect.template.php');
     }
 }
 else
 {
-    echo "no operation";
+    include_once('templates/MainView.template.php');
 }

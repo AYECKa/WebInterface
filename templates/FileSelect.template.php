@@ -22,7 +22,9 @@
     <div class="col-lg-4 text-center">
         <div class="well">
             <img src="images/ayeckaLogo.png">
-            <form method="post">
+            <form method="post" action="#">
+                <input type="text" placeholder="AYECKa Device IP Address" class="form-control input-sm" name="ip">
+                <br>
                 <select class="form-control input-sm" name="mib">
                     <option selected disabled>Select Mib</option>
                     <?php
@@ -33,7 +35,7 @@
                     ?>
                 </select>
                 <br>
-                <input type="submit" value="select_file" name="operation" class="btn btn-success btn-lg">
+                <input type="submit" value="Manage" name="operation" class="btn btn-success btn-lg">
             </form>
             <hr>
             <footer class="text-left">&copy; <a href="http://www.ayecka.com">Ayecka</a> Comunnication System</footer>
