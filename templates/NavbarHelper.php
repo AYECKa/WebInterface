@@ -44,21 +44,17 @@ class NavBar
 		}
 	}
 
-	public function renderMenuItem($item, $isSubmenu = false)
+	public function renderMenuItem($item)
 	{
 		if(count($item["children"]) === 0)
-			return '<li><a href="' . '#' . '">' . $item["name"] . '</a></li>' . "\r\n";
-			//if(!$isSubmenu)
-				
-			//else
-			//	return '<li class="dropdown-submenu"><a href="' . '#' . '">' . $item["name"] . '</a></li>' . "\r\n";
+			return '<li><a href="' . '#' . '">' . $item["name"] . '</a></li>';
 		else
 		{
 			$ret = "<li>\r\n";
-			$ret .= '<a href="' . '#' . '" class="dropdown-toggle" data-toggle="dropdown">'. $item["name"] . '<b class="caret"></b></a>' . "\r\n";
-			$ret .= '<ul class="dropdown-menu multi-level">' . "\r\n";
+			$ret .= '<a class="trigger" >'. $item["name"] . '<b class="caret"></b></a>' . "\r\n";
+			$ret .= '<ul class="dropdown-menu sub-menu navbarmenu-items">' . "\r\n";
 			foreach($item["children"] as $child)
-				$ret .= $this->renderMenuItem($child, true);
+				$ret .= $this->renderMenuItem($child);
 			$ret .= "</ul>\r\n";
 			$ret .= "</li>\r\n";
 			return $ret;
@@ -73,47 +69,13 @@ class NavBar
 
 		        </div>
 		        <div class="navbar-collapse collapse">
-		            <ul class="nav navbar-nav">
-		            	                <li>
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Menu 1 <b class="caret"></b></a>
-                    <ul class="dropdown-menu multi-level">
-                        <li><a href="#">Action</a></li>
-                        <li><a href="#">Another action</a></li>
-                        <li><a href="#">Something else here</a></li>
-                        <li class="divider"></li>
-                        <li><a href="#">Separated link</a></li>
-                        <li class="divider"></li>
-                        <li><a href="#">One more separated link</a></li>
-                        <li class="dropdown-submenu">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Dropdown</a>
-                            <ul class="dropdown-menu">
-                                <li><a href="#">Action</a></li>
-                                <li class="dropdown-submenu">
-                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Dropdown</a>
-                                    <ul class="dropdown-menu">
-                                        <li class="dropdown-submenu">
-                                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Dropdown</a>
-                                            <ul class="dropdown-menu">
-                                                <li><a href="#">Action</a></li>
-                                                <li><a href="#">Another action</a></li>
-                                                <li><a href="#">Something else here</a></li>
-                                                <li class="divider"></li>
-                                                <li><a href="#">Separated link</a></li>
-                                                <li class="divider"></li>
-                                                <li><a href="#">One more separated link</a></li>
-                                            </ul>
-                                        </li>
-                                    </ul>
-                                </li>
-                            </ul>
-                        </li>
-                    </ul>
-                </li>
+		            <ul class="nav navbar-nav navbarmenu-items">
 		                <?php
 		                	foreach($this->friendlyMenuTree as $item)
 		                		echo $this->renderMenuItem($item);
 		                ?>
-		                <li> <a href="http://www.ayecka.com/Files/ST1_UserManual.pdf" target="_blank">ST1 User Manual</a></li>
+		                <li> <a href="http://www.ayecka.com/Files/ST1_UserManual.pdf" target="_blank">User Manual</a></li>
+		                <li> <a href="?resetSession">Manage another device</a></li>
 		            </ul>
 		        </div>
 		    </div>
