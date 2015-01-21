@@ -32,7 +32,7 @@
                 <li <?php if($active=="vrrp"){echo 'class="active"';} ?>> <a href="vrrp.php">VRRP</a></li>
                 <li> | </li>
                 <li <?php if($active=="system"){echo 'class="active"';} ?>> <a href="system.php">System</a></li>
-                <li> | </li>
+                <li> | </li>w
                 <li <?php if($active=="images"){echo 'class="active"';} ?>> <a href="images.php">Images</a></li>
                 <li> | </li>
                 <li> <a href="http://www.ayecka.com/Files/ST1_UserManual.pdf" target="_blank">ST1 User Manual</a></li>
