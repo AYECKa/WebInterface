@@ -1,5 +1,4 @@
 <?php
-include_once('inc.php');
 class NavBar
 {
 	private $mibMenuRoot;

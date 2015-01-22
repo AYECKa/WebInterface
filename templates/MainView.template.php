@@ -85,11 +85,11 @@
 
 <div class="well well-sm" style="margin-bottom: 0;">
     <div class="container">
-        <div class="col-lg-1"><img src="images/ayeckaLogo.png" class="pull-left"></div>
+        <div class="col-lg-1"><img src="img/ayeckaLogo.png" class="pull-left"></div>
         <div class="col-lg-10 text-center">
             <br><h4>AYECKa Web Interface</h4>
         </div>
-        <div class="col-lg-1"><img src="images/slogen.png" class="pull-right"></div>
+        <div class="col-lg-1"><img src="img/slogen.png" class="pull-right"></div>
     </div>
 </div>
 

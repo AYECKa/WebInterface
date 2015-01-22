@@ -1,5 +1,5 @@
 <?php
-require_once('inc.php');
+require_once('lib/inc.php');
 if(!$mib->isFileSelected())
 {
 	if(isset($_POST['operation']) && $_POST['operation'] == "Manage" && isset($_POST['mib']) && isset($_POST['ip']))

@@ -3,9 +3,9 @@
 <head>
     <title>Ayecka Web Interface</title>
     <meta name="viewport" content="width=device-width">
-    <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/bootstrap.min.css">
     <!--<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>-->
-    <script type="text/javascript" src="bootstrap/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="js/bootstrap.min.js"></script>
     <style type="text/css">
         body {
             padding-top: 80px;
@@ -21,7 +21,7 @@
     <div class="col-lg-4"></div>
     <div class="col-lg-4 text-center">
         <div class="well">
-            <img src="images/ayeckaLogo.png">
+            <img src="img/ayeckaLogo.png">
             <form method="post" action="#">
                 <input type="text" placeholder="AYECKa Device IP Address" class="form-control input-sm" name="ip">
                 <br>
