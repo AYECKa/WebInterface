@@ -1,13 +1,30 @@
 <?php
 class NavBar
 {
+	private $mib;
 	private $mibMenuRoot;
 	private $friendlyMenuTree;
-
+	private $currentLocation;
 	public function __construct($mib)
 	{
-		$this->mibMenuRoot = $mib->tree->root->children[0];
+		$this->mib = $mib->tree->root;
+		$mibMenu = $this->mib->children[0];
+		$this->mibMenuRoot = $mibMenu->cloneNode();
 		$this->createNavbarTree();
+
+
+	}
+
+	public function getCurrentMibLocation()
+	{
+		if(!isset($_GET['location']))
+		{
+			return false;
+		}
+		else
+		{
+			return $this->mib->getNodeByName($_GET['location'])->children;
+		}
 	}
 
 	private function createNavbarTree()
@@ -46,7 +63,7 @@ class NavBar
 	public function renderMenuItem($item)
 	{
 		if(count($item["children"]) === 0)
-			return '<li><a href="' . '#' . '">' . $item["name"] . '</a></li>';
+			return '<li><a href="' . "?location=" . $item['key'] . '">' . $item["name"] . '</a></li>';
 		else
 		{
 			$ret = "<li>\r\n";

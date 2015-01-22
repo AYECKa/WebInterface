@@ -9,7 +9,7 @@ class MibNode
 	public $description;
 	public $canRead;
 	public $canWrite;
-	public $parent;
+	public $parent = null;
 	public $children = array();
 	
 
@@ -40,7 +40,7 @@ class MibNode
 	public function getOid()
 	{
 		if($this->parent == null) return $this->oid;
-		return $this->parent->getFullOid() . "." . $this->oid;
+		return $this->parent->getOid() . "." . $this->oid;
 	}
 
 	public function getNodesOfType($type)
@@ -53,6 +53,21 @@ class MibNode
 			$nodes = array_merge($nodes, $child->getNodesOfType($type));
 		}
 		return $nodes;
+	}
+
+	public function cloneNode()
+	{
+		$ret = new MibNode();
+		$ret->name = $this->name;
+		$ret->oid = $this->oid;
+		$ret->type = $this->type;
+		$ret->status = $this->status;
+		$ret->description = $this->description;
+		$ret->canRead = $this->canRead;
+		$ret->canWrite = $this->canWrite;
+		foreach($this->children as $child)
+			$ret->addChild($child->cloneNode());
+		return $ret;
 	}
 }
 

@@ -1,6 +1,8 @@
 <?php
     require_once('NavbarHelper.php');
+    require_once('MibObject.template.php');
     $navbar = new NavBar($mib);
+    $currentLocationMibNode = $navbar->getCurrentMibLocation();
 ?>
 <html>
 <head>
@@ -8,9 +10,10 @@
     <link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon" />
     <meta name="viewport" content="width=device-width">
     <link rel="stylesheet" href="css/bootstrap.css">
-    
-    <script type="text/javascript" src="js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="css/bootstrap-editable.css">
     <script type="text/javascript" src="js/jquery-2.1.3.min.js"></script>
+    <script type="text/javascript" src="js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="js/bootstrap-editable.js"></script>
     <script>
         $(function(){
             $(".navbarmenu-items > li > a.trigger").on("click",function(e){
@@ -29,6 +32,14 @@
                 root.hide();
             });
 
+        });
+        $(document).ready(function ()
+        {   
+            $.fn.editable.defaults.mode = 'inline';
+            $('.editable-link').editable();
+            setInterval(function () {
+                $('.data-loader-ajax-loader').hide();
+            }, 500);
         });
     </script>
     <style>
@@ -120,62 +131,22 @@ echo $navbar->render();
 <div class="row">
     <div class="col-md-3"></div>
     <div class="col-md-6 text-left">
-        <table class="table table-hover table-condensed">
+         <table class="table table-hover table-condensed">
             <tbody>
-            <tr>
-                <td>Rx Switching Mode</td>
-                <td>
-                    <label>
-                    <input type="radio" value="0" name="rxSwitchMode" checked/>
-                        Auto
-                    </label>
-                </td>
-                <td>
-                    <label>
-                        <input type="radio" value="1" name="rxSwitchMode"  checked />
-                        Manual
-                    </label>
-                </td>
-                <td>
-                    Switch Period
-                    <div class="form-group">
-                        <input class="form-control input-sm" type="number" name="rxSwitchPeriod" max="120" min="0" step="1" value="">
-                    </div>sec
-                </td>
-            </tr>
-            <tr>
-                <td>Active Rx Channel</td>
-                <td>
-                    <label>
-                        <input type="radio" value="1" name="rxActive" >
-                        Rx1
-                    </label>
-                </td>
-                <td>
-                    <label>
-                        <input type="radio" value="2" name="rxActive">
-                        Rx2
-                    </label>
-                </td>
-                <td></td>
-            </tr>
-            <tr>
-                <td>Rx Channel Operation Mode</td>
-                <td>
-                    <label>
-                        <input type="radio" value="0" name="rxChannelOpMode">
-                        Single
-                    </label>
-                </td>
-                <td>
-                    <label>
-                        <input type="radio" value="1" name="rxChannelOpMode">
-                        Dual
-                    </label>
-                </td>
-                <td></td>
-            </tr>
-
+       <?php
+            if($currentLocationMibNode !== false)
+            {
+                foreach($currentLocationMibNode as $mibObject)
+                {
+                    $render = new MibObjectRender($mibObject);    
+                    echo $render->render();
+                }
+                
+                
+            }
+            else
+                require_once('Home.template.php');
+       ?>
 
             </tbody>
         </table>
