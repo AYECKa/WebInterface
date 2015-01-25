@@ -175,7 +175,7 @@ class MibObjectParser
 	public function parseObject()
 	{
 		preg_match('/(.*)\s*OBJECT-TYPE\s*SYNTAX\s*(.*)\s*MAX-ACCESS\s*(.*)\s*STATUS\s*(.*)\s*DESCRIPTION\s*"(.*)" \s*.*\{\s*(.*)\s*\}/', $this->block,$match);
-		if(count($match) == 0) throw new Exception('ERROR PARSING BLOCK: ' . $block);
+		if(count($match) == 0) throw new Exception('ERROR PARSING BLOCK: "' .$this->block . '"');
 
 		preg_match('/(\w*)\s*(\d*)/', $match[6], $relationMatch);
 		$access = new MibAccessParser($match[3]);
@@ -234,9 +234,9 @@ class MibObjectParserFactory
 	{
 		$objectParsers = array();
 		$blocks = $this->getBlockArray();
-		foreach($blocks as $block)
+		foreach($blocks as $key=> $block)
 		{
-			$objectParsers[] = new MibObjectParser($block);
+			$objectParsers[] = new MibObjectParser($block);	
 		}
 		return $objectParsers;
 
@@ -257,9 +257,19 @@ class MibTree
 		$objectParserFactory = new MibObjectParserFactory($mibFile);
 		$objectParsers = $objectParserFactory->createMibObjectParsers();
 
-		foreach($objectParsers as $objectParser)
+		foreach($objectParsers as $key=>$objectParser)
 		{
-			$objectParser->parseObject();
+			try {
+				$objectParser->parseObject();
+			}
+			catch(Exception $e)
+			{
+				echo "Exception was thrown, ";
+				echo "current block index: " . $key . "\r\n";
+				throw $e;
+				
+
+			}
 			$parentNode = $this->root->getNodeByName($objectParser->getParentName());
 			if($parentNode == null)
 				throw new Exception("Could not find parent " . $parentName ."in for object " . $node->name);
