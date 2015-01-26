@@ -81,11 +81,15 @@ class NavBar
 		?>
 		<div class="navbar navbar-inverse">
 		    <div class="container">
+		        
 		        <div class="navbar-header">
 
 		        </div>
+				
 		        <div class="navbar-collapse collapse">
+
 		            <ul class="nav navbar-nav navbarmenu-items">
+		            	<li><a href=".">Home</a></li>
 		                <?php
 		                	foreach($this->friendlyMenuTree as $item)
 		                		echo $this->renderMenuItem($item);

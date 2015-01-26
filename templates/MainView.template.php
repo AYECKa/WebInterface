@@ -2,7 +2,8 @@
     require_once('NavbarHelper.php');
     require_once('MibObject.template.php');
     $navbar = new NavBar($mib);
-    $currentLocationMibNode = $navbar->getCurrentMibLocation();
+    $mibPageRender = new MibPageRender($navbar->getCurrentMibLocation());
+
 ?>
 <html>
 <head>
@@ -35,12 +36,39 @@
         });
         $(document).ready(function ()
         {   
-            $.fn.editable.defaults.mode = 'inline';
-            $('.editable-link').editable();
-            setInterval(function () {
-                $('.data-loader-ajax-loader').hide();
-            }, 500);
+            //$.fn.editable.defaults.mode = 'inline';
+            loadAllPageData();
         });
+
+        function loadAllPageData()
+        {
+
+            $('.editable-link').each(function ()
+            {
+                var oid = this.attributes['oid'].value;
+                
+                var loaderId = this.attributes['id'].value + '-loader';
+                var textId = this.attributes['id'].value;
+                var textBox = $('#' + textId);
+                var loader = $('#' + loaderId);
+                $.get('ajax/snmpget.php?oid=' + oid,function(data) {
+                    textBox.html(data);
+                    loader.hide();
+                    textBox.editable();
+                });
+
+            });
+
+            $('.systemInfo').each(function () {
+                var textBox = this;
+                var oid = this.attributes['oid'].value;
+                $.get('ajax/snmpget.php?oid=' + oid,function(data) {
+                    textBox.innerHTML = data;
+                });
+            });
+
+
+        }
     </script>
     <style>
          .dropdown-menu>li
@@ -107,58 +135,49 @@
 <?php
 echo $navbar->render();
 ?>
-<!--PageBody-->
-<!--end Page Body-->
-<form method="post" class="form-inline">
+<div class="row">
 
-    <div class="well well-sm text-center">
-        <div class="form-group">FPGA<input type="text" class="form-control input-sm" value="" name="fpgaVersion" readonly></div>
-        <div class="form-group">SW<input type="text" class="form-control input-sm" value="" name="softwareVersion" readonly></div>
-        <div class="form-group">HW<input type="text" class="form-control input-sm" value="" name="hardwareVersion" readonly></div>
-        <div class="form-group">SN<input type="text" class="form-control input-sm" value="" name="serialNumber" readonly></div>
-        <div style="margin-top: 10px;">
-            <div class="form-group">System Up Time<input type="text" class="form-control input-sm" value="" readonly></div>
-            <div class="form-group">System Contact<input type="text" class="form-control input-sm" value="" readonly></div>
-            <div class="form-group">System Descr<input type="text" class="form-control input-sm" value="" readonly></div>
-            <div class="form-group">System Name<input type="text" class="form-control input-sm" value="" readonly></div>
-            <div class="form-group">System Location<input type="text" class="form-control input-sm" value="" readonly></div>
-            <div class="form-group">System Object ID<input type="text" class="form-control input-sm" value="" readonly></div>
-            <div class="form-group">System Services<input type="text" class="form-control input-sm" value="" readonly></div>
-        </div>
+    <div class="col-md-3"></div>
+    <div class="col-md-3">
+        <label>System Up Time:      <span class="systemInfo" oid=""><img src="img/loading.gif"</span></label></br>
+        <label>System Contact:      <span class="systemInfo" oid=""><img src="img/loading.gif"</span></label></br>
+        <label>System Description:  <span class="systemInfo" oid=""><img src="img/loading.gif"</span></label></br>
+        <label>System Name:         <span class="systemInfo" oid=""><img src="img/loading.gif"</span></label></br>
+        <label>System Location:     <span class="systemInfo" oid=""><img src="img/loading.gif"</span></label></br>
+        <label>System Object ID:    <span class="systemInfo" oid=""><img src="img/loading.gif"</span></label></br>
+        <label>System Services:     <span class="systemInfo" oid=""><img src="img/loading.gif"</span></label></br>
+    </div>
+    <div class="col-md-3">
+        <label>FPGA:                <span class="systemInfo" oid=""><img src="img/loading.gif"</span></label></br>
+        <label>Software:            <span class="systemInfo" oid=""><img src="img/loading.gif"</span></label></br>
+        <label>Firmware:            <span class="systemInfo" oid=""><img src="img/loading.gif"</span></label></br>
+        <label>Serial:              <span class="systemInfo" oid=""><img src="img/loading.gif"</span></label></br>
 
     </div>
+
+    <div class="col-md-3"></div>
+</div>
 <hr>
 <div class="row">
     <div class="col-md-3"></div>
     <div class="col-md-6 text-left">
-         <table class="table table-hover table-condensed">
-            <tbody>
+
        <?php
-            if($currentLocationMibNode !== false)
-            {
-                foreach($currentLocationMibNode as $mibObject)
-                {
-                    $render = new MibObjectRender($mibObject);    
-                    echo $render->render();
-                }
-                
-                
-            }
+            if($mibPageRender->hasPage)
+                echo $mibPageRender->render();
             else
                 require_once('Home.template.php');
        ?>
 
-            </tbody>
-        </table>
+
     </div>
 
-</form>
 <div class="col-md-3"></div>
 </div>
 <div class="container text-left">
     <hr>
     <footer>
-        <span class="pull-right">Version Number: 1</span><a href="http://www.ayecka.com">Ayecka </a>Comunnication System
+        <span class="pull-right">Version Number: 3.0 Beta</span><a href="http://www.ayecka.com">Ayecka </a>Comunnication System
     </footer>
 </div>
 </form>

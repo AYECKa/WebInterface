@@ -167,9 +167,6 @@ class MibObjectParser
 	private $parentName;
 	public function __construct($block)
 	{
-		$block = str_replace("\r\n", " ", $block);
-		$block = str_replace("\t", " ", $block);
-		$block = preg_replace('!\s+!', ' ', $block);
 		$this->block = $block;	
 	}
 	public function parseObject()
@@ -219,9 +216,13 @@ class MibObjectParserFactory
 		{
 			$startIndex = $match[1];
 			$newSearchString = substr($mibFile, $startIndex);
-			preg_match("/\r?\n\s*\r?\n/", $newSearchString, $endMatch,PREG_OFFSET_CAPTURE);
-			$len = $endMatch[0][1];
+			preg_match('/::=.*\r\n/', $newSearchString, $endMatch,PREG_OFFSET_CAPTURE);
+			$len = $endMatch[0][1] + strlen($endMatch[0][0]);
 			$block = substr($mibFile, $startIndex, $len);
+			$block = str_replace("\r\n", " ", $block);
+			$block = str_replace("\t", " ", $block);
+			$block = preg_replace('!\s+!', ' ', $block);
+			$block = trim($block);
 			if(!preg_match('/^--/', $block))
 			{
 				$blocks[] = $block;
