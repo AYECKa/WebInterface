@@ -116,6 +116,21 @@
             width: 0;
             margin-left:5px;
         }
+        .dl-horizontal dt {
+            text-align: left;
+        }
+        .dl-horizontal dd {
+            margin-right: 0;
+        }
+        .panel-primary {
+            border-color: #222222;
+            width: auto;
+        }
+        .panel-primary > .panel-heading {
+            background-color: #222222;
+            border-color: #222222;
+            color: #FFFFFF;
+        }
     </style>
 
 </head>
@@ -135,32 +150,41 @@
 <?php
 echo $navbar->render();
 ?>
+<div class="text-center"><h2>System Information</h2></div>
 <div class="row">
 
-    <div class="col-md-3"></div>
-    <div class="col-md-3">
-        <label>System Up Time:      <span class="systemInfo" oid=""><img src="img/loading.gif"</span></label></br>
-        <label>System Contact:      <span class="systemInfo" oid=""><img src="img/loading.gif"</span></label></br>
-        <label>System Description:  <span class="systemInfo" oid=""><img src="img/loading.gif"</span></label></br>
-        <label>System Name:         <span class="systemInfo" oid=""><img src="img/loading.gif"</span></label></br>
-        <label>System Location:     <span class="systemInfo" oid=""><img src="img/loading.gif"</span></label></br>
-        <label>System Object ID:    <span class="systemInfo" oid=""><img src="img/loading.gif"</span></label></br>
-        <label>System Services:     <span class="systemInfo" oid=""><img src="img/loading.gif"</span></label></br>
-    </div>
-    <div class="col-md-3">
-        <label>FPGA:                <span class="systemInfo" oid=""><img src="img/loading.gif"</span></label></br>
-        <label>Software:            <span class="systemInfo" oid=""><img src="img/loading.gif"</span></label></br>
-        <label>Firmware:            <span class="systemInfo" oid=""><img src="img/loading.gif"</span></label></br>
-        <label>Serial:              <span class="systemInfo" oid=""><img src="img/loading.gif"</span></label></br>
+    <div class="col-md-3 text-center"></div>
+        
+        <div class="col-md-3">
 
-    </div>
+            <div class="panel panel-default">
+                <label>System Up Time:      <span class="systemInfo" oid=""><img src="img/loading.gif"/></span></label></br>
+                <label>System Contact:      <span class="systemInfo" oid=""><img src="img/loading.gif"/></span></label></br>
+                <label>System Description:  <span class="systemInfo" oid=""><img src="img/loading.gif"/></span></label></br>
+                <label>System Name:         <span class="systemInfo" oid=""><img src="img/loading.gif"/></span></label></br>
+                <label>System Location:     <span class="systemInfo" oid=""><img src="img/loading.gif"/></span></label></br>
+                <label>System Object ID:    <span class="systemInfo" oid=""><img src="img/loading.gif"/></span></label></br>
+                <label>System Services:     <span class="systemInfo" oid=""><img src="img/loading.gif"/></span></label></br>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="panel panel-default">
+            <label>FPGA:                <span class="systemInfo" oid=""><img src="img/loading.gif"/></span></label></br>
+            <label>Software:            <span class="systemInfo" oid=""><img src="img/loading.gif"/></span></label></br>
+            <label>Firmware:            <span class="systemInfo" oid=""><img src="img/loading.gif"/></span></label></br>
+            <label>Serial:              <span class="systemInfo" oid=""><img src="img/loading.gif"/></span></label></br>
+            </div>
+
+        </div>
 
     <div class="col-md-3"></div>
 </div>
 <hr>
+<div class="text-center"><h1><?php echo $navbar->getCurrentCategoryName(); ?></h1></div>
+<h1></h1>
 <div class="row">
-    <div class="col-md-3"></div>
-    <div class="col-md-6 text-left">
+    <div class="col-md-1"></div>
+    <div class="col-md-10">
 
        <?php
             if($mibPageRender->hasPage)
@@ -172,7 +196,7 @@ echo $navbar->render();
 
     </div>
 
-<div class="col-md-3"></div>
+<div class="col-md-1"></div>
 </div>
 <div class="container text-left">
     <hr>
@@ -180,7 +204,6 @@ echo $navbar->render();
         <span class="pull-right">Version Number: 3.0 Beta</span><a href="http://www.ayecka.com">Ayecka </a>Comunnication System
     </footer>
 </div>
-</form>
 <!-- /container -->
 </body>
 

@@ -11,20 +11,22 @@ class NavBar
 		$mibMenu = $this->mib->children[0];
 		$this->mibMenuRoot = $mibMenu->cloneNode();
 		$this->createNavbarTree();
+		$this->currentLocation = isset($_GET['location'])?$_GET['location']:false;
 
+	}
 
+	public function getCurrentCategoryName()
+	{
+		if($this->currentLocation)
+			return ucwords(join(explode('_' ,$this->currentLocation), ' '));
+		return "";
 	}
 
 	public function getCurrentMibLocation()
 	{
-		if(!isset($_GET['location']))
-		{
-			return false;
-		}
-		else
-		{
-			return $this->mib->getNodeByName($_GET['location'])->children;
-		}
+		if($this->currentLocation)
+			return $this->mib->getNodeByName($this->currentLocation)->children;
+		return false;
 	}
 
 	private function createNavbarTree()
@@ -82,14 +84,14 @@ class NavBar
 		<div class="navbar navbar-inverse">
 		    <div class="container">
 		        
-		        <div class="navbar-header">
+		        <div class="navbar-header">212
 
 		        </div>
 				
 		        <div class="navbar-collapse collapse">
 
 		            <ul class="nav navbar-nav navbarmenu-items">
-		            	<li><a href=".">Home</a></li>
+		            	<li><a href=".">Dashboard</a></li>
 		                <?php
 		                	foreach($this->friendlyMenuTree as $item)
 		                		echo $this->renderMenuItem($item);
