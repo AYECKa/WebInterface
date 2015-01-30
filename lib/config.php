@@ -4,4 +4,6 @@
 //---------------------------------------
 //The search path of the mib files
 //---------------------------------------
-$searchPath = "mibs/";
+
+$siteRoot = dirname(__FILE__) . '/../';
+$searchPath = $siteRoot . "mibs/";

@@ -1,8 +1,13 @@
 <?php
 require_once(dirname(__FILE__) . '/config.php');
 require_once(dirname(__FILE__) . '/MibParser.php');
-
+require_once(dirname(__FILE__) . '/SNMPLib.php');
 session_start();
+function getValueOrEmptyString($arrayElement)
+{
+	return isset($arrayElement)?$arrayElement:"";
+}
+
 $mib = new MibFiles($searchPath);
 if(isset($_GET['resetSession']))
 {
@@ -13,4 +18,26 @@ if(isset($_GET['resetSession']))
 if(isset($_SESSION['SELECTED_FILE']) && $_SESSION['SELECTED_FILE'] !== "")
 {
 	$mib->selectMibTreeByName($_SESSION['SELECTED_FILE']);
+}
+$snmp = new SNMPClient();
+
+if(isset($_SESSION['host']))
+	$snmp->setHost($_SESSION['host']);
+if(isset($_SESSION['community-write']))
+	$snmp->setWriteCommunityKey($_SESSION['community-write']);
+if(isset($_SESSION['community-read']))
+	$snmp->setReadCommunityKey($_SESSION['community-read']);
+
+if(isset($_SESSION['use-mock']))
+{
+	if($_SESSION['use-mock'] == true)
+	{
+		$snmp->setSNMPGetBehavior(new SNMPMockBehavior());
+		$snmp->setSNMPSetBehavior(new SNMPMockBehavior());
+	}
+	else
+	{
+		$snmp->setSNMPGetBehavior(new SNMPPHPExtentionBehavior());
+		$snmp->setSNMPSetBehavior(new SNMPMockBehavior());
+	}
 }

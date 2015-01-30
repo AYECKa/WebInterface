@@ -3,6 +3,12 @@
     require_once('MibObject.template.php');
     $navbar = new NavBar($mib);
     $mibPageRender = new MibPageRender($navbar->getCurrentMibLocation());
+    //get the oid's of the system info
+    $sysInfo = array();
+    $sysInfo['FPGA'] = $mib->tree->root->getNodeByName('fpgaVersion')->getOid();
+    $sysInfo['Software'] = $mib->tree->root->getNodeByName('softwareVersion')->getOid();
+    $sysInfo['Firmware'] = $mib->tree->root->getNodeByName('hardwareVersion')->getOid();
+    $sysInfo['Serial'] = $mib->tree->root->getNodeByName('serialNumber')->getOid();
 
 ?>
 <html>
@@ -158,21 +164,21 @@ echo $navbar->render();
         <div class="col-md-3">
 
             <div class="panel panel-default">
-                <label>System Up Time:      <span class="systemInfo" oid=""><img src="img/loading.gif"/></span></label></br>
-                <label>System Contact:      <span class="systemInfo" oid=""><img src="img/loading.gif"/></span></label></br>
-                <label>System Description:  <span class="systemInfo" oid=""><img src="img/loading.gif"/></span></label></br>
-                <label>System Name:         <span class="systemInfo" oid=""><img src="img/loading.gif"/></span></label></br>
-                <label>System Location:     <span class="systemInfo" oid=""><img src="img/loading.gif"/></span></label></br>
-                <label>System Object ID:    <span class="systemInfo" oid=""><img src="img/loading.gif"/></span></label></br>
-                <label>System Services:     <span class="systemInfo" oid=""><img src="img/loading.gif"/></span></label></br>
+                <label>System Up Time:      <span class="systemInfo" oid="1.3.6.1.2.1.1.3"><img src="img/loading.gif"/></span></label></br>
+                <label>System Contact:      <span class="systemInfo" oid="1.3.6.1.2.1.1.4"><img src="img/loading.gif"/></span></label></br>
+                <label>System Description:  <span class="systemInfo" oid="1.3.6.1.2.1.1.1"><img src="img/loading.gif"/></span></label></br>
+                <label>System Name:         <span class="systemInfo" oid="1.3.6.1.2.1.1.5"><img src="img/loading.gif"/></span></label></br>
+                <label>System Location:     <span class="systemInfo" oid="1.3.6.1.2.1.1.6"><img src="img/loading.gif"/></span></label></br>
+                <label>System Object ID:    <span class="systemInfo" oid="1.3.6.1.2.1.1.2"><img src="img/loading.gif"/></span></label></br>
+                <label>System Services:     <span class="systemInfo" oid="1.3.6.1.2.1.1.7"><img src="img/loading.gif"/></span></label></br>
             </div>
         </div>
         <div class="col-md-3">
             <div class="panel panel-default">
-            <label>FPGA:                <span class="systemInfo" oid=""><img src="img/loading.gif"/></span></label></br>
-            <label>Software:            <span class="systemInfo" oid=""><img src="img/loading.gif"/></span></label></br>
-            <label>Firmware:            <span class="systemInfo" oid=""><img src="img/loading.gif"/></span></label></br>
-            <label>Serial:              <span class="systemInfo" oid=""><img src="img/loading.gif"/></span></label></br>
+            <label>FPGA:                <span class="systemInfo" oid="<?php echo $sysInfo['FPGA']; ?>"><img src="img/loading.gif"/></span></label></br>
+            <label>Software:            <span class="systemInfo" oid="<?php echo $sysInfo['Software']; ?>"><img src="img/loading.gif"/></span></label></br>
+            <label>Firmware:            <span class="systemInfo" oid="<?php echo $sysInfo['Firmware']; ?>"><img src="img/loading.gif"/></span></label></br>
+            <label>Serial:              <span class="systemInfo" oid="<?php echo $sysInfo['Serial']; ?>"><img src="img/loading.gif"/></span></label></br>
             </div>
 
         </div>
