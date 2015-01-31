@@ -1,1 +1,4 @@
 *.DS_Store
+#ignore thumbnails created by windows
+Thumbs.db
+img/Thumbs.db

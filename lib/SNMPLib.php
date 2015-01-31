@@ -16,7 +16,11 @@ class SNMPPHPExtentionBehavior implements SNMPSetBehavior, SNMPGetBehavior
 	
 	public function get($host, $readCommunity, $oid)
 	{	
+		ob_start();
 		$input = snmpget($host, $readCommunity, $oid);
+		$errors = ob_get_contents();
+		ob_clean();
+		if($errors !== "") return $errors;
 		$arr = explode(":", $input);
 		unset($arr[0]);
 		$output = trim(join($arr, ":"));
@@ -33,13 +37,13 @@ class SNMPMockBehavior implements SNMPSetBehavior, SNMPGetBehavior
 {
 	public function get($host, $readCommunity, $oid)
 	{
-		$a = rand(0,2000) / 1000;
+		$a = rand(0,1000) / 1000;
 		sleep($a);
 		return $a;
 	}
 	public function set($host, $writeCommunity, $oid, $type ,$value)
 	{
-		$a = rand(0,2000) / 1000;
+		$a = rand(0,1000) / 1000;
 		sleep($a);	
 	}
 }

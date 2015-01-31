@@ -36,6 +36,28 @@ class NavBar
 		$this->friendlyMenuTree = $this->createFriendlyMenuTree($tree);
 	}
 
+	private function hasObjectChildren($menuName)
+	{
+		$node = $this->mib->getNodeByName($menuName);
+		foreach($node->children as $child)
+		{
+			if($child->type !== 'folder')
+				return true;
+		}
+		return false;
+	}
+
+	private function hasFolderChildren($menuName)
+	{
+		$node = $this->mib->getNodeByName($menuName);
+		foreach($node->children as $child)
+		{
+			if($child->type === 'folder')
+				return true;
+		}
+		return false;
+	}
+
 	private function createFriendlyMenuTree($filteredItemsTree)
 	{
 
@@ -45,7 +67,16 @@ class NavBar
 			$item = array();
 			$item["name"] = ucwords(str_replace("_", " ", $child->name));
 			$item["key"] = $child->name;
-			$item["children"] = $this->createFriendlyMenuTree($child);
+
+			$item["children"] = array();
+			$thisItem = array("name" => $item["name"] . " Settings",
+							  "key" => $item["key"], 
+							  "children" => array());
+			if($this->hasObjectChildren($item['key']) && $this->hasFolderChildren($item['key']))
+			{
+				$item["children"][] = $thisItem;
+			}
+			$item["children"] = array_merge($item["children"], $this->createFriendlyMenuTree($child));
 			$items[] = $item;
 		}
 		return $items;
@@ -84,7 +115,7 @@ class NavBar
 		<div class="navbar navbar-inverse">
 		    <div class="container">
 		        
-		        <div class="navbar-header">212
+		        <div class="navbar-header">
 
 		        </div>
 				

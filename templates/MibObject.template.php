@@ -13,17 +13,17 @@ class MibPageRender {
 			$this->hasPage = false;
 			return;
 		}
-			
-
-
 		$this->mibGroups = array();
 		foreach($mibObjects as $object)
 		{
-			$renderer = new MibObjectRender($object);
-			$groupName = $renderer->getGroupName();
-			if(!isset($this->mibGroups[$groupName]))
-				$this->mibGroups[$groupName] = array();
-			$this->mibGroups[$groupName][] = $renderer;
+			if($object->type !== 'folder')
+			{
+				$renderer = new MibObjectRender($object);
+				$groupName = $renderer->getGroupName();
+				if(!isset($this->mibGroups[$groupName]))
+					$this->mibGroups[$groupName] = array();
+				$this->mibGroups[$groupName][] = $renderer;
+			}
 		}
 		ksort($this->mibGroups);
 	}
@@ -100,9 +100,9 @@ class MibObjectRender {
 	public function render()
 	{
 		$render = "";
-		
+		$name = $this->renderName();
 		$render .= "";
-		$render .= "<dt>" . $this->renderName() . ": </dt>";
+		$render .= "<dt><a href=\"#\" class=\"data-title-link\" data-toggle=\"tooltip\" title=\"". $name ."\"> " . $name . ":</a> </dt>";
 		$render .= "<dd>
 						<a class=\"editable-link\" href=\"#\" id=\"" . $this->mibObject->name . "\" oid=\"" . $this->oid ."\">" . 'Fetching...' . "</a>
 						<img class=\"data-loader-ajax-loader\" src=\"img/loading.gif\" id=\"". $this->mibObject->name . "-loader\"/>
