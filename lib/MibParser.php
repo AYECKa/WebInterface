@@ -138,6 +138,48 @@ class MibType
 {
 
 }
+
+class MibTypeParser
+{
+	public function __construct($mibFile)
+	{
+		$typeTree = array();
+		//remove all newlines and cr
+
+		preg_match_all('/.* ::= SEQUENCE/', $mibFile, $results,PREG_OFFSET_CAPTURE);
+		$results = $results[0];
+		foreach($results as $result)
+		{
+			//create a block string.
+
+			$block = substr($mibFile, $result[1]);
+			$block = substr($block,0,strpos($block,"}"));
+			$block = str_replace("\r", "" , $block);
+			$block = explode("\n",$block);
+			unset($block[count($block) - 1]); //remove the whitespace
+			$title = $block[0];
+			preg_match('/(.*)::=/',$title, $c);
+			$title = trim($c[1]);
+			unset($block[0]); //remove the title
+			$members = array();
+			foreach($block as $member)
+			{
+				$item = array();
+				$member = str_replace(",", "", $member); //remove delimiter
+				$member = preg_split('#\s+#', $member, null, PREG_SPLIT_NO_EMPTY);
+				$item["name"] = $member[0];
+				$item["type"] = $member[1];
+				$members[] = $item;
+			}
+			$typeTree[$title] = $members;
+		}
+		//var_dump($typeTree);
+
+
+	}
+
+
+}
 class MibAccessParser
 {
 	private $canRead;
@@ -185,7 +227,6 @@ class MibObjectParser
 		$this->rawNode->description = $match[5];
 		$this->rawNode->oid = $relationMatch[2];
 		$this->parentName = $relationMatch[1];
-		
 	}
 
 	public function getRawNode()
@@ -255,6 +296,9 @@ class MibTree
 	{
 		$mibFile = file_get_contents($mibFilePath . '/' . $fileName);
 		$this->mibFileName = $fileName;
+
+		$mibTypeParser =  new MibTypeParser($mibFile);
+
 		$objectIdentifiers = new ObjectIdentifierParser($mibFile);
 		$this->root = $objectIdentifiers->parseObjectIdentifiers();
 		$objectParserFactory = new MibObjectParserFactory($mibFile);
@@ -273,10 +317,10 @@ class MibTree
 				
 
 			}
+			$node = $objectParser->getRawNode();
 			$parentNode = $this->root->getNodeByName($objectParser->getParentName());
 			if($parentNode == null)
-				throw new Exception("Could not find parent " . $parentName ."in for object " . $node->name);
-			$node = $objectParser->getRawNode();
+				throw new Exception("Could not find parent " . $objectParser->getParentName() ."in for object " . $node->name);
 			$node->parent = $parentNode;
 			$parentNode->addChild($node);
 			

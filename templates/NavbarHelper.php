@@ -127,7 +127,7 @@ class NavBar
 		                	foreach($this->friendlyMenuTree as $item)
 		                		echo $this->renderMenuItem($item);
 		                ?>
-		                <li> <a href="http://www.ayecka.com/Files/ST1_UserManual.pdf" target="_blank">User Manual</a></li>
+
 		                <li> <a href="?resetSession">Manage another device</a></li>
 		            </ul>
 		        </div>
