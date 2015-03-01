@@ -12,6 +12,7 @@ class NavBar
 		$this->mibMenuRoot = $mibMenu->cloneNode();
 		$this->createNavbarTree();
 		$this->currentLocation = isset($_GET['location'])?$_GET['location']:false;
+		if($this->currentLocation === false) $this->currentLocation = isset($_GET['table'])?$_GET['table']:false;
 
 	}
 

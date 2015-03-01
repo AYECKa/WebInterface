@@ -141,6 +141,7 @@ class MibType
 
 class MibTypeParser
 {
+	private $typeTree;
 	public function __construct($mibFile)
 	{
 		$typeTree = array();
@@ -173,8 +174,19 @@ class MibTypeParser
 			}
 			$typeTree[$title] = $members;
 		}
-		//var_dump($typeTree);
+		$this->typeTree = $typeTree;
+	}
 
+	public function getType($typeString)
+	{
+		//check for sequence
+		if(preg_match('/SEQUENCE OF (.*)/',$typeString,$match))
+		{
+			//get sequence type:
+			$seqType = trim($match[1]);
+			return $this->typeTree[$seqType];
+
+		}
 
 	}
 
@@ -207,9 +219,10 @@ class MibObjectParser
 	private $block;
 	private $rawNode;
 	private $parentName;
-	public function __construct($block)
+	public function __construct($block,MibTypeParser $typeParser)
 	{
-		$this->block = $block;	
+		$this->block = $block;
+		$this->typeParser= $typeParser;
 	}
 	public function parseObject()
 	{
@@ -220,13 +233,16 @@ class MibObjectParser
 		$access = new MibAccessParser($match[3]);
 		$this->rawNode = new MibNode();
 		$this->rawNode->name = trim($match[1]);
-		$this->rawNode->type = $match[2];
+		$this->rawNode->type = $this->typeParser->getType($match[2]);
 		$this->rawNode->status = $match[4];
 		$this->rawNode->canRead = $access->canRead();
 		$this->rawNode->canWrite = $access->canWrite();
 		$this->rawNode->description = $match[5];
 		$this->rawNode->oid = $relationMatch[2];
 		$this->parentName = $relationMatch[1];
+
+
+
 	}
 
 	public function getRawNode()
@@ -241,9 +257,11 @@ class MibObjectParser
 }
 class MibObjectParserFactory
 {
+	private $mibTypeParser;
 	public function __construct($mibFile)
 	{
 		$this->mibFile = $mibFile;
+		$this->mibTypeParser = new MibTypeParser($mibFile);
 	}
 	private function getBlockArray()
 	{
@@ -280,7 +298,7 @@ class MibObjectParserFactory
 		$blocks = $this->getBlockArray();
 		foreach($blocks as $key=> $block)
 		{
-			$objectParsers[] = new MibObjectParser($block);	
+			$objectParsers[] = new MibObjectParser($block, $this->mibTypeParser);
 		}
 		return $objectParsers;
 

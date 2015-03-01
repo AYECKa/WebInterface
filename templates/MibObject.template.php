@@ -1,11 +1,15 @@
 <?php
 
+
+
 class MibPageRender {
 
 	private $mibGroups;
 	public $hasPage;
+	private $mibObject;
 	public function __construct($mibObjects)
 	{
+		$this->mibObject = $mibObjects;
 		if($mibObjects !== false)
 			$this->hasPage = true;
 		else
@@ -31,6 +35,20 @@ class MibPageRender {
 
 	public function render()
 	{
+
+		if(isset($_GET['table']))
+		{
+			return $this->tableRender();
+		}
+		else
+		{
+			return $this->objectsRender();
+		}
+
+	}
+
+	private function objectsRender()
+	{
 		$ret = "";
 		$ret.= '<div class="row">' . "\n\r";
 		foreach($this->mibGroups as $groupName => $group)
@@ -43,20 +61,50 @@ class MibPageRender {
 			$ret .= "<dl class=\"dl-horizontal\">\n";
 			foreach($group as  $object)
 			{
-				
 				$ret .= $object->render();
 			}
 			$ret .= "</dl>\n";
 			$ret .= "</div>\n";
 			$ret .= "</div>\n";
 			$ret .= "</div>\n";
-			
+
 		}
 		$ret.= '</div>' . "\n\r";
 		return $ret;
+	}
+	private function butifyFieldName($name)
+	{
+		$ret = "";
+		$arr = preg_split('/(?=\p{Lu})/u', $name);
+		if($arr[0] === '') unset($arr[0]); //remove first element, if string starts with a capital letter.
+		foreach($arr as $word)
+		{
+			$ret .= ucwords($word) . " ";
+		}
+		return $ret;
 
 	}
+	private function tableRender()
+	{
+		//try and get the table type...
+		$type = $this->mibObject[0]->parent->type;
+		$ret = "<table class=\"table table-responsive\">
 
+
+  					<tr>
+						";
+						foreach($type as $t)
+						{
+							$name = $this->butifyFieldName($t['name']);
+							$ret .= "<td>{$name}</td>";
+						}
+		$ret .=	"		</tr>
+
+				</table>";
+
+		return $ret;
+
+	}
 }
 
 
@@ -76,7 +124,7 @@ class MibObjectRender {
 	{
 		if($this->mibObject->description !== "")
 			return explode(' ', trim($this->mibObject->description))[0];
-		
+
 		$arr = preg_split('/(?=\p{Lu})/u', $this->mibObject->name);
 		if($arr[0] === '') unset($arr[0]); //remove first element, if string starts with a capital letter.
 
@@ -89,7 +137,7 @@ class MibObjectRender {
 			return trim($this->mibObject->description);
 		$ret = "";
 		//TODO: update to desc instead of name
-		$arr = preg_split('/(?=\p{Lu})/u', $name);
+		$arr = preg_split('/(?=\p{Lu})/u', $$this->mibObject->name);
 		if($arr[0] === '') unset($arr[0]); //remove first element, if string starts with a capital letter.
 		foreach($arr as $word)
 		{
@@ -104,10 +152,16 @@ class MibObjectRender {
 		$render .= "";
 		$render .= "<dt><a href=\"#\" class=\"data-title-link\" data-toggle=\"tooltip\" title=\"". $name ."\"> " . $name . ":</a> </dt>";
 		$render .= "<dd>
-						<a class=\"editable-link\" href=\"#\" id=\"" . $this->mibObject->name . "\" oid=\"" . $this->oid ."\">" . 'Fetching...' . "</a>
-						<img class=\"data-loader-ajax-loader\" src=\"img/loading.gif\" id=\"". $this->mibObject->name . "-loader\"/>
-					</dd>\r\n";
-		//$render .= "</dl>\r\n";
+
+						";
+		if(is_array($this->mibObject->type))
+			$render .= "<a href='?table={$this->mibObject->name}'>Open Table</a>";
+		else
+			$render .=		"
+							<a class=\"editable-link\" href=\"#\" id=\"" . $this->mibObject->name . "\" oid=\"" . $this->oid ."\">" . 'Fetching...' . "</a>
+							<img class=\"data-loader-ajax-loader\" src=\"img/loading.gif\" id=\"". $this->mibObject->name . "-loader\"/>
+						</dd>\r\n";
+
 
 		
 		return $render;
