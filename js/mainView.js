@@ -20,12 +20,57 @@ $(document).ready(function ()
 {   
     //$.fn.editable.defaults.mode = 'inline';
     loadAllPageData(30);
+    loadTable();
     loadSystemInfo();
 });
 
+function loadTable()
+{
+    var tableCols = [];
+    $('.oid-table td').each(function () {
+        var oid = this.getAttribute('oid');
+        tableCols.push(oid);
+    });
+
+    var currentRow = 1;
+    for(var i=0;i<5;i++) {
+        fetchTableRow(tableCols, i);
+    }
+
+}
+
+
+function fetchTableRow(tableCols, rowIndex ,finishCallback)
+{
+    var request = "";
+    for(var i=0;i<tableCols.length;i++)
+    {
+        request += tableCols[i] + "." + rowIndex + ",";
+    }
+    query = request.slice(0, -1); //removes the comma in the end of the query
+    $.get('ajax/snmpget.php?oids=' + query, function (response) {
+        var tableData = response.data;
+        var template = "";
+        template+="<tr>";
+        for(var obj in tableData)
+        {
+
+            var editable = "<a class=\"editable-link editable editable-click\" href=\"#\" oid=\"" + obj + "\">" + tableData[obj] + "</a>";
+            template += "<td>" + editable + "</td>";
+        }
+        template+="</tr>";
+        $('.oid-table tr:last').after(template)
+        $('.oid-table .editable').each(function () {
+            $(this).editable();
+        });
+        if(finishCallback)
+            finishCallback(rowIndex);
+    });
+}
+
 function loadAllPageData(chunkSize)
 {
-    var controlQueue = []
+    var controlQueue = [];
 
     $('.editable-link').each(function ()
     {

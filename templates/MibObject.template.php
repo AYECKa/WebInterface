@@ -87,24 +87,23 @@ class MibPageRender {
 	private function tableRender()
 	{
 		//try and get the table type...
+		$col = $this->mibObject[0]->children;
 		$type = $this->mibObject[0]->parent->type;
-		$ret = "<table class=\"table table-responsive\">
-
-
-  					<tr>
-						";
-						foreach($type as $t)
+		$ret = "<table class=\"table table-responsive oid-table\">\r\n\t\t\t<tr>\n";
+						foreach($type as $key => $t)
 						{
+							$oid = $col[$key]->getOid();
 							$name = $this->butifyFieldName($t['name']);
-							$ret .= "<td>{$name}</td>";
+							$ret .= "\r\t\t\t\t<td oid=\"{$oid}\">{$name}</td>\r\n";
 						}
-		$ret .=	"		</tr>
+		$ret .=	"\t\t\t</tr>
 
 				</table>";
 
 		return $ret;
 
 	}
+
 }
 
 

@@ -23,7 +23,7 @@
         <div class="well">
             <img src="img/ayeckaLogo.png">
             <form method="post" action="#">
-                <input type="text" placeholder="AYECKa Device host" class="form-control input-sm" name="host"><br>
+                <input type="text" placeholder="AYECKa Device host" class="form-control input-sm" name="host" value="10.0.0.201"><br>
                 <input type="text" placeholder="Community-Read" value="public" class="form-control input-sm" name="community-read"><br>
                 <input type="text" placeholder="Community-Write" value="private" class="form-control input-sm" name="community-write"><br>
                 <div class="checkbox text-left"><label><input name="use-mock" checked type="checkbox"/>Use mock device</label></div>
