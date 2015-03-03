@@ -7,18 +7,27 @@ function getValueOrEmptyString($arrayElement)
 {
 	return isset($arrayElement)?$arrayElement:"";
 }
-
-$mib = new MibFiles($searchPath);
-if(isset($_GET['resetSession']))
+if(isset($_SESSION['mib']))
 {
-	unset($_SESSION['SELECTED_FILE']);
-	die("<script>window.location.href = window.location.href.replace(window.location.search,'');</script>");
+	$mib = $_SESSION['mib'];
+}
+else
+{
+	$mib = new MibFiles($searchPath);
+	if(isset($_GET['resetSession']))
+	{
+		unset($_SESSION['SELECTED_FILE']);
+		unset($_SESSION['mib']);
+		die("<script>window.location.href = window.location.href.replace(window.location.search,'');</script>");
+	}
+
+	if(isset($_SESSION['SELECTED_FILE']) && $_SESSION['SELECTED_FILE'] !== "")
+	{
+		$mib->selectMibTreeByName($_SESSION['SELECTED_FILE']);
+	}	
+	$_SESSION['mib'] = $mib;
 }
 
-if(isset($_SESSION['SELECTED_FILE']) && $_SESSION['SELECTED_FILE'] !== "")
-{
-	$mib->selectMibTreeByName($_SESSION['SELECTED_FILE']);
-}
 $snmp = new SNMPClient();
 
 if(isset($_SESSION['host']))

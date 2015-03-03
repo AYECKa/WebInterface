@@ -32,16 +32,19 @@ function loadTable()
         tableCols.push(oid);
     });
 
-    var currentRow = 1;
-    for(var i=0;i<5;i++) {
-        fetchTableRow(tableCols, i);
-    }
-
+    fetchTable(tableCols);
 }
 
-
-function fetchTableRow(tableCols, rowIndex ,finishCallback)
+var currentRow = 0;
+function fetchTable(tableCols)
 {
+    currentRow++;
+    fetchTableRow(tableCols,currentRow, fetchTable, tableCols,10);
+}
+
+function fetchTableRow(tableCols, rowIndex ,finishCallback, callbackParam, rowIndexLimit)
+{
+    if(rowIndex >= rowIndexLimit) return;
     var request = "";
     for(var i=0;i<tableCols.length;i++)
     {
@@ -54,7 +57,7 @@ function fetchTableRow(tableCols, rowIndex ,finishCallback)
         template+="<tr>";
         for(var obj in tableData)
         {
-
+            if(tableData[obj].indexOf("Error") !== -1) return;
             var editable = "<a class=\"editable-link editable editable-click\" href=\"#\" oid=\"" + obj + "\">" + tableData[obj] + "</a>";
             template += "<td>" + editable + "</td>";
         }
@@ -64,7 +67,7 @@ function fetchTableRow(tableCols, rowIndex ,finishCallback)
             $(this).editable();
         });
         if(finishCallback)
-            finishCallback(rowIndex);
+            finishCallback(callbackParam);
     });
 }
 
