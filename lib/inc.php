@@ -9,6 +9,16 @@ function getValueOrEmptyString($arrayElement)
 {
 	return isset($arrayElement)?$arrayElement:"";
 }
+
+if(isset($_GET['resetSession']))
+{
+	unset($_SESSION['SELECTED_FILE']);
+	unset($_SESSION['mib']);
+	die("<script>window.location.href = window.location.href.replace(window.location.search,'');</script>");
+}
+
+
+
 if(isset($_SESSION['mib']) && ENABLE_MIB_CACHE)
 {
 	$mib = $_SESSION['mib'];
@@ -16,13 +26,6 @@ if(isset($_SESSION['mib']) && ENABLE_MIB_CACHE)
 else
 {
 	$mib = new MibFiles($searchPath);
-	if(isset($_GET['resetSession']))
-	{
-		unset($_SESSION['SELECTED_FILE']);
-		unset($_SESSION['mib']);
-		die("<script>window.location.href = window.location.href.replace(window.location.search,'');</script>");
-	}
-
 	if(isset($_SESSION['SELECTED_FILE']) && $_SESSION['SELECTED_FILE'] !== "")
 	{
 		$mib->selectMibTreeByName($_SESSION['SELECTED_FILE']);
