@@ -69,6 +69,28 @@ class MibNode
 			$ret->addChild($child->cloneNode());
 		return $ret;
 	}
+
+	public function walkTo($oid)
+	{
+		//echo $this->oid . "-";
+		if($oid == "")
+		{
+			return $this;
+		}
+
+		$x = explode('.', $oid);
+		$current = $x[0];
+		unset($x[0]);
+		$rest = join('.', $x);
+		foreach($this->children as $child)
+		{
+
+			if($child->oid === $current)
+			{
+				return $child->walkTo($rest);
+			}
+		}
+	}
 }
 
 
@@ -134,10 +156,6 @@ class ObjectIdentifierParser
 	}
 }
 
-class MibType
-{
-
-}
 
 class MibTypeParser
 {
@@ -186,6 +204,10 @@ class MibTypeParser
 			$seqType = trim($match[1]);
 			return $this->typeTree[$seqType];
 
+		}
+		else
+		{
+			return strtoupper(trim($typeString));
 		}
 
 	}
@@ -355,6 +377,14 @@ class MibTree
 	public function getNodesOfType($type)
 	{
 		return $this->root->getNodesOfType($type);
+	}
+
+	public function getNodeByOid($oid)
+	{
+		$oid = str_replace($this->root->oid . ".", "", $oid);
+		$node = $this->root->walkTo($oid);
+		return $node;
+
 	}
 }
 

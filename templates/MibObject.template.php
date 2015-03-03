@@ -89,16 +89,17 @@ class MibPageRender {
 		//try and get the table type...
 		$col = $this->mibObject[0]->children;
 		$type = $this->mibObject[0]->parent->type;
-		$ret = "<table class=\"table table-responsive oid-table\">\r\n\t\t\t<tr>\n";
+		$ret = "<div class=\"table-responsive\">";
+		$ret .= "<table id=\"oid-table\" class=\"table oid-table\">\r\n\t\t\t<thead><tr>\n";
 						foreach($type as $key => $t)
 						{
 							$oid = $col[$key]->getOid();
 							$name = $this->butifyFieldName($t['name']);
-							$ret .= "\r\t\t\t\t<td oid=\"{$oid}\">{$name}</td>\r\n";
+							$ret .= "\r\t\t\t\t<th oid=\"{$oid}\">{$name}</th>\r\n";
 						}
-		$ret .=	"\t\t\t</tr>
+		$ret .=	"\t\t\t</tr></thead><tbody></tbody>
 
-				</table>";
+				</table></div>";
 
 		return $ret;
 
@@ -157,7 +158,7 @@ class MibObjectRender {
 			$render .= "<a href='?table={$this->mibObject->name}'>Open Table</a>";
 		else
 			$render .=		"
-							<a class=\"editable-link\" href=\"#\" id=\"" . $this->mibObject->name . "\" oid=\"" . $this->oid ."\">" . 'Fetching...' . "</a>
+							<a class=\"editable-link\" href=\"#\" id=\"" . $this->mibObject->name . "\" oid=\"" . $this->oid ."\" data-name=\"" . $this->oid ."\" data-type=\"text\" data-pk=\"0\" data-url=\"ajax/snmpset.php\">" . 'Fetching...' . "</a>
 							<img class=\"data-loader-ajax-loader\" src=\"img/loading.gif\" id=\"". $this->mibObject->name . "-loader\"/>
 						</dd>\r\n";
 

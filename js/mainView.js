@@ -27,22 +27,27 @@ $(document).ready(function ()
 function loadTable()
 {
     var tableCols = [];
-    $('.oid-table td').each(function () {
+    $('.oid-table th').each(function () {
         var oid = this.getAttribute('oid');
         tableCols.push(oid);
     });
+    var dataTable = $('#oid-table').DataTable();
 
-    fetchTable(tableCols);
+    if(tableCols.length > 0)
+    {
+        fetchTable(dataTable, tableCols);
+    }
+
 }
 
 var currentRow = 0;
-function fetchTable(tableCols)
+function fetchTable(dataTable, tableCols)
 {
     currentRow++;
-    fetchTableRow(tableCols,currentRow, fetchTable, tableCols,10);
+    fetchTableRow(dataTable, tableCols,currentRow, fetchTable, tableCols,100);
 }
 
-function fetchTableRow(tableCols, rowIndex ,finishCallback, callbackParam, rowIndexLimit)
+function fetchTableRow(dataTable,tableCols, rowIndex ,finishCallback, callbackParam, rowIndexLimit)
 {
     if(rowIndex >= rowIndexLimit) return;
     var request = "";
@@ -54,20 +59,25 @@ function fetchTableRow(tableCols, rowIndex ,finishCallback, callbackParam, rowIn
     $.get('ajax/snmpget.php?oids=' + query, function (response) {
         var tableData = response.data;
         var template = "";
-        template+="<tr>";
+        //template+="<tr>";
+        var row = [];
         for(var obj in tableData)
         {
             if(tableData[obj].indexOf("Error") !== -1) return;
-            var editable = "<a class=\"editable-link editable editable-click\" href=\"#\" oid=\"" + obj + "\">" + tableData[obj] + "</a>";
-            template += "<td>" + editable + "</td>";
+            var editable = "<a class=\"editable-link editable editable-click\" data-type=\"text\" href=\"#\" data-pk=\"1\" data-url=\"ajax/snmpset.php\" oid=\"" + obj + "\" data-name=\"" + obj + "\">" + tableData[obj] + "</a>";
+            row.push(editable);
+            //template += "<td>" + editable + "</td>";
         }
-        template+="</tr>";
-        $('.oid-table tr:last').after(template)
-        $('.oid-table .editable').each(function () {
+
+        //template+="</tr>";
+        //$(template).appendTo('.oid-table tbody');
+        dataTable.row.add(row).draw();
+
+        $('.editable').each(function () {
             $(this).editable();
         });
         if(finishCallback)
-            finishCallback(callbackParam);
+            finishCallback(dataTable, callbackParam);
     });
 }
 

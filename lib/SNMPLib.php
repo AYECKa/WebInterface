@@ -39,7 +39,7 @@ class SNMPMockBehavior implements SNMPSetBehavior, SNMPGetBehavior
 	{
 		$a = rand(0,1000) / 1000;
 		sleep($a);
-		return $a;
+		return (string)$a;
 	}
 	public function set($host, $writeCommunity, $oid, $type ,$value)
 	{
@@ -91,7 +91,7 @@ class SNMPClient
 		{
 			throw new Exception("SNMP Set behavior is not set");
 		}
-		return $this->snmpSet->set($this->host, $this->writeCommunity, $oid, $value);
+		return $this->snmpSet->set($this->host, $this->writeCommunity, $oid,$type ,$value);
 	}
 
 }

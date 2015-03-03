@@ -3,11 +3,13 @@ require_once(dirname(__FILE__) . '/config.php');
 require_once(dirname(__FILE__) . '/MibParser.php');
 require_once(dirname(__FILE__) . '/SNMPLib.php');
 session_start();
+
+define('ENABLE_MIB_CACHE' , true);
 function getValueOrEmptyString($arrayElement)
 {
 	return isset($arrayElement)?$arrayElement:"";
 }
-if(isset($_SESSION['mib']))
+if(isset($_SESSION['mib']) && ENABLE_MIB_CACHE)
 {
 	$mib = $_SESSION['mib'];
 }

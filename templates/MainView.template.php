@@ -18,9 +18,12 @@
         <link rel="stylesheet" href="css/bootstrap.css">
         <link rel="stylesheet" href="css/bootstrap-editable.css">
         <link rel="stylesheet" href="css/custom-style.css">
+        <link rel="stylesheet" href="css/dataTables.bootstrap.css">
         <script type="text/javascript" src="js/jquery-2.1.3.min.js"></script>
         <script type="text/javascript" src="js/bootstrap.min.js"></script>
         <script type="text/javascript" src="js/bootstrap-editable.js"></script>
+        <script type="text/javascript" src="js/jquery.dataTables.min.js"></script>
+        <script type="text/javascript" src="js/dataTables.bootstrap.js"></script>
         <script type="text/javascript" src="js/mainView.js"></script>
     </head>
     <body>
