@@ -91,7 +91,8 @@ class MibPageRender {
 		$type = $this->mibObject[0]->parent->type;
 		$ret = "<div class=\"table-responsive\">";
 		$ret .= "<table id=\"oid-table\" class=\"table oid-table\">\r\n\t\t\t<thead><tr>\n";
-						foreach($type as $key => $t)
+
+						foreach($type['type'] as $key => $t)
 						{
 							$oid = $col[$key]->getOid();
 							$name = $this->butifyFieldName($t['name']);
@@ -154,14 +155,22 @@ class MibObjectRender {
 		$render .= "<dd>
 
 						";
-		if(is_array($this->mibObject->type))
+
+
+		if($this->mibObject->type['metaType'] == 'TABLE')
 			$render .= "<a href='?table={$this->mibObject->name}'>Open Table</a>";
-		else
+		else if($this->mibObject->type['metaType'] == 'LITERAL')
 			$render .=		"
 							<a class=\"editable-link\" href=\"#\" id=\"" . $this->mibObject->name . "\" oid=\"" . $this->oid ."\" data-name=\"" . $this->oid ."\" data-type=\"text\" data-pk=\"0\" data-url=\"ajax/snmpset.php\">" . 'Fetching...' . "</a>
 							<img class=\"data-loader-ajax-loader\" src=\"img/loading.gif\" id=\"". $this->mibObject->name . "-loader\"/>
 						</dd>\r\n";
+		else if($this->mibObject->type['metaType'] == 'OPTIONS')
+		{
+			$render .= "<a href=\"#\" class=\"editable-options\" id=\"" . $this->mibObject->name ."\" oid=\"" . $this->oid . "\" data-name=\"" . $this->oid ."\" data-type=\"select\" data-pk=\"0\" data-url=\"ajax/snmpset.php\" data-options='" . json_encode($this->mibObject->type['type']) ."'>" . 'Fetching...' . "</a>
+						<img class=\"data-loader-ajax-loader\" src=\"img/loading.gif\" id=\"". $this->mibObject->name . "-loader\"/>
+						</dd>\r\n";
 
+		}
 
 		
 		return $render;

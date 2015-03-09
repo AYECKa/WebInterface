@@ -35,11 +35,42 @@ class SNMPPHPExtentionBehavior implements SNMPSetBehavior, SNMPGetBehavior
 
 class SNMPMockBehavior implements SNMPSetBehavior, SNMPGetBehavior
 {
+
+	private function mockSysInfo()
+	{
+
+		return array( "1.3.6.1.2.1.1.6" => '55:55:55',
+					"1.3.6.1.2.1.1.3" => 'Mock Object Id',
+					"1.3.6.1.2.1.1.4" => 'GOD',
+					"1.3.6.1.2.1.1.1" => 'Mock SNMP Device',
+					"1.3.6.1.2.1.1.5" => 'Mock',
+					"1.3.6.1.2.1.1.2" => 'Somewhere over the rainbow',
+					"1.3.6.1.2.1.1.7" => 'SNMP');
+	}
+
 	public function get($host, $readCommunity, $oid)
 	{
-		$a = rand(0,1000) / 1000;
-		sleep($a);
-		return (string)$a;
+		global $mib;
+		$ret = "";
+		$sys = $this->mockSysInfo();
+		if(isset($sys[$oid])) return $sys[$oid];
+
+		$node = $mib->tree->getNodeByOid($oid);
+		//if($node == null) return "Error: Bad Name"; //will stop table from loading data...
+
+		if($node != null && $node->type['metaType'] == "OPTIONS")
+		{
+			$index = rand(0, count($node->type['type'])-1);
+			$ret = $node->type['type'][$index]['value'];
+		}
+		else
+		{
+			$ret = rand(0,1000);
+
+		}
+		sleep(rand(0,1000) / 1000);
+		return (string)$ret;
+
 	}
 	public function set($host, $writeCommunity, $oid, $type ,$value)
 	{

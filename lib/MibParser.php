@@ -202,12 +202,27 @@ class MibTypeParser
 		{
 			//get sequence type:
 			$seqType = trim($match[1]);
-			return $this->typeTree[$seqType];
+			return array('metaType'=>'TABLE', 'type' => $this->typeTree[$seqType]);
 
+		}
+		else if(preg_match('/(INTEGER|Integer32) \{(.*)\}/', $typeString, $match))
+		{
+			$oidType = $match[1];
+			$options_match = explode(',', $match[2]);
+			$options = array();
+			foreach($options_match as $match)
+			{
+				preg_match('/(.*)\((.*)\)/', $match, $typeMatch);
+				$desc = trim($typeMatch[1]);
+				$desc = ucwords(str_replace('_', ' ', $desc));
+				$options[] = array('value'=>trim($typeMatch[2]), 'text' => $desc);
+			}
+
+			return array('metaType'=>'OPTIONS' , 'oidType' => $oidType, 'type' => $options);
 		}
 		else
 		{
-			return strtoupper(trim($typeString));
+			return array('metaType'=>'LITERAL', 'oidType'=> strtoupper(trim($typeString)), 'type'=>strtoupper(trim($typeString)));
 		}
 
 	}

@@ -3,7 +3,7 @@ require_once('../lib/inc.php');
 header('Content-Type: application/json');
 
 
-$typeTable = array('INTEGER' => 'i', 'STRING' => 's', 'HEX STRING' =>'x', 'DECIMAL STRING' => 'd', 'NULLOBJ' => 'n', 'OBJID' => 'o', 'TIMETICKS' => 't', 'IPADDRESS' => 'a', 'BITS' => 'b', 'MACADDRESS' => 'x', 'Unsigned32' => 'u');
+$typeTable = array('INTEGER' => 'i', 'STRING' => 's', 'HEX STRING' =>'x', 'DECIMAL STRING' => 'd', 'NULLOBJ' => 'n', 'OBJID' => 'o', 'TIMETICKS' => 't', 'IPADDRESS' => 'a', 'BITS' => 'b', 'MACADDRESS' => 'x', 'UNSIGNED32' => 'u');
 
 function getOidType($isTable,$oid)
 {
@@ -21,14 +21,16 @@ function getOidType($isTable,$oid)
     {
         $oidIndex = explode('.' ,$oid);
         $oidIndex = $oidIndex[count($oidIndex) - 1] - 1;
-        $typeString = $node->parent->parent->type[$oidIndex]['type'];
+        $typeString = $node->parent->parent->type['type'][$oidIndex]['type'];
     }
     else
     {
-        $typeString = $node->type;
+        $typeString = $node->type['oidType'];
+
     }
 
     global $typeTable;
+    if(!isset($typeTable[$typeString])) {die(json_encode(array('status' => 'error', 'desc' => 'Unknown type ' . $typeString)));}
     return $typeTable[$typeString];
 
 }

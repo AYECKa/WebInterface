@@ -34,6 +34,7 @@
                 <div class="col-lg-1"><img src="img/ayeckaLogo.png" class="pull-left"></div>
                 <div class="col-lg-10 text-center">
                     <br><h4>AYECKa Web Interface</h4>
+                    <h5><?php echo $_SESSION['SYS_DESC'];?></h5>
                 </div>
                 <div class="col-lg-1"><img src="img/slogen.png" class="pull-right"></div>
             </div>
@@ -50,12 +51,12 @@
                 <div class="col-md-3">
 
                     <div class="panel panel-default">
-                        <label>System Up Time:      <span class="systemInfo" oid="1.3.6.1.2.1.1.3"><img src="img/loading.gif"/></span></label></br>
+                        <label>System Up Time:      <span class="systemInfo" oid="1.3.6.1.2.1.1.6"><img src="img/loading.gif"/></span></label></br>
+                        <label>System Object ID:    <span class="systemInfo" oid="1.3.6.1.2.1.1.3"><img src="img/loading.gif"/></span></label></br>
                         <label>System Contact:      <span class="systemInfo" oid="1.3.6.1.2.1.1.4"><img src="img/loading.gif"/></span></label></br>
                         <label>System Description:  <span class="systemInfo" oid="1.3.6.1.2.1.1.1"><img src="img/loading.gif"/></span></label></br>
                         <label>System Name:         <span class="systemInfo" oid="1.3.6.1.2.1.1.5"><img src="img/loading.gif"/></span></label></br>
-                        <label>System Location:     <span class="systemInfo" oid="1.3.6.1.2.1.1.6"><img src="img/loading.gif"/></span></label></br>
-                        <label>System Object ID:    <span class="systemInfo" oid="1.3.6.1.2.1.1.2"><img src="img/loading.gif"/></span></label></br>
+                        <label>System Location:     <span class="systemInfo" oid="1.3.6.1.2.1.1.2"><img src="img/loading.gif"/></span></label></br>
                         <label>System Services:     <span class="systemInfo" oid="1.3.6.1.2.1.1.7"><img src="img/loading.gif"/></span></label></br>
                     </div>
                 </div>

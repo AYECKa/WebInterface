@@ -44,7 +44,7 @@ var currentRow = 0;
 function fetchTable(dataTable, tableCols)
 {
     currentRow++;
-    fetchTableRow(dataTable, tableCols,currentRow, fetchTable, tableCols,100);
+    fetchTableRow(dataTable, tableCols,currentRow, fetchTable, tableCols,513);
 }
 
 function fetchTableRow(dataTable,tableCols, rowIndex ,finishCallback, callbackParam, rowIndexLimit)
@@ -95,13 +95,31 @@ function loadAllPageData(chunkSize)
         var loader = $('#' + loaderId);
 
         var dataHolder = {
+            controlType:'TEXT',
             oid: oid,
             control: textBox,
             loader: loader
         };
         controlQueue[oid]=dataHolder;
     });
+    $('.editable-options').each(function ()
+    {
+        var oid = this.attributes['oid'].value;
 
+        var loaderId = this.attributes['id'].value + '-loader';
+        var textId = this.attributes['id'].value;
+        var textBox = $('#' + textId);
+        var loader = $('#' + loaderId);
+        var options = JSON.parse(this.attributes['data-options'].value);
+        var dataHolder = {
+            controlType:'OPTIONS',
+            oid: oid,
+            control: textBox,
+            loader: loader,
+            options: options
+        };
+        controlQueue[oid]=dataHolder;
+    });
     var i=1;
     var query = ""
     for(var key in controlQueue)
@@ -129,8 +147,23 @@ function executeQuery(controlQueue,query)
                 console.log('Unexpected index ' + key);
                 continue;
             }
-            controlQueue[key].control.html(response.data[key])
-            controlQueue[key].control.editable();
+            var responseData = response.data[key];
+
+            if(controlQueue[key].controlType === 'TEXT')
+            {
+                controlQueue[key].control.html(responseData);
+                controlQueue[key].control.editable();
+            }
+            else if(controlQueue[key].controlType == 'OPTIONS')
+            {
+                controlQueue[key].control.html('');
+                var options = controlQueue[key].options;
+                controlQueue[key].control.editable({
+                    value: responseData,
+                    source: options
+                });
+            }
+
             controlQueue[key].loader.hide();
         }
     });

@@ -14,6 +14,7 @@ if(isset($_GET['resetSession']))
 {
 	unset($_SESSION['SELECTED_FILE']);
 	unset($_SESSION['mib']);
+	unset($_SESSION['SYS_DESC']);
 	die("<script>window.location.href = window.location.href.replace(window.location.search,'');</script>");
 }
 
@@ -25,12 +26,26 @@ if(isset($_SESSION['mib']) && ENABLE_MIB_CACHE)
 }
 else
 {
+
+	if(ENABLE_MIB_CACHE)
+	{
+		include('templates/Analyze.template.php');
+		flush();
+	}
 	$mib = new MibFiles($searchPath);
 	if(isset($_SESSION['SELECTED_FILE']) && $_SESSION['SELECTED_FILE'] !== "")
 	{
 		$mib->selectMibTreeByName($_SESSION['SELECTED_FILE']);
 	}	
 	$_SESSION['mib'] = $mib;
+	if(ENABLE_MIB_CACHE)
+	{
+		echo "<script>location.reload();</script>";
+		flush();
+	}
+
+
+
 }
 
 $snmp = new SNMPClient();
@@ -54,4 +69,11 @@ if(isset($_SESSION['use-mock']))
 		$snmp->setSNMPGetBehavior(new SNMPPHPExtentionBehavior());
 		$snmp->setSNMPSetBehavior(new SNMPPHPExtentionBehavior());
 	}
+}
+
+
+//checkout for system desc
+if(!isset($_SESSION['SYS_DESC']) && isset($_SESSION['host']))
+{
+	$_SESSION['SYS_DESC'] = $snmp->get('1.3.6.1.2.1.1.1');
 }
