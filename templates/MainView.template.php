@@ -19,11 +19,14 @@
         <link rel="stylesheet" href="css/bootstrap-editable.css">
         <link rel="stylesheet" href="css/custom-style.css">
         <link rel="stylesheet" href="css/dataTables.bootstrap.css">
+        <link rel="stylesheet" href="css/dataTables.tableTools.css">
         <script type="text/javascript" src="js/jquery-2.1.3.min.js"></script>
         <script type="text/javascript" src="js/bootstrap.min.js"></script>
         <script type="text/javascript" src="js/bootstrap-editable.js"></script>
         <script type="text/javascript" src="js/jquery.dataTables.min.js"></script>
+        <script type="text/javascript" src="js/jquery.toaster.js"></script>
         <script type="text/javascript" src="js/dataTables.bootstrap.js"></script>
+        <script type="text/javascript" src="js/dataTables.tableTools.js"></script>
         <script type="text/javascript" src="js/mainView.js"></script>
     </head>
     <body>
@@ -85,8 +88,10 @@
                         require_once('Home.template.php');
                ?>
             </div>
+
         <div class="col-md-1"></div>
         </div>
+
         <div class="container text-left">
             <hr>
             <footer>

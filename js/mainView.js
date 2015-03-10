@@ -19,6 +19,7 @@ $(function(){
 $(document).ready(function ()
 {   
     //$.fn.editable.defaults.mode = 'inline';
+    $.toaster({settings:{timeout:2000}})
     loadAllPageData(30);
     loadTable();
     loadSystemInfo();
@@ -26,12 +27,77 @@ $(document).ready(function ()
 
 function loadTable()
 {
+
+    var clipboard = [];
+
+
     var tableCols = [];
     $('.oid-table th').each(function () {
         var oid = this.getAttribute('oid');
         tableCols.push(oid);
     });
-    var dataTable = $('#oid-table').DataTable();
+    var dataTable = $('#oid-table').DataTable({
+        "dom": 'T<"clear">lfrtip',
+        "tableTools": {
+            "aButtons": [
+                {
+                    "sExtends":    "text",
+                    "sButtonText": "Copy record",
+                    "fnClick": function () {
+                        if(!dataTable.$('tr').hasClass('selected'))
+                        {
+                            $.toaster({ priority : 'info', title : 'Could not copy record', message : 'Please select a record'});
+                            return;
+                        }
+                        clipboard = [];
+                        dataTable.$('tr.selected').children().each(function () {
+                          clipboard.push($(this));
+                        });
+                        $.toaster({ priority : 'success', title : 'Success', message : 'Record is now in clipboard'});
+                    }
+                },
+                {
+                    "sExtends":    "text",
+                    "sButtonText": "Paste record",
+                    "fnClick" : function () {
+                        if(clipboard.length == 0)
+                        {
+                            $.toaster({ priority : 'info', title : 'Error', message : 'Please copy a record first'});
+                            return;
+                        }
+                        if(!dataTable.$('tr').hasClass('selected'))
+                        {
+                            $.toaster({ priority : 'info', title : 'Could not paste record', message : 'Please select a record'});
+                            return;
+                        }
+                        dataTable.$('tr.selected').find('.editable').each(function (index) {
+
+                            var element = clipboard[index];
+                            $(this).editable('setValue', element.text());
+                            $(this).editable('submit');
+                        });
+
+
+
+
+                    }
+                }
+            ]
+        }
+
+    });
+
+    $('#oid-table tbody').on('click','tr', function () {
+       if( $(this).hasClass('selected'))
+       {
+           $(this).removeClass('selected');
+       }
+       else
+       {
+            dataTable.$('tr.selected').removeClass('selected');
+            $(this).addClass('selected');
+       }
+    });
 
     if(tableCols.length > 0)
     {
@@ -44,7 +110,7 @@ var currentRow = 0;
 function fetchTable(dataTable, tableCols)
 {
     currentRow++;
-    fetchTableRow(dataTable, tableCols,currentRow, fetchTable, tableCols,513);
+    fetchTableRow(dataTable, tableCols,currentRow, fetchTable, tableCols,/*513*/ 10);
 }
 
 function fetchTableRow(dataTable,tableCols, rowIndex ,finishCallback, callbackParam, rowIndexLimit)

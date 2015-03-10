@@ -332,3 +332,6 @@ div.FixedHeader_Cloned table {
 	margin: 0 !important
 }
 
+tbody .selected {
+	background-color: #abb9d3;
+}
