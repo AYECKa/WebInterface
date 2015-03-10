@@ -110,7 +110,7 @@ var currentRow = 0;
 function fetchTable(dataTable, tableCols)
 {
     currentRow++;
-    fetchTableRow(dataTable, tableCols,currentRow, fetchTable, tableCols,/*513*/ 10);
+    fetchTableRow(dataTable, tableCols,currentRow, fetchTable, tableCols,513);
 }
 
 function fetchTableRow(dataTable,tableCols, rowIndex ,finishCallback, callbackParam, rowIndexLimit)
