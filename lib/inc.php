@@ -17,6 +17,9 @@ if(isset($_GET['resetSession']))
 	unset($_SESSION['SELECTED_FILE']);
 	unset($_SESSION['mib']);
 	unset($_SESSION['SYS_DESC']);
+	unset($_SESSION['host']);
+	unset($_SESSION['community-write']);
+	unset($_SESSION['community-read']);
 	die("<script>window.location.href = window.location.href.replace(window.location.search,'');</script>");
 }
 
