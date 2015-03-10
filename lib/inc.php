@@ -12,6 +12,8 @@ function getValueOrEmptyString($arrayElement)
 
 if(isset($_GET['resetSession']))
 {
+	include('templates/Analyze.template.php');
+	flush();
 	unset($_SESSION['SELECTED_FILE']);
 	unset($_SESSION['mib']);
 	unset($_SESSION['SYS_DESC']);
