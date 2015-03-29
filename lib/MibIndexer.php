@@ -25,9 +25,14 @@ function addToIndexRecursivly($obj, MibNode $rootNode)
 {
     $url = getNodeUrl($rootNode);
     if($url != "") {
-        $obj[] = array("id" => $url, "name" => $rootNode->name);
         if ($rootNode->description !== null && $rootNode->description !== "")
             $obj[] = array("id" => $url, "name" => $rootNode->description);
+        else
+        {
+            $obj[] = array("id" => $url, "name" => $rootNode->name);
+        }
+
+
     }
 
 
