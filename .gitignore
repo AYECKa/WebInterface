@@ -3,3 +3,4 @@
 #ignore thumbnails created by windows
 Thumbs.db
 img/Thumbs.db
+mibs/*

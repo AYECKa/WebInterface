@@ -17,10 +17,24 @@ class SNMPPHPExtentionBehavior implements SNMPSetBehavior, SNMPGetBehavior
 	public function get($host, $readCommunity, $oid)
 	{	
 		ob_start();
-		$input = snmpget($host, $readCommunity, $oid);
-		$errors = ob_get_contents();
-		ob_clean();
-		if($errors !== "") return $errors;
+		$snmp = new SNMP(SNMP::VERSION_2C, $host, $readCommunity);
+		$snmp->exceptions_enabled = SNMP::ERRNO_ANY;
+		try {
+			$input = @$snmp->get($oid);
+		}
+		catch(Exception $e)
+		{
+			switch($snmp->getErrno())
+			{
+				case SNMP::ERRNO_ERROR_IN_REPLY:
+					return "Error: No such oid, probably wrong MIB";
+				case SNMP::ERRNO_TIMEOUT:
+					return "Error: Timeout";
+			}
+			return $e->getMessage() . " Error No. " . $snmp->getErrno();
+		}
+
+
 		$arr = explode(":", $input);
 		unset($arr[0]);
 		$output = trim(join($arr, ":"));

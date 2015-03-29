@@ -23,6 +23,34 @@ $(document).ready(function ()
     loadAllPageData(30);
     loadTable();
     loadSystemInfo();
+    $.get('ajax/getmibindex.php', function (response) {
+        $('#search-input').typeahead({
+            source: response,
+            onSelect: function(item)
+            {
+                console.log(item);
+                window.location.href = item.value + "&highlight=" + item.text;
+
+            }
+        });
+    });
+
+    if(location.search.split('highlight=').length == 2)
+    {
+        var text= decodeURI(location.search.split('highlight=')[1]);
+        $("body").highlight(text);
+        var element = $("*:contains('" + text+  "'):last");
+        $(window).scrollTop(element.offset().top);
+    }
+
+    $(document).keydown(function (e) {
+        if(e.ctrlKey && e.keyCode == 'F'.charCodeAt(0)){
+            e.preventDefault();
+            $('#search-input').focus();
+
+        }
+    });
+
 });
 
 function loadTable()

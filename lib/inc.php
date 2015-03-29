@@ -2,6 +2,7 @@
 require_once(dirname(__FILE__) . '/config.php');
 require_once(dirname(__FILE__) . '/MibParser.php');
 require_once(dirname(__FILE__) . '/SNMPLib.php');
+require_once(dirname(__FILE__) . '/MibIndexer.php');
 session_start();
 
 define('ENABLE_MIB_CACHE' , true);
@@ -20,8 +21,12 @@ if(isset($_GET['resetSession']))
 	unset($_SESSION['host']);
 	unset($_SESSION['community-write']);
 	unset($_SESSION['community-read']);
+	unset($_SESSION['mibIndex']);
 	die("<script>window.location.href = window.location.href.replace(window.location.search,'');</script>");
 }
+
+
+
 
 
 
@@ -41,6 +46,7 @@ else
 	if(isset($_SESSION['SELECTED_FILE']) && $_SESSION['SELECTED_FILE'] !== "")
 	{
 		$mib->selectMibTreeByName($_SESSION['SELECTED_FILE']);
+
 	}	
 	$_SESSION['mib'] = $mib;
 	if(ENABLE_MIB_CACHE)
@@ -52,6 +58,22 @@ else
 
 
 }
+
+
+if(isset($_SESSION['mibIndex']) && false)
+{
+	$mibIndex = $_SESSION['mibIndex'];
+}
+else
+{
+	if(isset($mib->tree->root))
+	{
+		$mibIndex = indexMib($mib->tree->root);
+		$_SESSION['mibIndex'] = $mibIndex;
+	}
+}
+
+
 
 $snmp = new SNMPClient();
 

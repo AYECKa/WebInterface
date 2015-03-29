@@ -409,7 +409,7 @@ class MibFiles
 	private $fileList;
 	private $mibList;
 	public $tree;
-
+	private $selectedFileName;
 	public function __construct($searchPath)
 	{
 		$this->searchPath = $searchPath;
@@ -417,14 +417,29 @@ class MibFiles
 		$this->tree = false;
 	}
 
+	public function getFileNameByOid($oid)
+	{
+		foreach($this->mibList as $key=>$file)
+		{
+			$fileOid = $file->root->children[0]->getOid();
+			if($fileOid === $oid)
+				return $key;
+		}
+		return false;
+	}
 
 	public function selectMibTreeByName($name)
 	{
 		if(!isset($this->mibList[$name])) return false;
+		$this->selectedFileName = $name;
 		$this->tree = $this->mibList[$name];
 		return true;
 	}
 
+	public function getSelectedMibFileName()
+	{
+		return $this->selectedFileName;
+	}
 	public function getMibFileList()
 	{
 		return $this->fileList;
