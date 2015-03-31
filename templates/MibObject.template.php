@@ -149,7 +149,8 @@ class MibObjectRender {
 	}
 	private function isFave()
 	{
-		return false;
+		global $fav;
+		return $fav->isFaved($this->oid);
 	}
 	public function render()
 	{

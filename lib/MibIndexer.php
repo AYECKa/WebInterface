@@ -26,10 +26,10 @@ function addToIndexRecursivly($obj, MibNode $rootNode)
     $url = getNodeUrl($rootNode);
     if($url != "") {
         if ($rootNode->description !== null && $rootNode->description !== "")
-            $obj[] = array("id" => $url, "name" => $rootNode->description);
+            $obj[] = array("id" => $url, "oid" => $rootNode->getOid() ,"name" => $rootNode->description);
         else
         {
-            $obj[] = array("id" => $url, "name" => $rootNode->name);
+            $obj[] = array("id" => $url, "oid" => $rootNode->getOid() ,"name" => $rootNode->name);
         }
 
 
