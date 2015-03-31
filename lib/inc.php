@@ -3,6 +3,7 @@ require_once(dirname(__FILE__) . '/config.php');
 require_once(dirname(__FILE__) . '/MibParser.php');
 require_once(dirname(__FILE__) . '/SNMPLib.php');
 require_once(dirname(__FILE__) . '/MibIndexer.php');
+require_once(dirname(__FILE__) . '/FavoriteHandler.php');
 session_start();
 
 define('ENABLE_MIB_CACHE' , true);
@@ -25,7 +26,7 @@ if(isset($_GET['resetSession']))
 	die("<script>window.location.href = window.location.href.replace(window.location.search,'');</script>");
 }
 
-
+$fav = new Favorite();
 
 
 

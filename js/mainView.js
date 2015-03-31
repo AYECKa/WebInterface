@@ -51,7 +51,37 @@ $(document).ready(function ()
         }
     });
 
+    handleFaves()
+
 });
+
+function handleFaves()
+{
+    $(".favorite").click(function() {
+        var oid = $(this).attr('oid');
+        var status = false;
+       if($(this).hasClass('glyphicon-star'))
+       {
+           $(this).removeClass('glyphicon-star');
+           $(this).addClass('glyphicon-star-empty');
+           status = false;
+       }
+       else
+       {
+           $(this).removeClass('glyphicon-star-empty');
+           $(this).addClass('glyphicon-star');
+           status = true;
+       }
+        setFave(oid, status);
+    });
+}
+
+function setFave(oid, status)
+{
+    $.get('ajax/setfave.php?oid=' + oid + "&status=" + status, function () {
+        console.log("fave is set");
+    });
+}
 
 function loadTable()
 {

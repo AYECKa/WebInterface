@@ -51,7 +51,9 @@ function checkIsIPV4(entry) {
 function doneTyping () {
     if(checkIsIPV4($('#host').val()))
     {
+
         $.toaster({settings:{timeout:2000}})
+        $.toaster({ priority : 'info', title : 'Checking for available mibs', message :  $('#host').val()});
         var query = "ip=" + $('#host').val() + "&community-read=" + $('#community-read').val();
         $.get('ajax/getmibbyip.php?' + query , function (response) {
             console.log(response);

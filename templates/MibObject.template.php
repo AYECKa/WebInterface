@@ -56,6 +56,7 @@ class MibPageRender {
 
 			$ret .= "<div class=\"col-md-4 col-sm-6 col-lg-3 col-xs-12\">\n";
 			$ret .= "<div class=\"panel panel-primary\">\n";
+
 			$ret .= "<div class=\"panel-heading\">" . $groupName . "</div>\n";
 			$ret .= "<div class=\"panel-body\">\n";
 			$ret .= "<dl class=\"dl-horizontal\">\n";
@@ -146,12 +147,17 @@ class MibObjectRender {
 		}
 		return $ret;
 	}
+	private function isFave()
+	{
+		return false;
+	}
 	public function render()
 	{
+		$fave_render = $this->isFave()?"":"-empty";
 		$render = "";
 		$name = $this->renderName();
 		$render .= "";
-		$render .= "<dt><a href=\"#\" class=\"data-title-link\" data-toggle=\"tooltip\" title=\"". $name ."\"> " . $name . ":</a> </dt>";
+		$render .= "<dt><div oid=\"".$this->oid. "\" class=\"glyphicon glyphicon-star". $fave_render . " favorite\"></div><a href=\"#\" class=\"data-title-link\" data-toggle=\"tooltip\" title=\"". $name ."\"> " . $name . ":</a> </dt>";
 		$render .= "<dd>
 
 						";
