@@ -79,7 +79,7 @@ class Favorite {
         $this->userDataHandler = $userDataHandler;
         $data = $userDataHandler->getData('fave');
         if(!$data) $data = array();
-        $this->favorites = $data;
+        $this->favorites = array_values(json_decode(json_encode($data),true)); //stdClass to array
     }
 
     private function getIsolatedNode($node)
@@ -99,7 +99,7 @@ class Favorite {
         //look for the fave to prevent duplicates
         foreach($this->favorites as $fave)
         {
-            if($fave->oid === $oid)
+            if($fave['oid'] === $node->oid)
                 return;
         }
         $this->favorites[] = $mibNode;
@@ -109,7 +109,7 @@ class Favorite {
         $node = $this->getIsolatedNode($node);
         foreach($this->favorites as $key => $fave)
         {
-            if($fave->oid === $node->oid)
+            if($fave['oid'] === $node->oid)
                 unset($this->favorites[$key]);
         }
     }
@@ -118,7 +118,7 @@ class Favorite {
     {
         foreach($this->favorites as $f)
         {
-            if($f->oid === $oid)
+            if($f['oid'] === $oid)
                 return true;
         }
         return false;
@@ -130,13 +130,13 @@ class Favorite {
         foreach($this->favorites as $f)
         {
             $mibNode = new MibNode();
-            $mibNode->name = $f->name;
-            $mibNode->oid = $f->oid;
-            $mibNode->type = json_decode(json_encode($f->type), true); //stdClass to array
-            $mibNode->status = $f->status;
-            $mibNode->description = $f->description;
-            $mibNode->canRead = $f->canRead;
-            $mibNode->canWrite = $f->canWrite;
+            $mibNode->name = $f['name'];
+            $mibNode->oid = $f['oid'];
+            $mibNode->type = $f['type'];
+            $mibNode->status = $f['status'];
+            $mibNode->description = $f['description'];
+            $mibNode->canRead = $f['canRead'];
+            $mibNode->canWrite = $f['canWrite'];
             $fav[] = $mibNode;
         }
         return $fav;

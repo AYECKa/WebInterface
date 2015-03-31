@@ -78,38 +78,56 @@ $(document).ready(function ()
 
 function handleGauges()
 {
-    var gauges = $('.gaugeContainer').jqxGauge({
-        min: 0,
-        max: 220,
-        ticksMinor: { interval: 5, size: '5%' },
-        ticksMajor: { interval: 10, size: '9%' },
-        value: 0,
-        colorScheme: 'scheme03',
-        animationDuration: 1200
+    var gauges = []
+    $('.gaugeContainer').each(function () {
+        var id = $(this).attr('id');
+        gauges.push(new JustGage({
+            id: id,
+            min: 1,
+            max: 100,
+            value: 50,
+            title: 'Test'
+
+
+
+        })) ;
     });
 
     $('.gaugeContainer').on('click', function (){
         var val = $(this).attr('id').replace('gaugeContainer' , '');
         var gauge = gauges[val-1];
-        var min = $(gauge).jqxGauge('min');
-        var max = $(gauge).jqxGauge('max');
+        console.log(gauge)
+        var min = gauge.config.min;
+        var max = gauge.config.max;
         var oid = $(gauge).attr('oid');
+        var label = gauge.config.title;
         $('#GaugeOidSearch').val(oid);
         $('#GaugeMin').val(min);
         $('#GaugeMax').val(max);
         $('#gaugeId').val(val);
+        $('#GaugeLabel').val(label);
        $('#gaugeModal').modal();
     });
 
     $('#saveGauge').on('click', function () {
         var id = $('#gaugeId').val();
-        var gauge = $('#gaugeContainer' + id);
+
+        var gauge = gauges[id-1];
+        var elementId = gauge.config.id;
+        var jgauge = $('#' + elementId);
+        var label = $('#GaugeLabel').val();
         var oid = $('#GaugeOidSearch').val();
         var min = $('#GaugeMin').val();
         var max = $('#GaugeMax').val();
-
-        $(gauge).jqxGauge({min: min, max: max});
-        $(gauge).attr('oid',oid);
+        $('#' + elementId).html('');
+        gauges[id - 1] = new JustGage({
+            id: elementId,
+            min:min,
+            max:max,
+            value:0,
+            title: label
+        });
+        $(jgauge).attr('oid',oid);
         $('#gaugeModal').modal('hide');
 
     });
@@ -118,12 +136,16 @@ function handleGauges()
         var query=$('#gaugeContainer1').attr('oid') + "," + $('#gaugeContainer2').attr('oid') + "," + $('#gaugeContainer3').attr('oid');
 
             $.get('ajax/snmpget.php?oids=' + query, function (response) {
-            $('.gaugeContainer').each(function(){
-                var oid = $(this).attr('oid');
-                var value = response.data[oid];
-                $(this).jqxGauge({value: value});
+            for (key in gauges) {
+                var gauge = gauges[key];
+                var jgauge = $('#' + gauge.config.id);
+                var oid = $(jgauge).attr('oid');
+                if(oid !== "") {
+                    var value = response.data[oid];
+                    gauge.refresh(value);
+                }
+            }
 
-            });
 
         });
     }, 1000);
