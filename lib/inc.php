@@ -31,6 +31,7 @@ if(isset($_SESSION['SELECTED_FILE']))
 {
 	$userDataHandler = new UserDataHandler($_SESSION['SELECTED_FILE']);
 	$fav = new Favorite($userDataHandler);
+	$gauges = new Gauges($userDataHandler);
 }
 
 

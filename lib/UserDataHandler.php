@@ -70,6 +70,36 @@ class UserDataHandler
     }
 }
 
+class Gauges {
+    private $gauges;
+    private $userDataHandler;
+
+    function __construct(UserDataHandler $userDataHandler)
+    {
+        $this->userDataHandler = $userDataHandler;
+        $data = $userDataHandler->getData('gauges');
+        if(!$data) $data = array("1"=> array(), "2" => array(), "3" => array());
+        $this->gauges = json_decode(json_encode($data),true); //stdClass to array
+    }
+
+    function getGauges()
+    {
+        return $this->gauges;
+    }
+    function setGuage($gaugeId, $gaugeParams)
+    {
+        $this->gauges[$gaugeId] = $gaugeParams;
+        foreach($this->gauges as $key=>$val)
+        {
+            if($key != 1 && $key != 2 && $key != 3) {
+                unset($this->gauges[$key]);
+            }
+        }
+
+
+        $this->userDataHandler->setData('gauges', $this->gauges);
+    }
+}
 
 class Favorite {
     private $favorites;

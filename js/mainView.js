@@ -79,18 +79,39 @@ $(document).ready(function ()
 function handleGauges()
 {
     var gauges = []
-    $('.gaugeContainer').each(function () {
-        var id = $(this).attr('id');
-        gauges.push(new JustGage({
-            id: id,
-            min: 1,
-            max: 100,
-            value: 50,
-            title: 'Test'
+    $.get('ajax/getgauges.php', function (response) {
+        $('.gaugeContainer').each(function () {
 
+            var id = $(this).attr('id');
+            var responseId = id.replace('gaugeContainer', '');
+            var config = {};
+            var oid = "";
+            if(response[responseId] != undefined)
+            {
+                config = {
+                    id: id,
+                    min: response[responseId].min,
+                    max: response[responseId].max,
+                    value: 0,
+                    title: response[responseId].label
+                };
+                oid = response[responseId].oid;
+            }
+            else
+            {
+                config = {
+                    id: id,
+                        min: 1,
+                    max: 100,
+                    value: 0,
+                    title: 'Gauge'
+                };
+            }
+            $("#" + id).attr('oid', oid);
+            gauges.push(new JustGage(config));
+        });
+        startUpdateGauges(1000, gauges);
 
-
-        })) ;
     });
 
     $('.gaugeContainer').on('click', function (){
@@ -127,15 +148,25 @@ function handleGauges()
             value:0,
             title: label
         });
+
+
         $(jgauge).attr('oid',oid);
         $('#gaugeModal').modal('hide');
+        $.get('ajax/updategauge.php?id=' + id + "&label=" + label + "&oid=" + oid + "&min=" + min + "&max=" + max, function () {
+            console.log('Gauge is now updated');
+        });
 
     });
 
+}
+
+
+function startUpdateGauges(interval, gauges)
+{
     setInterval(function () {
         var query=$('#gaugeContainer1').attr('oid') + "," + $('#gaugeContainer2').attr('oid') + "," + $('#gaugeContainer3').attr('oid');
 
-            $.get('ajax/snmpget.php?oids=' + query, function (response) {
+        $.get('ajax/snmpget.php?oids=' + query, function (response) {
             for (key in gauges) {
                 var gauge = gauges[key];
                 var jgauge = $('#' + gauge.config.id);
@@ -148,14 +179,7 @@ function handleGauges()
 
 
         });
-    }, 1000);
-
-
-
-
-
-
-
+    }, interval);
 }
 
 function handleFaves()
