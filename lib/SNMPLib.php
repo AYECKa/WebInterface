@@ -68,10 +68,9 @@ class SNMPMockBehavior implements SNMPSetBehavior, SNMPGetBehavior
 		$ret = "";
 		$sys = $this->mockSysInfo();
 		if(isset($sys[$oid])) return $sys[$oid];
-
+		if($oid === "") return;
 		$node = $mib->tree->getNodeByOid($oid);
 		//if($node == null) return "Error: Bad Name"; //will stop table from loading data...
-
 		if($node != null && $node->type['metaType'] == "OPTIONS")
 		{
 			$index = rand(0, count($node->type['type'])-1);
