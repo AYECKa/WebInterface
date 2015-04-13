@@ -64,6 +64,7 @@ function doneTyping () {
                     if(selectobject.options[i].text === response.FileName)
                     {
                         selectobject.selectedIndex = i;
+                        $('#host').val(response.IP); 
                         updatedSelectedMib();
                     }
                 }

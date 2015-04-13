@@ -85,7 +85,10 @@
                 </div>
 
             <div class="col-md-3"></div>
+
         </div>
+        <div class="text-center"><span class="glyphicon glyphicon-star favorite"></span> - Add to favorite</div>
+        <div class="text-center"><span class="glyphicon glyphicon-star-empty favorite"></span> - Remove from favorite</div>
         <hr>
         <div class="text-center"><h1><?php echo $navbar->getCurrentCategoryName(); ?></h1></div>
         <h1></h1>

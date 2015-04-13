@@ -1,4 +1,4 @@
-SR1_255 DEFINITIONS ::= BEGIN
+SR1GSE DEFINITIONS ::= BEGIN
 
 IMPORTS
 	MODULE-IDENTITY, OBJECT-TYPE, enterprises,
@@ -17,11 +17,11 @@ ayecka MODULE-IDENTITY
 	LAST-UPDATED "201012291200Z"
 	ORGANIZATION "Ayecka Communications Systems Ltd."
 	CONTACT-INFO "yarong@ayecka.com"
-	DESCRIPTION "This is the MIB of the SR1"
+	DESCRIPTION "This is the MIB of the SR1 GSE"
 	::= {enterprises 27928}  
 	
-sr1 				OBJECT IDENTIFIER ::= {ayecka 101}   
-configuration 		OBJECT IDENTIFIER ::= {sr1 1}
+sr1cg 				OBJECT IDENTIFIER ::= {ayecka 102}   
+configuration 		OBJECT IDENTIFIER ::= {sr1cg 1}
 rx1 				OBJECT IDENTIFIER ::= {configuration 1}
 rx2 				OBJECT IDENTIFIER ::= {configuration 2}
 rx_mgmt				OBJECT IDENTIFIER ::= {configuration 3}
@@ -49,9 +49,9 @@ rx2_cfg2_tuner		OBJECT IDENTIFIER ::= {rx2_cfg2 1}
 rx2_cfg2_demod		OBJECT IDENTIFIER ::= {rx2_cfg2 2}
 rx2_cfg2_lnb		OBJECT IDENTIFIER ::= {rx2_cfg2 3}
 rx2_cfg2_transport	OBJECT IDENTIFIER ::= {rx2_cfg2 4}
-network				OBJECT IDENTIFIER ::= {sr1 2}
-system				OBJECT IDENTIFIER ::= {sr1 3}
-alarms				OBJECT IDENTIFIER ::= {sr1 10}
+network				OBJECT IDENTIFIER ::= {sr1cg 2}
+system				OBJECT IDENTIFIER ::= {sr1cg 3}
+alarms				OBJECT IDENTIFIER ::= {sr1cg 10}
 
 --------------------------------------------------------------------------------
 -- Receiver 1 / 2 configuration configuration mode
@@ -662,50 +662,54 @@ filters4Entry OBJECT-TYPE
 
 Filters1Entry ::= SEQUENCE {
     filterIndex1			INTEGER,
-	pid1					INTEGER,
-	ethernetAddress1		MacAddress, 
-	counterPidPassed1		Unsigned32,
-	counterMpeSections1		Unsigned32,
-	counterCrcErrors1		Unsigned32,
-	counterMpeDiscarded1	Unsigned32,
-	filterStatus1			INTEGER,
-	filterMulticastMode1	INTEGER,
+	enabled1				INTEGER,
+	label1					MacAddress, 
+	bbFrames1				Unsigned32,
+	gseFrames1				Unsigned32,
+	badFragCRC1				Unsigned32,
+	bitRate1				Unsigned32,
+	labelType1				INTEGER,
+	passBcast1				INTEGER,
+	filterIsi1				INTEGER,
 	}
 
 Filters2Entry ::= SEQUENCE {
     filterIndex2			INTEGER,
-	pid2					INTEGER,
-	ethernetAddress2		MacAddress, 
-	counterPidPassed2		Unsigned32,
-	counterMpeSections2		Unsigned32,
-	counterCrcErrors2		Unsigned32,
-	counterMpeDiscarded2	Unsigned32,
-	filterStatus2			INTEGER,
-	filterMulticastMode2	INTEGER,
+	enabled2				INTEGER,
+	label2					MacAddress, 
+	bbFrames2				Unsigned32,
+	gseFrames2				Unsigned32,
+	badFragCRC2				Unsigned32,
+	bitRate2				Unsigned32,
+	labelType2				INTEGER,
+	passBcast2				INTEGER,
+	filterIsi2				INTEGER,
 	}
 
 Filters3Entry ::= SEQUENCE {
     filterIndex3			INTEGER,
-	pid3					INTEGER,
-	ethernetAddress3		MacAddress, 
-	counterPidPassed3		Unsigned32,
-	counterMpeSections3		Unsigned32,
-	counterCrcErrors3		Unsigned32,
-	counterMpeDiscarded3	Unsigned32,
-	filterStatus3			INTEGER,
-	filterMulticastMode3	INTEGER,
+	enabled3				INTEGER,
+	label3					MacAddress, 
+	bbFrames3				Unsigned32,
+	gseFrames3				Unsigned32,
+	badFragCRC3				Unsigned32,
+	bitRate3				Unsigned32,
+	labelType3				INTEGER,
+	passBcast3				INTEGER,
+	filterIsi3				INTEGER,
 	}
 
 Filters4Entry ::= SEQUENCE {
     filterIndex4			INTEGER,
-	pid4					INTEGER,
-	ethernetAddress4		MacAddress, 
-	counterPidPassed4		Unsigned32,
-	counterMpeSections4		Unsigned32,
-	counterCrcErrors4		Unsigned32,
-	counterMpeDiscarded4	Unsigned32,
-	filterStatus4			INTEGER,
-	filterMulticastMode4	INTEGER,
+	enabled4				INTEGER,
+	label4					MacAddress, 
+	bbFrames4				Unsigned32,
+	gseFrames4				Unsigned32,
+	badFragCRC4				Unsigned32,
+	bitRate4				Unsigned32,
+	labelType4				INTEGER,
+	passBcast4				INTEGER,
+	filterIsi4				INTEGER,
 	}
 
 filterIndex1 OBJECT-TYPE
@@ -740,261 +744,289 @@ filterIndex4 OBJECT-TYPE
 		"Unique index of this filter"
     ::= { filters4Entry 1 }
 	
-pid1 OBJECT-TYPE
-    SYNTAX INTEGER (0..8191)
+enabled1 OBJECT-TYPE
+    SYNTAX INTEGER {no(0), yes(1)}
     MAX-ACCESS read-write
     STATUS current
     DESCRIPTION
-		"PID"
+		""
     ::= { filters1Entry 2 }
 
-pid2 OBJECT-TYPE
-    SYNTAX INTEGER (0..8191)
+enabled2 OBJECT-TYPE
+    SYNTAX INTEGER {no(0), yes(1)}
     MAX-ACCESS read-write
     STATUS current
     DESCRIPTION
-		"PID"
+		""
     ::= { filters2Entry 2 }
 
-pid3 OBJECT-TYPE
-    SYNTAX INTEGER (0..8191)
+enabled3 OBJECT-TYPE
+    SYNTAX INTEGER {no(0), yes(1)}
     MAX-ACCESS read-write
     STATUS current
     DESCRIPTION
-		"PID"
+		""
     ::= { filters3Entry 2 }
 
-pid4 OBJECT-TYPE
-    SYNTAX INTEGER (0..8191)
+enabled4 OBJECT-TYPE
+    SYNTAX INTEGER {no(0), yes(1)}
     MAX-ACCESS read-write
     STATUS current
     DESCRIPTION
-		"PID"
+		""
     ::= { filters4Entry 2 }
 	
-ethernetAddress1 OBJECT-TYPE
+label1 OBJECT-TYPE
     SYNTAX MacAddress
     MAX-ACCESS read-write
     STATUS current
     DESCRIPTION
-		"Ethernet Address"
+		""
     ::= { filters1Entry 3 }
 
-ethernetAddress2 OBJECT-TYPE
+label2 OBJECT-TYPE
     SYNTAX MacAddress
     MAX-ACCESS read-write
     STATUS current
     DESCRIPTION
-		"Ethernet Address"
+		""
     ::= { filters2Entry 3 }
 
-ethernetAddress3 OBJECT-TYPE
+label3 OBJECT-TYPE
     SYNTAX MacAddress
     MAX-ACCESS read-write
     STATUS current
     DESCRIPTION
-		"Ethernet Address"
+		""
     ::= { filters3Entry 3 }
 
-ethernetAddress4 OBJECT-TYPE
+label4 OBJECT-TYPE
     SYNTAX MacAddress
     MAX-ACCESS read-write
     STATUS current
     DESCRIPTION
-		"Ethernet Address"
+		""
     ::= { filters4Entry 3 }
 	
-counterPidPassed1 OBJECT-TYPE
+bbFrames1 OBJECT-TYPE
     SYNTAX Unsigned32
     MAX-ACCESS read-only
     STATUS current
     DESCRIPTION
-		"Counter PID passed"
+		"BBFrames passed"
     ::= { filters1Entry 4 }
 
-counterPidPassed2 OBJECT-TYPE
+bbFrames2 OBJECT-TYPE
     SYNTAX Unsigned32
     MAX-ACCESS read-only
     STATUS current
     DESCRIPTION
-		"Counter PID passed"
+		"BBFrames passed"
     ::= { filters2Entry 4 }
 
-counterPidPassed3 OBJECT-TYPE
+bbFrames3 OBJECT-TYPE
     SYNTAX Unsigned32
     MAX-ACCESS read-only
     STATUS current
     DESCRIPTION
-		"Counter PID passed"
+		"BBFrames passed"
     ::= { filters3Entry 4 }
 
-counterPidPassed4 OBJECT-TYPE
+bbFrames4 OBJECT-TYPE
     SYNTAX Unsigned32
     MAX-ACCESS read-only
     STATUS current
     DESCRIPTION
-		"Counter PID passed"
+		"BBFrames passed"
     ::= { filters4Entry 4 }
 	
-counterMpeSections1 OBJECT-TYPE
+gseFrames1 OBJECT-TYPE
     SYNTAX Unsigned32
     MAX-ACCESS read-only
     STATUS current
     DESCRIPTION
-		"Counter MPE sections"
+		"GSE Frames passed"
     ::= { filters1Entry 5 }
 
-counterMpeSections2 OBJECT-TYPE
+gseFrames2 OBJECT-TYPE
     SYNTAX Unsigned32
     MAX-ACCESS read-only
     STATUS current
     DESCRIPTION
-		"Counter MPE sections"
+		"GSE Frames passed"
     ::= { filters2Entry 5 }
 
-counterMpeSections3 OBJECT-TYPE
+gseFrames3 OBJECT-TYPE
     SYNTAX Unsigned32
     MAX-ACCESS read-only
     STATUS current
     DESCRIPTION
-		"Counter MPE sections"
+		"GSE Frames passed"
     ::= { filters3Entry 5 }
 
-counterMpeSections4 OBJECT-TYPE
+gseFrames4 OBJECT-TYPE
     SYNTAX Unsigned32
     MAX-ACCESS read-only
     STATUS current
     DESCRIPTION
-		"Counter MPE sections"
+		"GSE Frames passed"
     ::= { filters4Entry 5 }
 
-counterCrcErrors1 OBJECT-TYPE
+badFragCRC1 OBJECT-TYPE
     SYNTAX Unsigned32
     MAX-ACCESS read-only
     STATUS current
     DESCRIPTION
-		"Counter CRC errors"
+		"Bad Fragmentation CRC"
     ::= { filters1Entry 6 }
 
-counterCrcErrors2 OBJECT-TYPE
+badFragCRC2 OBJECT-TYPE
     SYNTAX Unsigned32
     MAX-ACCESS read-only
     STATUS current
     DESCRIPTION
-		"Counter CRC errors"
+		"Bad Fragmentation CRC"
     ::= { filters2Entry 6 }
 
-counterCrcErrors3 OBJECT-TYPE
+badFragCRC3 OBJECT-TYPE
     SYNTAX Unsigned32
     MAX-ACCESS read-only
     STATUS current
     DESCRIPTION
-		"Counter CRC errors"
+		"Bad Fragmentation CRC"
     ::= { filters3Entry 6 }
 
-counterCrcErrors4 OBJECT-TYPE
+badFragCRC4 OBJECT-TYPE
     SYNTAX Unsigned32
     MAX-ACCESS read-only
     STATUS current
     DESCRIPTION
-		"Counter CRC errors"
+		"Bad Fragmentation CRC"
     ::= { filters4Entry 6 }
  	
-counterMpeDiscarded1 OBJECT-TYPE
+bitRate1 OBJECT-TYPE
     SYNTAX Unsigned32
     MAX-ACCESS read-only
     STATUS current
     DESCRIPTION
-		"Counter MPE discarded"
+		"Current Bitrate (bps)"
     ::= { filters1Entry 7 }
 
-counterMpeDiscarded2 OBJECT-TYPE
+bitRate2 OBJECT-TYPE
     SYNTAX Unsigned32
     MAX-ACCESS read-only
     STATUS current
     DESCRIPTION
-		"Counter MPE discarded"
+		"Current Bitrate (bps)"
     ::= { filters2Entry 7 }
 
-counterMpeDiscarded3 OBJECT-TYPE
+bitRate3 OBJECT-TYPE
     SYNTAX Unsigned32
     MAX-ACCESS read-only
     STATUS current
     DESCRIPTION
-		"Counter MPE discarded"
+		"Current Bitrate (bps)"
     ::= { filters3Entry 7 }
 
-counterMpeDiscarded4 OBJECT-TYPE
+bitRate4 OBJECT-TYPE
     SYNTAX Unsigned32
     MAX-ACCESS read-only
     STATUS current
     DESCRIPTION
-		"Counter MPE discarded"
+		"Current Bitrate (bps)"
     ::= { filters4Entry 7 }
 	
-filterStatus1 OBJECT-TYPE
-    SYNTAX INTEGER {disable( 0 ), enable( 1 )}
+labelType1 OBJECT-TYPE
+    SYNTAX INTEGER {_6bytes( 0 ), _3bytes( 1 )}
     MAX-ACCESS read-write
     STATUS current
     DESCRIPTION
-		"Filter Status"
+		""
     ::= { filters1Entry 8 }
 
-filterStatus2 OBJECT-TYPE
-    SYNTAX INTEGER {disable( 0 ), enable( 1 )}
+labelType2 OBJECT-TYPE
+    SYNTAX INTEGER {_6bytes( 0 ), _3bytes( 1 )}
     MAX-ACCESS read-write
     STATUS current
     DESCRIPTION
-		"Filter Status"
+		""
     ::= { filters2Entry 8 }
 
-filterStatus3 OBJECT-TYPE
-    SYNTAX INTEGER {disable( 0 ), enable( 1 )}
+labelType3 OBJECT-TYPE
+    SYNTAX INTEGER {_6bytes( 0 ), _3bytes( 1 )}
     MAX-ACCESS read-write
     STATUS current
     DESCRIPTION
-		"Filter Status"
+		""
     ::= { filters3Entry 8 }
 
-filterStatus4 OBJECT-TYPE
-    SYNTAX INTEGER {disable( 0 ), enable( 1 )}
+labelType4 OBJECT-TYPE
+    SYNTAX INTEGER {_6bytes( 0 ), _3bytes( 1 )}
     MAX-ACCESS read-write
     STATUS current
     DESCRIPTION
-		"Filter Status"
+		""
     ::= { filters4Entry 8 }
     
-filterMulticastMode1 OBJECT-TYPE
-    SYNTAX INTEGER {blocked(0),passed(1)}
+passBcast1 OBJECT-TYPE
+    SYNTAX INTEGER {no(0),yes(1)}
     MAX-ACCESS read-write
     STATUS current
     DESCRIPTION
-		"Filter Multicast mode"
-    ::= { filters1Entry 10 }
+		""
+    ::= { filters1Entry 9 }
 
-filterMulticastMode2 OBJECT-TYPE
-    SYNTAX INTEGER {blocked(0),passed(1)}
+passBcast2 OBJECT-TYPE
+    SYNTAX INTEGER {no(0),yes(1)}
     MAX-ACCESS read-write
     STATUS current
     DESCRIPTION
 		"Filter Multicast mode"
-    ::= { filters2Entry 10 }
+    ::= { filters2Entry 9 }
 
-filterMulticastMode3 OBJECT-TYPE
-    SYNTAX INTEGER {blocked(0),passed(1)}
+passBcast3 OBJECT-TYPE
+    SYNTAX INTEGER {no(0),yes(1)}
     MAX-ACCESS read-write
     STATUS current
     DESCRIPTION
-		"Filter Multicast mode"
-    ::= { filters3Entry 10 }
+		""
+    ::= { filters3Entry 9 }
 
-filterMulticastMode4 OBJECT-TYPE
-    SYNTAX INTEGER {blocked(0),passed(1)}
+passBcast4 OBJECT-TYPE
+    SYNTAX INTEGER {no(0),yes(1)}
     MAX-ACCESS read-write
     STATUS current
     DESCRIPTION
-		"Filter Multicast mode"
-    ::= { filters4Entry 10 }
+		""
+    ::= { filters4Entry 9 }
+
+filterIsi1 OBJECT-TYPE
+	SYNTAX INTEGER (0..255)
+	MAX-ACCESS read-write
+	STATUS current
+	DESCRIPTION "Input Stream Identifier (0-255)"
+	::= {filters1Entry 10}
+	
+filterIsi2 OBJECT-TYPE
+	SYNTAX INTEGER (0..255)
+	MAX-ACCESS read-write
+	STATUS current
+	DESCRIPTION "Input Stream Identifier (0-255)"
+	::= {filters2Entry 10}
+
+filterIsi3 OBJECT-TYPE
+	SYNTAX INTEGER (0..255)
+	MAX-ACCESS read-write
+	STATUS current
+	DESCRIPTION "Input Stream Identifier (0-255)"
+	::= {filters3Entry 10}
+
+filterIsi4 OBJECT-TYPE
+	SYNTAX INTEGER (0..255)
+	MAX-ACCESS read-write
+	STATUS current
+	DESCRIPTION "Input Stream Identifier (0-255)"
+	::= {filters4Entry 10}
 
 --------------------------------------------------------------------------------
 -- Receiver 1/2 activation/deactivation
@@ -1010,14 +1042,14 @@ rxSwitchMode OBJECT-TYPE
 	SYNTAX INTEGER { auto( 0 ), manual( 1 ), disabled( 2 ) } 
 	MAX-ACCESS read-write
 	STATUS current
-	DESCRIPTION "Receiver Switch Mode"
+	DESCRIPTION "Receiver Switch Mode in Sec"
 	::= {rx_mgmt 2}
   
 rxSwitchPeriod OBJECT-TYPE
 	SYNTAX INTEGER (20..120) 
 	MAX-ACCESS read-write
 	STATUS current
-	DESCRIPTION "Receiver Switch Period"
+	DESCRIPTION "Receiver Switch Period in Sec"
 	::= {rx_mgmt 3}
 
 rxChannelOpMode OBJECT-TYPE
@@ -1115,7 +1147,7 @@ linkMargin2 OBJECT-TYPE
 	::= {rx2_status 6}     
 
 modcodStatus1 OBJECT-TYPE
-	SYNTAX INTEGER {dvbs2_auto(0),dvbs2_qpsk_1_4(1),dvbs2_qpsk_1_3(2),
+	SYNTAX INTEGER {dvbs2_dummy(-1),dvbs2_auto(0),dvbs2_qpsk_1_4(1),dvbs2_qpsk_1_3(2),
 					dvbs2_qpsk_2_5(3),dvbs2_qpsk_1_2(4),dvbs2_qpsk_3_5(5),
 					dvbs2_qpsk_2_3(6),dvbs2_qpsk_3_4(7),dvbs2_qpsk_4_5(8),
 					dvbs2_qpsk_5_6(9),dvbs2_qpsk_8_9(10),dvbs2_qpsk_9_10(11),
@@ -1133,7 +1165,7 @@ modcodStatus1 OBJECT-TYPE
 	::= {rx1_status 7}
 
 modcodStatus2 OBJECT-TYPE
-	SYNTAX INTEGER {dvbs2_auto(0),dvbs2_qpsk_1_4(1),dvbs2_qpsk_1_3(2),
+	SYNTAX INTEGER {dvbs2_dummy(-1),dvbs2_auto(0),dvbs2_qpsk_1_4(1),dvbs2_qpsk_1_3(2),
 					dvbs2_qpsk_2_5(3),dvbs2_qpsk_1_2(4),dvbs2_qpsk_3_5(5),
 					dvbs2_qpsk_2_3(6),dvbs2_qpsk_3_4(7),dvbs2_qpsk_4_5(8),
 					dvbs2_qpsk_5_6(9),dvbs2_qpsk_8_9(10),dvbs2_qpsk_9_10(11),
@@ -1305,34 +1337,6 @@ profileName4 OBJECT-TYPE
 	STATUS current
 	DESCRIPTION "Profile Name"
 	::= {rx2_cfg2 5}
-	
-diseqcSwitchInput1 OBJECT-TYPE
-	SYNTAX INTEGER {satA(0), satB(1), satC(2), satD(3)} 
-	MAX-ACCESS read-write
-	STATUS current
-	DESCRIPTION "diseqcSwitchInput"
-	::= {rx1_cfg1 6}
-
-diseqcSwitchInput2 OBJECT-TYPE
-	SYNTAX INTEGER {satA(0), satB(1), satC(2), satD(3)}
-	MAX-ACCESS read-write
-	STATUS current
-	DESCRIPTION "diseqcSwitchInput"
-	::= {rx1_cfg2 6}
-
-diseqcSwitchInput3 OBJECT-TYPE
-	SYNTAX INTEGER {satA(0), satB(1), satC(2), satD(3)}
-	MAX-ACCESS read-write
-	STATUS current
-	DESCRIPTION "diseqcSwitchInput"
-	::= {rx2_cfg1 6}
-
-diseqcSwitchInput4 OBJECT-TYPE
-	SYNTAX INTEGER {satA(0), satB(1), satC(2), satD(3)}
-	MAX-ACCESS read-write
-	STATUS current
-	DESCRIPTION "diseqcSwitchInput"
-	::= {rx2_cfg2 6}
 
 rx1NumFilters OBJECT-TYPE
 	SYNTAX Unsigned32
@@ -1574,6 +1578,13 @@ arpValid OBJECT-TYPE
 	DESCRIPTION "ARP cache vaildity"
 	::= {arpEntry 4} 
 
+lanJumboFrame OBJECT-TYPE
+	SYNTAX INTEGER { j1522(0), j2048(1), j10240(2)}
+	MAX-ACCESS read-write
+	STATUS current
+	DESCRIPTION "Jumbo Frame mode in bytes"
+	::= {network 26}
+
 
 --
 -- The MIB module consists of the following groups:
@@ -1656,7 +1667,7 @@ snmpTrapServerIpAddress OBJECT-TYPE
 	DESCRIPTION "SNMP Trap Server IP Address"
 	::= {system 11}
 	
--- snmpWriteCommunity OBJECT-TYPE
+--snmpWriteCommunity OBJECT-TYPE
 --	SYNTAX OCTET STRING (SIZE(0..19))
 --	MAX-ACCESS read-write
 --	STATUS current
@@ -1969,7 +1980,7 @@ modcodHighThershold OBJECT-TYPE
 	STATUS current
 	DESCRIPTION " MODCOD High Thresholds" 
 	::= {system 31}
-
+	
 --
 -- The MIB module consists of the following groups:
 -- alarms

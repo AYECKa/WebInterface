@@ -96,8 +96,19 @@ class MibPageRender {
 						foreach($type['type'] as $key => $t)
 						{
 							$oid = $col[$key]->getOid();
+
+							global $mib;
+							$node = $mib->tree->getNodeByOid($oid);
+							if($node->type['metaType'] == 'OPTIONS')
+							{
+								$type = json_encode($node->type['type']);
+							}
+							else
+							{
+								$type = 'LITERAL';
+							}
 							$name = $this->butifyFieldName($t['name']);
-							$ret .= "\r\t\t\t\t<th oid=\"{$oid}\">{$name}</th>\r\n";
+							$ret .= "\r\t\t\t\t<th oid=\"{$oid}\" type='{$type}'>{$name}</th>\r\n";
 						}
 		$ret .=	"\t\t\t</tr></thead><tbody></tbody>
 

@@ -6,7 +6,7 @@
  * Time: 7:44 PM
  */
 define('DATA_FILE_LOCATION' , dirname(__FILE__)  . "/../user_data/user_data.json");
-define('ALLOW_CONFIG_CACHE' , false);
+define('ALLOW_CONFIG_CACHE' , true);
 
 class UserDataHandler
 {
