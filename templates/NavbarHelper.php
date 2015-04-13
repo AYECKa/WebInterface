@@ -131,7 +131,15 @@ class NavBar
 
 		                <li> <a href="?resetSession">Manage another device</a></li>
 		            </ul>
-		        </div>
+					<div class="col-sm-3 col-md-3 pull-right">
+						<form class="navbar-form" role="search">
+							<div class="form-group">
+								<input id="search-input" type="text" class="form-control" placeholder="Search" autocomplete="off" name="q">
+							</div>
+						</form>
+					</div>
+				</div>
+
 		    </div>
 		</div>
 		<?php

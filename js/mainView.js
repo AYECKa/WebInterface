@@ -23,7 +23,196 @@ $(document).ready(function ()
     loadAllPageData(30);
     loadTable();
     loadSystemInfo();
+    $.get('ajax/getmibindex.php', function (response) {
+        $('#search-input').typeahead({
+            source: response,
+            onSelect: function(item)
+            {
+                console.log(item);
+                window.location.href = item.value + "&highlight=" + item.text;
+
+            }
+        });
+        $('#GaugeOidSearch').typeahead({
+            source: response,
+            onSelect: function(item)
+            {
+                for(key in response)
+                {
+                    if(response[key].id === item.value)
+                    {
+                        var oid = response[key].oid;
+                        setTimeout(function () {
+                            $('#GaugeOidSearch').val(oid);
+                        }, 500);
+
+
+                    }
+                }
+
+            }
+        });
+    });
+
+    if(location.search.split('highlight=').length == 2)
+    {
+        var text= decodeURI(location.search.split('highlight=')[1]);
+        $("body").highlight(text);
+        var element = $("*:contains('" + text+  "'):last");
+        $(window).scrollTop(element.offset().top);
+    }
+
+    $(document).keydown(function (e) {
+        if(e.ctrlKey && e.keyCode == 'F'.charCodeAt(0)){
+            e.preventDefault();
+            $('#search-input').focus();
+
+        }
+    });
+
+    handleFaves();
+    handleGauges();
+
 });
+
+
+function handleGauges()
+{
+    if($('.gaugeContainer').length == 0)
+    {
+        return;
+    }
+    var gauges = []
+    $.get('ajax/getgauges.php', function (response) {
+        $('.gaugeContainer').each(function () {
+
+            var id = $(this).attr('id');
+            var responseId = id.replace('gaugeContainer', '');
+            var config = {};
+            var oid = "";
+            if(response[responseId] != undefined)
+            {
+                config = {
+                    id: id,
+                    min: response[responseId].min,
+                    max: response[responseId].max,
+                    value: 0,
+                    title: response[responseId].label
+                };
+                oid = response[responseId].oid;
+            }
+            else
+            {
+                config = {
+                    id: id,
+                        min: 1,
+                    max: 100,
+                    value: 0,
+                    title: 'Gauge'
+                };
+            }
+            $("#" + id).attr('oid', oid);
+            gauges.push(new JustGage(config));
+        });
+        startUpdateGauges(1000, gauges);
+
+    });
+
+    $('.gaugeContainer').on('click', function (){
+        var val = $(this).attr('id').replace('gaugeContainer' , '');
+        var gauge = gauges[val-1];
+        console.log(gauge)
+        var min = gauge.config.min;
+        var max = gauge.config.max;
+        var oid = $(gauge).attr('oid');
+        var label = gauge.config.title;
+        $('#GaugeOidSearch').val(oid);
+        $('#GaugeMin').val(min);
+        $('#GaugeMax').val(max);
+        $('#gaugeId').val(val);
+        $('#GaugeLabel').val(label);
+       $('#gaugeModal').modal();
+    });
+
+    $('#saveGauge').on('click', function () {
+        var id = $('#gaugeId').val();
+
+        var gauge = gauges[id-1];
+        var elementId = gauge.config.id;
+        var jgauge = $('#' + elementId);
+        var label = $('#GaugeLabel').val();
+        var oid = $('#GaugeOidSearch').val();
+        var min = $('#GaugeMin').val();
+        var max = $('#GaugeMax').val();
+        $('#' + elementId).html('');
+        gauges[id - 1] = new JustGage({
+            id: elementId,
+            min:min,
+            max:max,
+            value:0,
+            title: label
+        });
+
+
+        $(jgauge).attr('oid',oid);
+        $('#gaugeModal').modal('hide');
+        $.get('ajax/updategauge.php?id=' + id + "&label=" + label + "&oid=" + oid + "&min=" + min + "&max=" + max, function () {
+            console.log('Gauge is now updated');
+        });
+
+    });
+
+}
+
+
+function startUpdateGauges(interval, gauges)
+{
+    setInterval(function () {
+        var query=$('#gaugeContainer1').attr('oid') + "," + $('#gaugeContainer2').attr('oid') + "," + $('#gaugeContainer3').attr('oid');
+
+        $.get('ajax/snmpget.php?oids=' + query, function (response) {
+            for (key in gauges) {
+                var gauge = gauges[key];
+                var jgauge = $('#' + gauge.config.id);
+                var oid = $(jgauge).attr('oid');
+                if(oid !== "") {
+                    var value = response.data[oid];
+                    gauge.refresh(value);
+                }
+            }
+
+
+        });
+    }, interval);
+}
+
+function handleFaves()
+{
+    $(".favorite").click(function() {
+        var oid = $(this).attr('oid');
+        var status = false;
+       if($(this).hasClass('glyphicon-star'))
+       {
+           $(this).removeClass('glyphicon-star');
+           $(this).addClass('glyphicon-star-empty');
+           status = false;
+       }
+       else
+       {
+           $(this).removeClass('glyphicon-star-empty');
+           $(this).addClass('glyphicon-star');
+           status = true;
+       }
+        setFave(oid, status);
+    });
+}
+
+function setFave(oid, status)
+{
+    $.get('ajax/setfave.php?oid=' + oid + "&status=" + status, function () {
+        console.log("fave is set");
+    });
+}
 
 function loadTable()
 {
@@ -125,12 +314,29 @@ function fetchTableRow(dataTable,tableCols, rowIndex ,finishCallback, callbackPa
     $.get('ajax/snmpget.php?oids=' + query, function (response) {
         var tableData = response.data;
         var template = "";
-        //template+="<tr>";
+        
         var row = [];
         for(var obj in tableData)
         {
+            //get parent oid
+            var parentOid = obj.split('.');
+            parentOid.pop();
+            parentOid = parentOid.join('.');
+
+
+            var parentType = $("th[oid='" + parentOid +"']").attr('type');
             if(tableData[obj].indexOf("Error") !== -1) return;
-            var editable = "<a class=\"editable-link editable editable-click\" data-type=\"text\" href=\"#\" data-pk=\"1\" data-url=\"ajax/snmpset.php\" oid=\"" + obj + "\" data-name=\"" + obj + "\">" + tableData[obj] + "</a>";
+            var editable = '';
+            if(parentType == "LITERAL")
+            {
+                editable = "<a class=\"editable-link    editable editable-click\"  metaType=\"LITERAL\"      data-type=\"text\"   href=\"#\"  data-pk=\"1\" data-url=\"ajax/snmpset.php\" oid=\"" + obj + "\" data-name=\"" + obj + "\">" + tableData[obj] + "</a>";    
+            }
+            else
+            {
+                editable = "<a class=\"editable-options editable\" metaType=\"OPTIONS\" data-type=\"select\" href=\"#\"  data-pk=\"0\" data-url=\"ajax/snmpset.php\" oid=\"" + obj + "\" data-name=\"" + obj + "\" data-options='" + parentType + "' data-val=\"" + tableData[obj] + "\"'></a>"
+                    
+            }
+            
             row.push(editable);
             //template += "<td>" + editable + "</td>";
         }
@@ -140,7 +346,21 @@ function fetchTableRow(dataTable,tableCols, rowIndex ,finishCallback, callbackPa
         dataTable.row.add(row).draw();
 
         $('.editable').each(function () {
-            $(this).editable();
+            var metaType = $(this).attr('metaType');
+            if(metaType == "LITERAL")
+            {
+                $(this).editable();    
+            }
+            else
+            {
+                var value = $(this).attr('data-val');
+                var options = JSON.parse($(this).attr('data-options'));
+                $(this).editable({
+                    value: value,
+                    source: options
+                });
+            }
+            
         });
         if(finishCallback)
             finishCallback(dataTable, callbackParam);

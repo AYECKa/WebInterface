@@ -3,9 +3,22 @@
 <head>
     <title>Ayecka Web Interface</title>
     <meta name="viewport" content="width=device-width">
-    <link rel="stylesheet" href="css/bootstrap.min.css">
-    <!--<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>-->
+    <title>Ayecka Web Interface</title>
+    <link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon" />
+    <meta name="viewport" content="width=device-width">
+    <link rel="stylesheet" href="css/bootstrap.css">
+    <link rel="stylesheet" href="css/bootstrap-editable.css">
+    <link rel="stylesheet" href="css/custom-style.css">
+    <link rel="stylesheet" href="css/dataTables.bootstrap.css">
+    <link rel="stylesheet" href="css/dataTables.tableTools.css">
+    <script type="text/javascript" src="js/jquery-2.1.3.min.js"></script>
     <script type="text/javascript" src="js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="js/bootstrap-editable.js"></script>
+    <script type="text/javascript" src="js/jquery.dataTables.min.js"></script>
+    <script type="text/javascript" src="js/jquery.toaster.js"></script>
+    <script type="text/javascript" src="js/dataTables.bootstrap.js"></script>
+    <script type="text/javascript" src="js/dataTables.tableTools.js"></script>
+    <script type="text/javascript" src="js/fileSelect.js"></script>
     <style type="text/css">
         body {
             padding-top: 80px;
@@ -23,20 +36,29 @@
         <div class="well">
             <img src="img/ayeckaLogo.png">
             <form method="post" action="#">
-                <input type="text" placeholder="AYECKa Device host" class="form-control input-sm" name="host" value="10.0.0.201"><br>
-                <input type="text" placeholder="Community-Read" value="public" class="form-control input-sm" name="community-read"><br>
+                <input id="host" type="text" placeholder="AYECKa Device host" class="form-control input-sm" name="host" value=""><br>
+                <input id="community-read" type="text" placeholder="Community-Read" value="public" class="form-control input-sm" name="community-read"><br>
                 <input type="text" placeholder="Community-Write" value="private" class="form-control input-sm" name="community-write"><br>
-                <div class="checkbox text-left"><label><input name="use-mock" checked type="checkbox"/>Use mock device</label></div>
-                <select class="form-control input-sm" name="mib">
-                    <option selected disabled>Select Mib</option>
-                    <?php
+                <div class="checkbox text-left"><label><input name="use-mock" unchecked type="checkbox"/>Use mock device</label></div>
+                <div class="checkbox text-left"><label><input id="manual-mib" unchecked type="checkbox"/>Select Mib Manually</label></div>
+                <div class="row">
+                    <div class="col-md-9">
+                    <select id="fileSelect" class="form-control input-sm" disabled>
+                        <option selected disabled>Enter Device IP</option>
+                        <?php
                         foreach($mib->getMibFileList() as $file)
                         {
                             echo '<option value="' . $file .'">'. $file .'</option>';
                         }
-                    ?>
-                </select>
-                <br>
+                        ?>
+                    </select>
+                    </div>
+                    <div class="col-md-1">
+                        <a href="?resetSession" class="btn btn-primary"><span class="glyphicon glyphicon-refresh"></span> Reload</a>
+                    </div>
+
+                </div>
+                <input id="mib-input" type="hidden" value="" name="mib">
                 <input type="submit" value="Manage" name="operation" class="btn btn-success btn-lg">
             </form>
             <hr>

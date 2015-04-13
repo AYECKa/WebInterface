@@ -19,9 +19,14 @@ function getOidType($isTable,$oid)
     $typeString = "";
     if($isTable)
     {
+        //remove row number
         $oidIndex = explode('.' ,$oid);
-        $oidIndex = $oidIndex[count($oidIndex) - 1] - 1;
-        $typeString = $node->parent->parent->type['type'][$oidIndex]['type'];
+        unset($oidIndex[count($oidIndex)]);
+        $noRowOid = join($oidIndex, '.');
+
+
+        $node = $mib->tree->getNodeByOid($oid);
+        $typeString = $node->type['oidType'];
     }
     else
     {

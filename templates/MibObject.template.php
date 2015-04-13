@@ -56,6 +56,7 @@ class MibPageRender {
 
 			$ret .= "<div class=\"col-md-4 col-sm-6 col-lg-3 col-xs-12\">\n";
 			$ret .= "<div class=\"panel panel-primary\">\n";
+
 			$ret .= "<div class=\"panel-heading\">" . $groupName . "</div>\n";
 			$ret .= "<div class=\"panel-body\">\n";
 			$ret .= "<dl class=\"dl-horizontal\">\n";
@@ -95,8 +96,19 @@ class MibPageRender {
 						foreach($type['type'] as $key => $t)
 						{
 							$oid = $col[$key]->getOid();
+
+							global $mib;
+							$node = $mib->tree->getNodeByOid($oid);
+							if($node->type['metaType'] == 'OPTIONS')
+							{
+								$type = json_encode($node->type['type']);
+							}
+							else
+							{
+								$type = 'LITERAL';
+							}
 							$name = $this->butifyFieldName($t['name']);
-							$ret .= "\r\t\t\t\t<th oid=\"{$oid}\">{$name}</th>\r\n";
+							$ret .= "\r\t\t\t\t<th oid=\"{$oid}\" type='{$type}'>{$name}</th>\r\n";
 						}
 		$ret .=	"\t\t\t</tr></thead><tbody></tbody>
 
@@ -146,12 +158,18 @@ class MibObjectRender {
 		}
 		return $ret;
 	}
+	private function isFave()
+	{
+		global $fav;
+		return $fav->isFaved($this->oid);
+	}
 	public function render()
 	{
+		$fave_render = $this->isFave()?"":"-empty";
 		$render = "";
 		$name = $this->renderName();
 		$render .= "";
-		$render .= "<dt><a href=\"#\" class=\"data-title-link\" data-toggle=\"tooltip\" title=\"". $name ."\"> " . $name . ":</a> </dt>";
+		$render .= "<dt><div oid=\"".$this->oid. "\" class=\"glyphicon glyphicon-star". $fave_render . " favorite\"></div><a href=\"#\" class=\"data-title-link\" data-toggle=\"tooltip\" title=\"". $name ."\"> " . $name . ":</a> </dt>";
 		$render .= "<dd>
 
 						";
