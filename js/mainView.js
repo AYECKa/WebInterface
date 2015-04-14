@@ -124,7 +124,7 @@ function handleGauges()
         console.log(gauge)
         var min = gauge.config.min;
         var max = gauge.config.max;
-        var oid = $(gauge).attr('oid');
+        var oid = $(this).attr('oid');
         var label = gauge.config.title;
         $('#GaugeOidSearch').val(oid);
         $('#GaugeMin').val(min);
@@ -176,7 +176,7 @@ function startUpdateGauges(interval, gauges)
                 var jgauge = $('#' + gauge.config.id);
                 var oid = $(jgauge).attr('oid');
                 if(oid !== "") {
-                    var value = response.data[oid];
+                    var value = Number(response.data[oid]);
                     gauge.refresh(value);
                 }
             }

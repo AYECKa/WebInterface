@@ -40,7 +40,7 @@
 
         <div class="well well-sm" style="margin-bottom: 0;">
             <div class="container">
-                <div class="col-lg-1"><img src="img/ayeckaLogo.png" class="pull-left"></div>
+                <div class="col-lg-1"><a href="index.php"><img src="img/ayeckaLogo.png"></a></div>
                 <div class="col-lg-10 text-center">
                     <br><h4>AYECKa Web Interface</h4>
                     <h5><?php echo $_SESSION['SYS_DESC'];?></h5>
@@ -87,8 +87,8 @@
             <div class="col-md-3"></div>
 
         </div>
-        <div class="text-center"><span class="glyphicon glyphicon-star favorite"></span> - Add to favorite</div>
-        <div class="text-center"><span class="glyphicon glyphicon-star-empty favorite"></span> - Remove from favorite</div>
+        <div class="text-center"><span class="glyphicon glyphicon-star" style="color: #ECC500; font-size: 13px;"></span> - Add to favorite</div>
+        <div class="text-center"><span class="glyphicon glyphicon-star-empty" style="color: #ECC500; font-size: 13px;"></span> - Remove from favorite</div>
         <hr>
         <div class="text-center"><h1><?php echo $navbar->getCurrentCategoryName(); ?></h1></div>
         <h1></h1>
