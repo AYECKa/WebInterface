@@ -143,7 +143,19 @@ class Favorite {
                 unset($this->favorites[$key]);
         }
     }
-
+    public function renameFave($oid, $name)
+    {
+        foreach($this->favorites as $key => $f)
+        {
+            if($f['oid'] == $oid)
+            {
+                $this->favorites[$key]['description'] = $name;
+                $this->userDataHandler->setData('fave', $this->favorites);
+                return true;
+            }
+        }
+        return false;
+    }
     public function isFaved($oid)
     {
         foreach($this->favorites as $f)

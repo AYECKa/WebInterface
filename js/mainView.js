@@ -1,3 +1,4 @@
+var mibIndex = [];
 $(function(){
     $(".navbarmenu-items > li > a.trigger").on("click",function(e){
         var current=$(this).next();
@@ -16,6 +17,25 @@ $(function(){
     });
 
 });
+
+function doHighlight()
+{
+    if(location.search.split('highlight=').length == 2)
+    {
+        var oid= decodeURI(location.search.split('highlight=')[1]);
+        for(i in mibIndex)
+        {
+            if(mibIndex[i].oid == oid)
+            {
+                var text = mibIndex[i].name;
+                $("body").highlight(text);
+                var element = $("*:contains('" + text+  "'):last");
+                $(window).scrollTop(element.offset().top);
+            }
+        }
+
+    }
+}
 $(document).ready(function ()
 {   
     //$.fn.editable.defaults.mode = 'inline';
@@ -24,12 +44,23 @@ $(document).ready(function ()
     loadTable();
     loadSystemInfo();
     $.get('ajax/getmibindex.php', function (response) {
+        mibIndex = response;
+        doHighlight();
         $('#search-input').typeahead({
             source: response,
             onSelect: function(item)
             {
                 console.log(item);
-                window.location.href = item.value + "&highlight=" + item.text;
+                for(i in mibIndex)
+                {
+                    if(mibIndex[i].name == item.text)
+                    {
+                        var oid = mibIndex[i].oid;
+                        window.location.href = item.value + "&highlight=" + oid;
+                    }
+
+                }
+                
 
             }
         });
@@ -54,13 +85,7 @@ $(document).ready(function ()
         });
     });
 
-    if(location.search.split('highlight=').length == 2)
-    {
-        var text= decodeURI(location.search.split('highlight=')[1]);
-        $("body").highlight(text);
-        var element = $("*:contains('" + text+  "'):last");
-        $(window).scrollTop(element.offset().top);
-    }
+
 
     $(document).keydown(function (e) {
         if(e.ctrlKey && e.keyCode == 'F'.charCodeAt(0)){
@@ -132,6 +157,47 @@ function handleGauges()
         $('#gaugeId').val(val);
         $('#GaugeLabel').val(label);
        $('#gaugeModal').modal();
+    });
+    function getLocationByOid(oid)
+    {
+        for(i in mibIndex)
+        {
+            if(mibIndex[i].oid == oid)
+                return mibIndex[i].id;
+        }
+    }
+    $('#favRemove').on('click', function () {
+        var oid = $('#favOid').val();
+        $.get('ajax/setfave.php?oid=' + oid + "&status=0", function () {
+        console.log("fave is set");
+        location.reload();
+        });
+
+    });
+    $('#saveFave').on('click', function () {
+        var oid = $('#favOid').val();
+        var name = $('#favLabel').val();
+        $.get('ajax/updatefavlabel.php?oid=' + oid + "&label=" + name, function () {
+            console.log("fave is updated");
+            location.reload();
+        });
+    });
+    $('.edit').on('click', function () {
+        var title = $(this).next().attr('title');
+        var editable = $(this).parent().next().children('a');
+        var oid = editable.attr('oid');
+        var oidName = editable.attr('id');
+        var oidLocation = getLocationByOid(oid);
+        var url = oidLocation + "&highlight=" + oid;
+
+
+
+        $('#favLabel').val(title);
+        $('#favGotoOid').attr('href', url);
+        $('#favOid').val(oid);
+        $('#favName').val(oidName);
+        $('#faveEditModal').modal();
+
     });
 
     $('#saveGauge').on('click', function () {

@@ -33,7 +33,7 @@ class MibPageRender {
 	}
 
 
-	public function render()
+	public function render($isFavoritePage=false)
 	{
 
 		if(isset($_GET['table']))
@@ -42,12 +42,12 @@ class MibPageRender {
 		}
 		else
 		{
-			return $this->objectsRender();
+			return $this->objectsRender($isFavoritePage);
 		}
 
 	}
 
-	private function objectsRender()
+	private function objectsRender($isFavoritePage = false)
 	{
 		$ret = "";
 		$ret.= '<div class="row">' . "\n\r";
@@ -62,7 +62,7 @@ class MibPageRender {
 			$ret .= "<dl class=\"dl-horizontal\">\n";
 			foreach($group as  $object)
 			{
-				$ret .= $object->render();
+				$ret .= $object->render($isFavoritePage);
 			}
 			$ret .= "</dl>\n";
 			$ret .= "</div>\n";
@@ -163,14 +163,20 @@ class MibObjectRender {
 		global $fav;
 		return $fav->isFaved($this->oid);
 	}
-	public function render()
+	public function render($isFavoritePage = false)
 	{
-		$fave_render = $this->isFave()?"":"-empty";
-		$render = "";
 		$name = $this->renderName();
-		$render .= "";
-		$render .= "<dt><div oid=\"".$this->oid. "\" class=\"glyphicon glyphicon-star". $fave_render . " favorite\"></div><a href=\"#\" class=\"data-title-link\" data-toggle=\"tooltip\" title=\"". $name ."\"> " . $name . ":</a> </dt>";
-		$render .= "<dd>
+
+		$fave_render = $this->isFave()?"":"-empty";
+		$fave_icon = "<div oid=\"".$this->oid. "\" class=\"glyphicon glyphicon-star". $fave_render . " favorite\"></div>";
+		$edit_icon = "<div class=\"glyphicon glyphicon-pencil edit\"></div>";
+		$oid_title = "<span class=\"data-title-link\" data-toggle=\"tooltip\" title=\"". $name ."\"> " . $name . ":</span>";
+		$render = "";
+		
+		$render .= "<dt>";
+		$render .= ($isFavoritePage)?$edit_icon:$fave_icon;
+		$render .= $oid_title;
+		$render .= "</dt><dd>
 
 						";
 

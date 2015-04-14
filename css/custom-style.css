@@ -1,3 +1,7 @@
+.edit {
+    font-size: 13px;
+    cursor: pointer;
+}
 .gaugeContainer
 {
     width:100%; height:300px;

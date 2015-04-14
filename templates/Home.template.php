@@ -33,6 +33,31 @@
         </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
+<div id="faveEditModal" class="modal fade">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Edit Favorite Element</h4>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="search">Element Label:</label>
+                    <input type="text" class="form-control" id="favLabel" placeholder="Label">
+                    <input type="hidden" id="favOid"/>
+                    <input type="hidden" id="favName"/>
+                </div>
+                <a href="#" type="button" id="favGotoOid" class="btn btn-link">Goto page</a></br>
+                <button type="button" id="favRemove" class="btn btn-danger">Remove From Favorites</button>
+                
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" id="saveFave">Save changes</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
 <div id="gauges">
     <div class="row">
         <div class="col-sm-4">
@@ -51,4 +76,4 @@
 <center><h4>Favorites:</h4></center>
 <?php
 $mibPageRender = new MibPageRender($fav->getFavorites());
-echo $mibPageRender->render();
+echo $mibPageRender->render(true);
