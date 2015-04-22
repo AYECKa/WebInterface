@@ -3,12 +3,7 @@
     require_once('MibObject.template.php');
     $navbar = new NavBar($mib);
     $mibPageRender = new MibPageRender($navbar->getCurrentMibLocation());
-    //get the oid's of the system info
-    $sysInfo = array();
-    $sysInfo['FPGA'] = $mib->tree->root->getNodeByName('fpgaVersion')->getOid();
-    $sysInfo['Software'] = $mib->tree->root->getNodeByName('softwareVersion')->getOid();
-    $sysInfo['Firmware'] = $mib->tree->root->getNodeByName('hardwareVersion')->getOid();
-    $sysInfo['Serial'] = $mib->tree->root->getNodeByName('serialNumber')->getOid();
+
 ?>
 <html>
     <head>
@@ -60,25 +55,25 @@
                 <div class="col-md-3">
 
                     <div class="panel panel-default">
-                        <label>System Up Time:      <span class="systemInfo" oid="1.3.6.1.2.1.1.3"><img src="img/loading.gif"/></span></label></br>
-                        <label>System Object ID:    <span class="systemInfo" oid="1.3.6.1.2.1.1.2"><img src="img/loading.gif"/></span></label></br>
-                        <label>System Contact:      <span class="systemInfo" oid="1.3.6.1.2.1.1.4"><img src="img/loading.gif"/></span></label></br>
-                        <label>System Description:  <span class="systemInfo" oid="1.3.6.1.2.1.1.1"><img src="img/loading.gif"/></span></label></br>
-                        <label>System Name:         <span class="systemInfo" oid="1.3.6.1.2.1.1.5"><img src="img/loading.gif"/></span></label></br>
-                        <label>System Location:     <span class="systemInfo" oid="1.3.6.1.2.1.1.6"><img src="img/loading.gif"/></span></label></br>
-                        <label>System Services:     <span class="systemInfo" oid="1.3.6.1.2.1.1.7"><img src="img/loading.gif"/></span></label></br>
+                        <label>System Up Time:      <span id="sys_up_time" oid="1.3.6.1.2.1.1.3"></span></label></br>
+                        <label>System Object ID:    <span><?php echo $_SESSION['SYS_INFO']['OID'];?></span></label></br>
+                        <label>System Contact:      <span><?php echo $_SESSION['SYS_INFO']['CONTACT'];?></span></label></br>
+                        <label>System Description:  <span><?php echo $_SESSION['SYS_INFO']['DESC'];?></span></label></br>
+                        <label>System Name:         <span><?php echo $_SESSION['SYS_INFO']['NAME'];?></span></label></br>
+                        <label>System Location:     <span><?php echo $_SESSION['SYS_INFO']['LOCATION'];?></span></label></br>
+                        <label>System Services:     <span><?php echo $_SESSION['SYS_INFO']['SERVICES'];?></span></label></br>
                     </div>
                 </div>
                 <div class="col-md-3">
                     <div class="panel panel-default">
-                        <label>FPGA:                <span class="systemInfo" oid="<?php echo $sysInfo['FPGA']; ?>"><img src="img/loading.gif"/></span></label></br>
-                        <label>Software:            <span class="systemInfo" oid="<?php echo $sysInfo['Software']; ?>"><img src="img/loading.gif"/></span></label></br>
-                        <label>Firmware:            <span class="systemInfo" oid="<?php echo $sysInfo['Firmware']; ?>"><img src="img/loading.gif"/></span></label></br>
-                        <label>Serial:              <span class="systemInfo" oid="<?php echo $sysInfo['Serial']; ?>"><img src="img/loading.gif"/></span></label></br>
+                        <label>FPGA:                <span><?php echo $_SESSION['SYS_INFO']['FPGA'];?></span></label></br>
+                        <label>Software:            <span><?php echo $_SESSION['SYS_INFO']['SOFT'];?></span></label></br>
+                        <label>Firmware:            <span><?php echo $_SESSION['SYS_INFO']['FRIM'];?></span></label></br>
+                        <label>Serial:              <span><?php echo $_SESSION['SYS_INFO']['SERIAL'];?></span></label></br>
 
-                        <label>Remote Device Address: <span class=""</span><?php echo $_SESSION['host']; ?></label></br>
-                        <label>Loaded MIB:          <span class=""><?php echo $mib->getSelectedMibFileName(); ?></span></label></br>
-                        <label>Loaded MIB Root:          <span class=""><?php echo $mib->tree->root->children[0]->getOid(); ?></span></label></br>
+                        <label>Remote Device Address:   <span class=""><?php echo $_SESSION['host']; ?></span></label></br>
+                        <label>Loaded MIB:              <span class=""><?php echo $mib->getSelectedMibFileName(); ?></span></label></br>
+                        <label>Loaded MIB Root:         <span class=""><?php echo $mib->tree->root->children[0]->getOid(); ?></span></label></br>
 
                     </div>
 

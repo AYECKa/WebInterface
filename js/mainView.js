@@ -70,7 +70,7 @@ $(document).ready(function ()
             {
                 for(key in response)
                 {
-                    if(response[key].id === item.value)
+                    if(response[key].name === item.text)
                     {
                         var oid = response[key].oid;
                         setTimeout(function () {
@@ -521,21 +521,42 @@ function executeQuery(controlQueue,query)
     });
 }
 
+function formatUpTime(upTimeInMilis)
+{
+    var secondsSinceStartup = Math.floor(upTimeInMilis / 100);
+    var upHours = Math.floor(secondsSinceStartup / 60 / 60);
+    var upMinutes = Math.floor((secondsSinceStartup - (upHours * 60 * 60)) / 60);
+    var upSeconds = secondsSinceStartup % 60;
+    var format =  upHours + ' hours ' + upMinutes + ' minutes '  + upSeconds + ' seconds';
+    $('#sys_up_time').html(format);
+}
+
+function getUpTimeFromDevice(callback)
+{
+    var uptime = $('#sys_up_time').attr('oid');
+    var pattern = /.*\((.*)\)/
+    $.get('ajax/snmpget.php?oids=' + uptime, function (response) {
+        var data = response.data[uptime];
+        upTimeInMilis = parseInt(data.match(pattern)[1]);
+        callback(upTimeInMilis);
+    });
+}
 function loadSystemInfo()
 {
-    var controlQueue = [];
-    query = "";
-    $('.systemInfo').each(function () {
-        var textBox = this;
-        var oid = this.attributes['oid'].value;
-        controlQueue[oid] = textBox;
-        query += oid + ",";
+    var upTimeInMilis = 0;
+    getUpTimeFromDevice(function(up) {
+        upTimeInMilis = up;
+        setInterval(function() {
+            getUpTimeFromDevice(function(up) {
+                upTimeInMilis = up;
+                formatUpTime(up);
+            })
+        }, 10000);
+        setInterval(function() {
+            formatUpTime(upTimeInMilis);
+            upTimeInMilis += 100;
+        }, 1000);
     });
-    query = query.slice(0, -1);
-    $.get('ajax/snmpget.php?oids=' + query, function (response) {
-        for(var key in response.data)
-        {
-            controlQueue[key].innerHTML = response.data[key];
-        }
-    });
+
+
 }

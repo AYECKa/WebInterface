@@ -53,12 +53,12 @@ class SNMPMockBehavior implements SNMPSetBehavior, SNMPGetBehavior
 	private function mockSysInfo()
 	{
 
-		return array( "1.3.6.1.2.1.1.6" => '55:55:55',
-					"1.3.6.1.2.1.1.3" => 'Mock Object Id',
+		return array( "1.3.6.1.2.1.1.6" => 'Somewhere over the rainbow',
+					"1.3.6.1.2.1.1.3" =>  '232 hours 18 minutes 35 seconds (83631550)',
 					"1.3.6.1.2.1.1.4" => 'GOD',
 					"1.3.6.1.2.1.1.1" => 'Mock SNMP Device',
 					"1.3.6.1.2.1.1.5" => 'Mock',
-					"1.3.6.1.2.1.1.2" => 'Somewhere over the rainbow',
+					"1.3.6.1.2.1.1.2" => 'Mock Object Id',
 					"1.3.6.1.2.1.1.7" => 'SNMP');
 	}
 
