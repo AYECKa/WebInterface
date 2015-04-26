@@ -3,7 +3,7 @@ require_once('../lib/inc.php');
 header('Content-Type: application/json');
 
 
-$typeTable = array('INTEGER' => 'i', 'STRING' => 's', 'HEX STRING' =>'x', 'DECIMAL STRING' => 'd', 'NULLOBJ' => 'n', 'OBJID' => 'o', 'TIMETICKS' => 't', 'IPADDRESS' => 'a', 'BITS' => 'b', 'MACADDRESS' => 'x', 'UNSIGNED32' => 'u');
+$typeTable = array('INTEGER' => 'i', 'STRING' => 's', 'HEX STRING' =>'x', 'DECIMAL STRING' => 'd', 'NULLOBJ' => 'n', 'OBJID' => 'o', 'TIMETICKS' => 't', 'IPADDRESS' => 'a', 'BITS' => 'b', 'MACADDRESS' => 'x', 'UNSIGNED32' => 'u' ,'OCTET STRING' => 's');
 
 function getOidType($isTable,$oid)
 {
@@ -30,7 +30,7 @@ function getOidType($isTable,$oid)
     }
     else
     {
-        $typeString = $node->type['oidType'];
+        $typeString = strtoupper(trim($node->type['oidType']));
 
     }
 

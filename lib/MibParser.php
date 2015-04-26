@@ -197,6 +197,9 @@ class MibTypeParser
 
 	public function getType($typeString)
 	{
+		$typeString = str_replace('SIZE', '', $typeString);
+		$typeString = str_replace('((', '(', $typeString);	
+		$typeString = str_replace('))', ')', $typeString);	
 		//check for sequence
 		if(preg_match('/SEQUENCE OF (.*)/',$typeString,$match))
 		{
@@ -220,9 +223,36 @@ class MibTypeParser
 
 			return array('metaType'=>'OPTIONS' , 'oidType' => $oidType, 'type' => $options);
 		}
+		else if(preg_match('/(.*)\((-?\d+)..(-?\d+)\)/', $typeString, $match))
+		{
+			$ret = array('metaType' => 'LITERAL');
+			$ret['oidType'] = $ret['type'] = $match[1];
+			$ret['min'] = $match[2];
+			$ret['max'] = $match[3];
+			return $ret;
+		}
 		else
 		{
-			return array('metaType'=>'LITERAL', 'oidType'=> strtoupper(trim($typeString)), 'type'=>strtoupper(trim($typeString)));
+			$ret = array('metaType' => 'LITERAL');
+			$typeString = strtoupper(trim($typeString));
+			
+
+			//explicit every type
+			switch ($typeString)
+			{
+				case "UNSIGNED32":
+				case "INTEGER32":
+				case "MACADDRESS":
+				case "IPADDRESS":
+				case "OCTET STRING":
+				case "INTEGER":
+					$ret['oidType'] = $ret['type'] = $typeString;
+					break;
+				default:
+					//not supported type
+			}
+			return $ret;
+
 		}
 
 	}

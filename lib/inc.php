@@ -6,7 +6,7 @@ require_once(dirname(__FILE__) . '/MibIndexer.php');
 require_once(dirname(__FILE__) . '/UserDataHandler.php');
 session_start();
 
-define('ENABLE_MIB_CACHE' , true);
+define('ENABLE_MIB_CACHE' , false);
 function getValueOrEmptyString($arrayElement)
 {
 	return isset($arrayElement)?$arrayElement:"";
