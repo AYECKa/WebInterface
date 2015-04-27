@@ -34,7 +34,7 @@ if(isset($_GET['resetSession']))
 	unset($_SESSION['community-write']);
 	unset($_SESSION['community-read']);
 	unset($_SESSION['config']);
-	header('Location: /');
+	header('Location: index.php');
 	die();
 }
 

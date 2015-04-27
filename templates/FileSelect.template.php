@@ -54,7 +54,7 @@
                     </select>
                     </div>
                     <div class="col-md-1">
-                        <a href="?resetSession" class="btn btn-primary"><span class="glyphicon glyphicon-refresh"></span> Reload</a>
+                        <a href="parse_mibs.php" class="btn btn-primary"><span class="glyphicon glyphicon-refresh"></span> Reload</a>
                     </div>
 
                 </div>
