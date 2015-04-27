@@ -6,6 +6,7 @@
  * Time: 7:49 PM
  */
 
+require('../lib/inc.php');
 header('Content-Type: application/json');
 $ip = $_GET['ip'];
 $readKey = $_GET['community-read'];
