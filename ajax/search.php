@@ -10,7 +10,7 @@ header('Content-Type: application/json');
 
 $q = $_GET['query'];
 $res = [];
-foreach($mibIndex as $item)
+foreach($mib->index as $item)
 {
     if (strpos(strtolower($item['name']), strtolower($q)) !== FALSE)
     {

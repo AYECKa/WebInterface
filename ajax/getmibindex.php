@@ -8,4 +8,4 @@
 
 include('../lib/inc.php');
 header('Content-Type: application/json');
-echo json_encode($mibIndex);
+echo json_encode($mib->index);

@@ -1,4 +1,5 @@
 <?php
+require_once(dirname(__FILE__) . '/MibIndexer.php');
 error_reporting(E_ALL);
 class MibNode 
 {
@@ -439,12 +440,15 @@ class MibFiles
 	private $fileList;
 	private $mibList;
 	public $tree;
+	public $index;
+	private $indexes;
 	private $selectedFileName;
 	public function __construct($searchPath)
 	{
 		$this->searchPath = $searchPath;
 		$this->loadMibs();
 		$this->tree = false;
+		$this->index = false;
 	}
 
 	public function getFileNameByOid($oid)
@@ -463,6 +467,7 @@ class MibFiles
 		if(!isset($this->mibList[$name])) return false;
 		$this->selectedFileName = $name;
 		$this->tree = $this->mibList[$name];
+		$this->index = $this->indexes[$name];
 		return true;
 	}
 
@@ -486,8 +491,8 @@ class MibFiles
 			if(preg_match('/\.mib$/', $file))
 			{
 				$this->mibList[$file] = new MibTree($this->searchPath, $file);
+				$this->indexes[$file] = indexMib($this->mibList[$file]->root);
 				$this->fileList[] = $file;
 			}
-
 	}
 }
