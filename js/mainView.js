@@ -139,7 +139,7 @@ function handleGauges()
             $("#" + id).attr('oid', oid);
             gauges.push(new JustGage(config));
         });
-        startUpdateGauges(1000, gauges);
+        startUpdateGauges(5000, gauges);
 
     });
 
@@ -326,10 +326,13 @@ function loadTable()
                             return;
                         }
                         dataTable.$('tr.selected').find('.editable').each(function (index) {
-
-                            var element = clipboard[index];
-                            $(this).editable('setValue', element.text());
-                            $(this).editable('submit');
+                            var readonly = $(this)[0].getAttribute('readonly') == "TRUE";
+                            if(!readonly)
+                            {
+                                var element = clipboard[index];
+                                $(this).editable('setValue', element.text());
+                                $(this).editable('submit');    
+                            }
                         });
 
 
@@ -389,17 +392,19 @@ function fetchTableRow(dataTable,tableCols, rowIndex ,finishCallback, callbackPa
             parentOid.pop();
             parentOid = parentOid.join('.');
 
+            var parent = $("th[oid='" + parentOid + "']")[0];
 
-            var parentType = $("th[oid='" + parentOid +"']").attr('type');
+            var parentType = parent.getAttribute('type');
+            var parentReadOnly = parent.getAttribute('readonly');
             if(tableData[obj].indexOf("Error") !== -1) return;
             var editable = '';
             if(parentType == "LITERAL")
             {
-                editable = "<a class=\"editable-link    editable editable-click\"  metaType=\"LITERAL\"      data-type=\"text\"   href=\"#\"  data-pk=\"1\" data-url=\"ajax/snmpset.php\" oid=\"" + obj + "\" data-name=\"" + obj + "\">" + tableData[obj] + "</a>";    
+                editable = "<a class=\"editable-link    editable editable-click\"  readonly=\"" + parentReadOnly +"\" metaType=\"LITERAL\"      data-type=\"text\"   href=\"#\"  data-pk=\"1\" data-url=\"ajax/snmpset.php\" oid=\"" + obj + "\" data-name=\"" + obj + "\">" + tableData[obj] + "</a>";    
             }
             else
             {
-                editable = "<a class=\"editable-options editable\" metaType=\"OPTIONS\" data-type=\"select\" href=\"#\"  data-pk=\"0\" data-url=\"ajax/snmpset.php\" oid=\"" + obj + "\" data-name=\"" + obj + "\" data-options='" + parentType + "' data-val=\"" + tableData[obj] + "\"'></a>"
+                editable = "<a class=\"editable-options editable\" readonly=\"" + parentReadOnly + "\" metaType=\"OPTIONS\" data-type=\"select\" href=\"#\"  data-pk=\"0\" data-url=\"ajax/snmpset.php\" oid=\"" + obj + "\" data-name=\"" + obj + "\" data-options='" + parentType + "' data-val=\"" + tableData[obj] + "\"'></a>"
                     
             }
             

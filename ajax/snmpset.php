@@ -26,7 +26,7 @@ function getOidType($isTable,$oid)
 
 
         $node = $mib->tree->getNodeByOid($oid);
-        $typeString = $node->type['oidType'];
+        $typeString = strtoupper(trim($node->type['oidType']));
     }
     else
     {
@@ -35,7 +35,7 @@ function getOidType($isTable,$oid)
     }
 
     global $typeTable;
-    if(!isset($typeTable[$typeString])) {die(json_encode(array('status' => 'error', 'desc' => 'Unknown type ' . $typeString)));}
+    if(!isset($typeTable[$typeString])) {die(json_encode(array('status' => 'error', 'desc' => 'Unknown type:\'' . $typeString. '\'')));}
     return $typeTable[$typeString];
 
 }

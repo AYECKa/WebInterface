@@ -1,3 +1,8 @@
+.input_ajax {
+    background-image: url('../img/loading.gif');
+    background-repeat: no-repeat;
+    background-position: 97%;
+}
 .edit {
     font-size: 13px;
     cursor: pointer;
