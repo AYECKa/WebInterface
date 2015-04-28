@@ -330,7 +330,17 @@ function loadTable()
                             if(!readonly)
                             {
                                 var element = clipboard[index];
-                                $(this).editable('setValue', element.text());
+                                var value = ""
+                                var element = element.children().first();
+                                if(element.attr('data-type') == "text")
+                                {
+                                    value = element.text()
+                                }
+                                else
+                                {
+                                    value = element.attr('data-val');
+                                }
+                                $(this).editable('setValue', value);    
                                 $(this).editable('submit');    
                             }
                         });
@@ -404,7 +414,7 @@ function fetchTableRow(dataTable,tableCols, rowIndex ,finishCallback, callbackPa
             }
             else
             {
-                editable = "<a class=\"editable-options editable\" readonly=\"" + parentReadOnly + "\" metaType=\"OPTIONS\" data-type=\"select\" href=\"#\"  data-pk=\"0\" data-url=\"ajax/snmpset.php\" oid=\"" + obj + "\" data-name=\"" + obj + "\" data-options='" + parentType + "' data-val=\"" + tableData[obj] + "\"'></a>"
+                editable = "<a class=\"editable-options editable\" readonly=\"" + parentReadOnly + "\" metaType=\"OPTIONS\" data-type=\"select\" href=\"#\"  data-pk=\"1\" data-url=\"ajax/snmpset.php\" oid=\"" + obj + "\" data-name=\"" + obj + "\" data-options='" + parentType + "' data-val=\"" + tableData[obj] + "\"'></a>"
                     
             }
             
