@@ -1,4 +1,6 @@
 var mibIndex = [];
+var maximum_table_rows = 8;
+
 $(function(){
     $(".navbarmenu-items > li > a.trigger").on("click",function(e){
         var current=$(this).next();
@@ -368,7 +370,7 @@ var currentRow = 0;
 function fetchTable(dataTable, tableCols)
 {
     currentRow++;
-    fetchTableRow(dataTable, tableCols,currentRow, fetchTable, tableCols,513);
+    fetchTableRow(dataTable, tableCols,currentRow, fetchTable, tableCols,maximum_table_rows);
 }
 
 function fetchTableRow(dataTable,tableCols, rowIndex ,finishCallback, callbackParam, rowIndexLimit)
