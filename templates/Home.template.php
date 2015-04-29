@@ -47,7 +47,6 @@
                     <input type="hidden" id="favOid"/>
                     <input type="hidden" id="favName"/>
                 </div>
-                <a href="#" type="button" id="favGotoOid" class="btn btn-link">Goto page</a></br>
                 <button type="button" id="favRemove" class="btn btn-danger">Remove From Favorites</button>
                 
             </div>

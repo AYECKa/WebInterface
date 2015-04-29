@@ -170,12 +170,13 @@ class MibObjectRender {
 
 		$fave_render = $this->isFave()?"":"-empty";
 		$fave_icon = "<div oid=\"".$this->oid. "\" class=\"glyphicon glyphicon-star". $fave_render . " favorite\"></div>";
-		$edit_icon = "<div class=\"glyphicon glyphicon-pencil edit\"></div>";
+		$edit_icon = "<div class=\"glyphicon glyphicon-pencil edit\"></div> ";
+		$goto_icon = "<a href=\"#\" class=\"goto glyphicon glyphicon-share-alt\"></a>";
 		$oid_title = "<span class=\"data-title-link\" data-toggle=\"tooltip\" title=\"". $name ."\"> " . $name . ":</span>";
 		$render = "";
 		
 		$render .= "<dt>";
-		$render .= ($isFavoritePage)?$edit_icon:$fave_icon;
+		$render .= ($isFavoritePage)?$goto_icon . " - " . $edit_icon:$fave_icon;
 		$render .= $oid_title;
 		$render .= "</dt><dd>
 
@@ -185,10 +186,13 @@ class MibObjectRender {
 		if($this->mibObject->type['metaType'] == 'TABLE')
 			$render .= "<a href='?table={$this->mibObject->name}'>Open Table</a>";
 		else if($this->mibObject->type['metaType'] == 'LITERAL')
+		{
 			$render .=		"
 							<a class=\"editable-link\" href=\"#\" id=\"" . $this->mibObject->name . "\" readonly=\"" . $canWrite ."\" oid=\"" . $this->oid ."\" data-name=\"" . $this->oid ."\" data-type=\"text\" data-pk=\"0\" data-url=\"ajax/snmpset.php\">" . 'Fetching...' . "</a>
-							<img class=\"data-loader-ajax-loader\" src=\"img/loading.gif\" id=\"". $this->mibObject->name . "-loader\"/>
-						</dd>\r\n";
+							<img class=\"data-loader-ajax-loader\" src=\"img/loading.gif\" id=\"". $this->mibObject->name . "-loader\"/>";
+			
+			$render .= "</dd>\r\n";
+		}
 		else if($this->mibObject->type['metaType'] == 'OPTIONS')
 		{
 			$render .= "<a href=\"#\" class=\"editable-options\" id=\"" . $this->mibObject->name ."\" readonly=\"". $canWrite . "\" oid=\"" . $this->oid . "\" data-name=\"" . $this->oid ."\" data-type=\"select\" data-pk=\"0\" data-url=\"ajax/snmpset.php\" data-options='" . json_encode($this->mibObject->type['type']) ."'>" . 'Fetching...' . "</a>

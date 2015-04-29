@@ -195,13 +195,22 @@ function handleGauges()
 
 
         $('#favLabel').val(title);
-        $('#favGotoOid').attr('href', url);
         $('#favOid').val(oid);
         $('#favName').val(oidName);
         $('#faveEditModal').modal();
 
     });
+    $('.goto').on('click', function () {
+        var title = $(this).next().attr('title');
+        var editable = $(this).parent().next().children('a');
+        var oid = editable.attr('oid');
+        var oidName = editable.attr('id');
+        var oidLocation = getLocationByOid(oid);
+        var url = oidLocation + "&highlight=" + oid;
+        window.location.href = url;
 
+
+    });
     $('#saveGauge').on('click', function () {
         var id = $('#gaugeId').val();
 
