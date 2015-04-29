@@ -41,25 +41,18 @@
                 <input type="text" placeholder="Community-Write" value="private" class="form-control input-sm" name="community-write"><br>
                 <div class="checkbox text-left"><label><input name="use-mock" unchecked type="checkbox"/>Use mock device</label></div>
                 <div class="checkbox text-left"><label><input id="manual-mib" unchecked type="checkbox"/>Select Mib Manually</label></div>
-                <div class="row">
-                    <div class="col-md-9">
-                    <select id="fileSelect" class="form-control input-sm" disabled>
-                        <option selected disabled>Enter Device IP</option>
-                        <?php
-                        foreach($mib->getMibFileList() as $file)
-                        {
-                            echo '<option value="' . $file .'">'. $file .'</option>';
-                        }
-                        ?>
-                    </select>
-                    </div>
-                    <div class="col-md-1">
-                        <a href="parse_mibs.php" class="btn btn-primary"><span class="glyphicon glyphicon-refresh"></span> Reload</a>
-                    </div>
+                <select id="fileSelect" class="form-control input-sm" disabled>
+                    <option selected disabled>Select Mib</option>
+                    <?php
+                    foreach($mib->getMibFileList() as $file)
+                    {
+                        echo '<option value="' . $file .'">'. $file .'</option>';
+                    }
+                    ?>
+                </select><br>
 
-                </div>
                 <input id="mib-input" type="hidden" value="" name="mib">
-                <input type="submit" value="Manage" name="operation" class="btn btn-success btn-lg">
+                <input id="submit" type="submit" value="Manage" name="operation" class="btn btn-success btn-lg disabled">
             </form>
             <hr>
             <footer class="text-left">&copy; <a href="http://www.ayecka.com">Ayecka</a> Comunnication System</footer>

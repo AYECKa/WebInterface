@@ -35,6 +35,7 @@ function updatedSelectedMib()
     var selectedString = selectobject.options[selectobject.selectedIndex].value;
     $('#mib-input').attr('value', selectedString);
     console.log('Selected mib is now ' + selectedString);
+    $('#submit').removeClass('disabled');
 
 }
 function checkIsIPV4(entry) {
