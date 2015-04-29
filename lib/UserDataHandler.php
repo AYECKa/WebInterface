@@ -5,8 +5,7 @@
  * Date: 3/31/15
  * Time: 7:44 PM
  */
-define('DATA_FILE_LOCATION' , dirname(__FILE__)  . "/../user_data/user_data.json");
-define('ALLOW_CONFIG_CACHE' , true);
+
 
 class UserDataHandler
 {
@@ -28,10 +27,6 @@ class UserDataHandler
         else
         {
 
-            if(!is_writable(DATA_FILE_LOCATION))
-            {
-                die("please run ./fix_permissions.sh before accessing the web interface.");
-            }
             $fileContent = json_decode(file_get_contents(DATA_FILE_LOCATION));
             if($fileContent == false)
             {

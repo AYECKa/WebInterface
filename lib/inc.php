@@ -6,13 +6,15 @@ require_once(dirname(__FILE__) . '/config.php');
 require_once(dirname(__FILE__) . '/UserDataHandler.php');
 session_start();
 
-
+//check if dirs are writable
+if(!is_writable(DATA_FILE_LOCATION))
+{
+    die("please run ./fix_permissions.sh before accessing the web interface.");
+}
 //check if mibs are compiled
 if(!file_exists($mibCache))
 {	
-	header('Location: parse_mibs.php');
-	
-	die();
+	die("Please run 'php make.php' before entering the web interface");
 }
 else
 {
