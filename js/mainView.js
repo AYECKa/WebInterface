@@ -1,5 +1,5 @@
 var mibIndex = [];
-var maximum_table_rows = 8;
+var maximum_table_rows = 512;
 
 $(function(){
     $(".navbarmenu-items > li > a.trigger").on("click",function(e){
