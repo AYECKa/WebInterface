@@ -50,20 +50,24 @@
         <div class="text-center"><h2>System Information</h2></div>
         <div class="row">
 
-            <div class="col-md-3 text-center"></div>
-                
                 <div class="col-md-3">
-
                     <div class="panel panel-default">
                         <label>System Up Time:      <span id="sys_up_time" oid="1.3.6.1.2.1.1.3"></span></label></br>
                         <label>System Object ID:    <span><?php echo $_SESSION['SYS_INFO']['OID'];?></span></label></br>
                         <label>System Contact:      <span><?php echo $_SESSION['SYS_INFO']['CONTACT'];?></span></label></br>
+                    </div>
+                </div>
+                
+
+                <div class="col-md-3">
+                    <div class="panel panel-default">
                         <label>System Description:  <span><?php echo $_SESSION['SYS_INFO']['DESC'];?></span></label></br>
                         <label>System Name:         <span><?php echo $_SESSION['SYS_INFO']['NAME'];?></span></label></br>
                         <label>System Location:     <span><?php echo $_SESSION['SYS_INFO']['LOCATION'];?></span></label></br>
                         <label>System Services:     <span><?php echo $_SESSION['SYS_INFO']['SERVICES'];?></span></label></br>
                     </div>
                 </div>
+
                 <div class="col-md-3">
                     <div class="panel panel-default">
                         <label>FPGA:                <span><?php echo $_SESSION['SYS_INFO']['FPGA'];?></span></label></br>
@@ -71,19 +75,27 @@
                         <label>Firmware:            <span><?php echo $_SESSION['SYS_INFO']['FRIM'];?></span></label></br>
                         <label>Serial:              <span><?php echo $_SESSION['SYS_INFO']['SERIAL'];?></span></label></br>
 
+                    </div>
+
+                </div>
+                <div class="col-md-3">
+                    <div class="panel panel-default">
                         <label>Remote Device Address:   <span class=""><?php echo $_SESSION['host']; ?></span></label></br>
                         <label>Loaded MIB:              <span class=""><?php echo $mib->getSelectedMibFileName(); ?></span></label></br>
                         <label>Loaded MIB Root:         <span class=""><?php echo $mib->tree->root->children[0]->getOid(); ?></span></label></br>
 
                     </div>
-
                 </div>
 
             <div class="col-md-3"></div>
 
         </div>
-        <div class="text-center"><span class="glyphicon glyphicon-star" style="color: #ECC500; font-size: 13px;"></span> - Add to favorite</div>
-        <div class="text-center"><span class="glyphicon glyphicon-star-empty" style="color: #ECC500; font-size: 13px;"></span> - Remove from favorite</div>
+        <div class="text-center">
+            <span><span class="glyphicon glyphicon-star" style="color: #ECC500; font-size: 13px;"></span> - Add to favorite</span>
+            <span> | </span>
+            <span><span class="glyphicon glyphicon-star-empty" style="color: #ECC500; font-size: 13px;"></span> - Remove from favorite</span>
+        </div>
+        
         <hr>
         <div class="text-center"><h1><?php echo $navbar->getCurrentCategoryName(); ?></h1></div>
         <h1></h1>
