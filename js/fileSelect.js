@@ -39,7 +39,6 @@ $(document).ready(function () {
       var code = e.keyCode || e.which; 
       if (code  == 13) {               
         e.preventDefault();
-        console.log('DD');
         //doneTyping();
         return false;
       }
