@@ -1,5 +1,9 @@
 <?php
 require_once(dirname(__FILE__) . '/MibIndexer.php');
+function parser_log($str)
+{
+	echo $str . "\n";
+}
 error_reporting(E_ALL);
 class MibNode 
 {
@@ -408,6 +412,9 @@ class MibTree
 			if($parentNode == null)
 				throw new Exception("Could not find parent " . $objectParser->getParentName() ."in for object " . $node->name);
 			$node->parent = $parentNode;
+			//do parser_log
+			parser_log("parsing object " . $node->name);
+
 			$parentNode->addChild($node);
 			
 		}
@@ -490,7 +497,9 @@ class MibFiles
 		foreach($files as $file)
 			if(preg_match('/\.mib$/', $file))
 			{
+				parser_log("Parsing mib " . $file);
 				$this->mibList[$file] = new MibTree($this->searchPath, $file);
+				parser_log("indexing objects...");
 				$this->indexes[$file] = indexMib($this->mibList[$file]->root);
 				$this->fileList[] = $file;
 			}
