@@ -26,6 +26,25 @@ $(document).ready(function () {
             $('#fileSelect').attr('disabled', 'true');
         }
     });
+
+    $('#form').on("keypress", function(e) {
+      var code = e.keyCode || e.which; 
+      if (code  == 13) {               
+        e.preventDefault();
+        return false;
+      }
+    });
+
+    $('#form').on("keyup", function(e) {
+      var code = e.keyCode || e.which; 
+      if (code  == 13) {               
+        e.preventDefault();
+        console.log('DD');
+        //doneTyping();
+        return false;
+      }
+    });
+        
 });
 
 
