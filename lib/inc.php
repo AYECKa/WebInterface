@@ -67,7 +67,7 @@ if(isset($_SESSION['use-mock']))
 	}
 	else
 	{
-		$snmp->setSNMPGetBehavior(new SNMPPHPExtentionBehavior());
+		$snmp->setSNMPGetBehavior(new SNMPBashBehavior());
 		$snmp->setSNMPSetBehavior(new SNMPPHPExtentionBehavior());
 	}
 }

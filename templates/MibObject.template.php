@@ -181,7 +181,6 @@ class MibObjectRender {
 		$render .= "</dt><dd>
 
 						";
-
 		$canWrite = $this->mibObject->canWrite?'FALSE':'TRUE';
 		if($this->mibObject->type['metaType'] == 'TABLE')
 			$render .= "<a href='?table={$this->mibObject->name}'>Open Table</a>";
