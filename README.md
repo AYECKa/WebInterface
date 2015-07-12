@@ -14,6 +14,8 @@ cd /var/www
 git clone https://github.com/AYECKa/WebInterface.git
 cd WebInterface
 git checkout origin/development
+chmod +x fix_permissions.sh 
+./fix_permissions.sh 
 ```
 
 now you can go to your browser, and type `http://localhost/WebInterface`
